@@ -4,5 +4,8 @@
 *.orig
 *.bak
 
+fonts/
+CascadiaCode.zip
+
 # Typst outputs
 *.pdf

@@ -1,6 +1,8 @@
 #import "@preview/touying:0.5.3": *
 #import "@preview/touying-unistra-pristine:1.1.0": *
 
+#set text(font: "CaskaydiaCove NF")
+
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
   config-info(
@@ -11,6 +13,8 @@
     logo: image(width: 80%, "branding/carallon/carallon_logo_white.png"),
   ),
 )
+
+#show raw: set text(font: "CaskaydiaCove NF")
 
 #title-slide(logo: image("branding/carallon/carallon_logo_white.png"))
 
