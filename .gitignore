@@ -1,0 +1,8 @@
+# Common editor files
+*~
+\#*\#
+*.orig
+*.bak
+
+# Typst outputs
+*.pdf
