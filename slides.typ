@@ -1,7 +1,7 @@
 #import "@preview/touying:0.5.3": *
-#import "@preview/touying-unistra-pristine:1.1.0": *
-
-#set text(font: "CaskaydiaCove NF")
+#import "unistra/unistra.typ": *
+#import "unistra/colors.typ": *
+#import "unistra/admonition.typ": *
 
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
