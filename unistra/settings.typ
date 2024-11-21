@@ -1,4 +1,4 @@
-#let SHOW-HEADER = true
+#let SHOW-HEADER = false
 #let SHOW-FOOTER = true
 
 #let FOOTER-UPPER-SEP = " | "
