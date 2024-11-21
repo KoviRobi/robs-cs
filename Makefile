@@ -1,6 +1,10 @@
 all: fonts/
-	typst compile --font-path fonts/ slides.typ 2>&1 | \
-		sed 's|.*@preview/\([^:]*\):\([^/]*\)/|~/.cache/typst/packages/preview/\1/\2/|g'
+	typst compile \
+		--font-path fonts/ \
+		--diagnostic-format short \
+		slides.typ 2>&1 | \
+		grep -v '@preview'
+		# sed 's|.*@preview/\([^:]*\):\([^/]*\)/|~/.cache/typst/packages/preview/\1/\2/|g'
 
 fonts/: fonts/CaskaydiaCoveNerdFont-Regular.ttf \
         fonts/CaskaydiaCoveNerdFontMono-Regular.ttf \
