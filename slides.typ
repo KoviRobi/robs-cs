@@ -150,7 +150,9 @@ FoCS -> Prolog
 FoCS -> Types
 FoCS -> CompTheory (lambda calculus)
 FoCS -> RegEx
-CompTheory -> RegEx (finite-state automata)
+RegEx -> Memoization (for backtracking implementations)
+RegEx -> CompTheory (finite-state automata)
+RegEx -> Complexity (C++ exptime backtracking regex, vs automata implementation)
 ```
 
 = Regex
