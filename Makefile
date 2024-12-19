@@ -3,7 +3,7 @@ all: fonts/
 		--font-path fonts/ \
 		--diagnostic-format short \
 		slides.typ 2>&1 | \
-		grep -v '@preview'
+		sed '/@preview/s/:/ /g'
 		# sed 's|.*@preview/\([^:]*\):\([^/]*\)/|~/.cache/typst/packages/preview/\1/\2/|g'
 
 fonts/: fonts/CaskaydiaCoveNerdFont-Regular.ttf \
