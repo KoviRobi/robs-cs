@@ -6,6 +6,15 @@
 #import "@preview/codly:1.0.0": *
 #import "@preview/bytefield:0.0.6": *
 
+#let codly-reveal(pauses, content, start: 1) = {
+  for (slide, end) in pauses.enumerate(start: start) {
+    only(slide)[
+      #codly-range(end: end)
+      #content
+    ]
+  }
+}
+
 #show: codly-init.with()
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
@@ -79,19 +88,17 @@
 
 == Syntax overview
 #slide[
-  ```ocaml
-  let greet () = print_endline "Hello, world!";;
-  ```
-  #pause
-  ```ocaml
-  type 'a list = Nil | Cons of 'a * 'a list;;
-  ```
-  #pause
-  ```ocaml
-  let rec append x y = match x with
+  #codly-reveal((1,3,7), [
+    ```ocaml
+let greet () = print_endline "Hello, world!";;
+
+type 'a list = Nil | Cons of 'a * 'a list;;
+
+let rec append x y = match x with
   | Nil -> y
   | Cons(x, xs) -> Cons(x, append xs b)
-  ```
+    ```
+  ])
   #speaker-note[
     Simple function definition, body is a single expression. Can be multiple
     with semicolons, and using parentheses or begin/end blocks.
