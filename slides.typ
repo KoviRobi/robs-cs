@@ -70,10 +70,12 @@
   / `#show thing;;`: to show type, or module contents
 ]
 
-=== VS Code
-#slide[
-  Showing VS Code specific tips.
-]
+#hero(image("./images/vs-code/1-ocaml-sandbox-select.png"))
+#hero(image("./images/vs-code/2-ocaml-sandbox-selected.png"))
+#hero(image("./images/vs-code/3-workspace-settings.png"))
+#hero(image("./images/vs-code/4-eval-selection.png"))
+#hero(image("./images/vs-code/5-doc-hover.png"))
+#hero(image("./images/vs-code/6-tab-completion.png"))
 
 == Syntax overview
 #slide[
