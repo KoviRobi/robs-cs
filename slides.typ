@@ -32,6 +32,8 @@
         zebra-fill: luma(251),
         lang-fill: (lang) => lang.color.lighten(95%),
         highlight-inset: 0pt,
+        highlight-outset: 0.32em,
+        highlight-clip: false,
         highlight-stroke: color => 0pt,
       )
     }
