@@ -1,5 +1,5 @@
 #import "@preview/touying:0.5.3": *
-#import "@preview/codly:1.1.1": *
+#import "codly/codly.typ": *
 
 /**
 Reveals code bit-by-bit. Pauses is an array of line numbers, start is the start

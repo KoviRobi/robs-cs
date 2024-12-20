@@ -3,7 +3,7 @@
 #import "unistra/colors.typ": *
 #import "unistra/admonition.typ": *
 
-#import "@preview/codly:1.1.1": *
+#import "codly/codly.typ": *
 #import "@preview/bytefield:0.0.6": *
 #import "@preview/diagraph:0.3.0"
 
