@@ -5,7 +5,7 @@
 
 #import "codly/codly.typ": *
 #import "@preview/bytefield:0.0.6": *
-#import "@preview/diagraph:0.3.0"
+#import "diagraph/lib.typ" as diagraph
 
 #import "utils.typ": *
 

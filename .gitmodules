@@ -1,3 +1,6 @@
 [submodule "codly"]
 	path = codly
 	url = ../codly.git
+[submodule "diagraph"]
+	path = diagraph
+	url = ../diagraph.git
