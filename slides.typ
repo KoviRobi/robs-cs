@@ -260,122 +260,81 @@ fold_right (fun a b -> a::b) [1;2;3;4;5] []
 ]
 
 #slide[
+  #let foldr = [
+    ```ocaml
+let rec foldr f lst acc =
+  match lst with
+  | [] -> acc
+  | l::ls ->
+    f l (foldr f  ls acc)
+    ```
+  ]
   #let entries = (
     ((line: 1, start: 3, end: 16), 1),
     ((line: 3, start: 3, end: 12), 1),
-    ((line: 4, start: 5, end: 25), 1),
-
-    ((line: 1, start: 3, end: 16), 2),
-    ((line: 3, start: 3, end: 12), 2),
     ((line: 4, start: 5, end: 25), 2),
 
     ((line: 1, start: 3, end: 16), 3),
     ((line: 3, start: 3, end: 12), 3),
-    ((line: 4, start: 5, end: 25), 3),
+    ((line: 4, start: 5, end: 25), 4),
 
-    ((line: 1, start: 3, end: 16), 4),
-    ((line: 2, start: 3, end: 13), 4),
-  ).enumerate(start: 1)
-  #for (slide, (hi, stack)) in entries {
-    only((slide,),
-    components.side-by-side[
-      #codly(
-        display-name: false,
-        display-icon: false,
-        highlights: (hi,),
-      )
-      ```ocaml
-let rec foldr f lst acc =
-  match lst with
-  | [] -> acc
-  | l::ls ->
-    f l (foldr f  ls acc)
-      ```
-    ][
-      #sublist([
-        + ```ocaml      foldr (+) [1;2;3] 0```
-        + ```ocaml f 1 (foldr (+) [2;3]   0)```
-        + ```ocaml f 2 (foldr (+) [3]     0)```
-        + ```ocaml f 3 (foldr (+) []      0)```
-      ], stack)
-    ])
-  }
-  #only(entries.len() + 1,)[
-    #components.side-by-side[
+    ((line: 1, start: 3, end: 16), 5),
+    ((line: 3, start: 3, end: 12), 5),
+    ((line: 4, start: 5, end: 25), 6),
+
+    ((line: 1, start: 3, end: 16), 7),
+    ((line: 2, start: 3, end: 13), 7),
+  )
+  #components.side-by-side[
+    #for (slide, (hi, stack)) in entries.enumerate(start: 1) {
+      only((slide,))[
+        #codly(
+          display-name: false,
+          display-icon: false,
+          highlights: (hi,),
+        )
+        #foldr
+      ]
+    }
+    #only(range(entries.len() + 1, entries.len() + 4))[
       #codly(
         display-name: false,
         display-icon: false,
         highlights: ((line: 4, start: 5, end: 25),),
       )
-      ```ocaml
-let rec foldr f lst acc =
-  match lst with
-  | [] -> acc
-  | l::ls ->
-    f l (foldr f  ls acc)
-      ```
-    ][
-      + ```ocaml      foldr (+) [1;2;3] 0```
-      + ```ocaml f 1 (foldr (+) [2;3]   0)```
-      + ```ocaml f 2 (foldr (+) [3]     0)```
-      + ```ocaml 3 + 0                    ```
+      #foldr
     ]
-  ]
-  #only(entries.len() + 2,)[
-    #components.side-by-side[
-      #codly(
-        display-name: false,
-        display-icon: false,
-        highlights: ((line: 4, start: 5, end: 25),),
-      )
-      ```ocaml
-let rec foldr f lst acc =
-  match lst with
-  | [] -> acc
-  | l::ls ->
-    f l (foldr f  ls acc)
-      ```
-    ][
-      + ```ocaml      foldr (+) [1;2;3] 0```
-      + ```ocaml f 1 (foldr (+) [2;3]   0)```
-      + ```ocaml 2 + 3                    ```
+  ][
+    #for (slide, (hi, stack)) in entries.enumerate(start: 1) {
+      only(slide,)[
+        #sublist([
+          + ```ocaml foldr (+) [1;2;3] 0```
+            + line 5 ```ocaml (+) 1 _```
+          + ```ocaml foldr (+) [2;3]   0```
+            + line 5 ```ocaml (+) 2 _```
+          + ```ocaml foldr (+) [3]     0```
+            + line 5 ```ocaml (+) 3 _```
+          + ```ocaml foldr (+) []      0```
+        ], stack)
+      ]
+    }
+    #only(entries.len() + 1,)[
+      + ```ocaml foldr (+) [1;2;3] 0```
+        + line 5 ```ocaml (+) 1 _```
+      + ```ocaml foldr (+) [2;3]   0```
+        + line 5 ```ocaml (+) 2 _```
+      + ```ocaml foldr (+) [3]     0```
+        + line 5 ```ocaml (+) 3 0```
     ]
-  ]
-  #only(entries.len() + 3,)[
-    #components.side-by-side[
-      #codly(
-        display-name: false,
-        display-icon: false,
-        highlights: ((line: 4, start: 5, end: 25),),
-      )
-      ```ocaml
-let rec foldr f lst acc =
-  match lst with
-  | [] -> acc
-  | l::ls ->
-    f l (foldr f  ls acc)
-      ```
-    ][
-      + ```ocaml      foldr (+) [1;2;3] 0```
-      + ```ocaml 1 + 5                    ```
+    #only(entries.len() + 2,)[
+      + ```ocaml foldr (+) [1;2;3] 0```
+        + line 5 ```ocaml (+) 1 _```
+      + ```ocaml foldr (+) [2;3]   0```
+        + line 5 ```ocaml (+) 2 3```
     ]
-  ]
-  #only(entries.len() + 4,)[
-    #components.side-by-side[
-      #codly(
-        display-name: false,
-        display-icon: false,
-        highlights: ((line: 4, start: 5, end: 25),),
-      )
-      ```ocaml
-let rec foldr f lst acc =
-  match lst with
-  | [] -> acc
-  | l::ls ->
-    f l (foldr f  ls acc)
-      ```
-    ][
-      + ```ocaml 6```
+    #only(entries.len() + 3,)[
+      + ```ocaml foldr (+) [1;2;3] 0```
+        + line 5 ```ocaml (+) 1 5```
     ]
   ]
 ]
