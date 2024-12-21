@@ -343,24 +343,52 @@ let rec foldr f lst acc =
 ]
 
 #unistra.slide[
-  #for (slide, (hi, stack)) in (
-    (0, 6),
-  ).enumerate(start: 1) {
-    components.side-by-side[
-      #codly(display-name: false, display-icon: false)
-      ```ocaml
+  #components.side-by-side[
+    #for (slide, hi) in (
+      (line: 1, start: 3, end: 16),
+      (line: 3, start: 3, end: 12),
+      (line: 4, start: 5, end: 25),
+
+      (line: 1, start: 3, end: 16),
+      (line: 3, start: 3, end: 12),
+      (line: 4, start: 5, end: 25),
+
+      (line: 1, start: 3, end: 16),
+      (line: 3, start: 3, end: 12),
+      (line: 4, start: 5, end: 25),
+
+      (line: 1, start: 3, end: 16),
+      (line: 2, start: 3, end: 13),
+    ).enumerate(start: 1) {
+    only(slide)[
+      #codly(
+        display-name: false,
+        display-icon: false,
+        highlights: (hi,),
+      )
+        ```ocaml
 let rec foldl f acc lst =
   match lst with
   | [] -> acc
   | l::ls ->
     foldl f (f acc l) ls
-      ```
-    ][
-      #sublist([
-        + ```ocaml foldl (+) 0 [1;2;3]```
-      ], stack)
+        ```
+      ]
+    }
+  ][
+    #only((1,2,3))[
+      + ```ocaml foldl (+) 0 [1;2;3]```
     ]
-  }
+    #only((4,5,6))[
+      + ```ocaml foldl (+) 1 [2;3]```
+    ]
+    #only((7,8,9))[
+      + ```ocaml foldl (+) 3 [3]```
+    ]
+    #only((10,11))[
+      + ```ocaml foldl (+) 6 []```
+    ]
+  ]
 ]
 
 == Complexity
