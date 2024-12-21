@@ -24,9 +24,12 @@
     preamble: {
       codly(
         languages: (
-          ml: (
+          ocaml: (
             name: "OCaml",
-            icon: text(font: "CaskaydiaCove NF")[\u{e67a}#h(0.4em)],
+            icon: text(
+              fill: gradient.linear(rgb("#F29100"),rgb("#EC670F"), dir: ttb),
+              font: "CaskaydiaCove NF")[\u{e67a}#h(0.4em)],
+              color: rgb("#F29100")
           ),
         ),
         zebra-fill: luma(251),
