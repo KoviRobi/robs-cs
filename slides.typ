@@ -1,5 +1,5 @@
 #import "@preview/touying:0.5.3": *
-#import "unistra/unistra.typ": *
+#import "unistra/unistra.typ" as unistra: *
 #import "unistra/colors.typ": *
 #import "unistra/admonition.typ": *
 
@@ -47,7 +47,7 @@
 
 #title-slide(logo: image(height: 95%, "branding/carallon/carallon_logo_white.png"))
 
-#slide[
+#unistra.slide[
 #sym.space.quad When old age shall this generation waste,                                \
 #sym.space.quad #sym.space.quad Thou shalt remain, in midst of other woe                 \
 Than ours, a friend to man, to whom thou say'st,                                         \
@@ -60,7 +60,7 @@ Than ours, a friend to man, to whom thou say'st,                                
 
 = OCaml overview
 == Why OCaml?
-#slide[
+#unistra.slide[
 
   Because I know it. :p
 
@@ -79,7 +79,7 @@ Than ours, a friend to man, to whom thou say'st,                                
 ]
 
 == Ergonomics
-#slide[
+#unistra.slide[
   OCaml interpreter is minimal:
   / #sym.arrow.r.double: Use `utop`, or an editor + lang server
 
@@ -112,7 +112,7 @@ code --install-extension ocamllabs.ocaml-platform
 #hero(image("./images/vs-code/6-tab-completion.png"))
 
 == Syntax overview
-#slide[
+#unistra.slide[
   #codly-reveal((1,3,7), [
     ```ocaml
 let greet () = print_endline "Hello, world!";;
@@ -177,7 +177,7 @@ let main() =
 }
 
 == Lists
-#slide[
+#unistra.slide[
   #only(1)[
     ```ocaml
 type 'a list = Nil | Cons of 'a * 'a list;;
@@ -230,7 +230,7 @@ let rec (@) xs ys = match xs with
 ]
 
 == Tail recursion
-#slide[
+#unistra.slide[
   ```ocaml
 let rec fold_left f acc lst = match lst with
   | [] -> acc
@@ -242,7 +242,7 @@ let rec fold_right f lst acc = match lst with
   ```
 ]
 
-#slide[
+#unistra.slide[
   ```ocaml
 fold_left  (+) 0 [1;2;3]
   = 6;;
@@ -252,7 +252,7 @@ fold_right (+) [1;2;3] 0
   ```
 ]
 
-#slide[
+#unistra.slide[
   ```ocaml
 fold_left  (fun a b -> b::a) [] [1;2;3;4;5]
   = [5;4;3;2;1];;
@@ -262,7 +262,7 @@ fold_right (fun a b -> a::b) [1;2;3;4;5] []
   ```
 ]
 
-#slide[
+#unistra.slide[
   #let foldr = [
     ```ocaml
 let rec foldr f lst acc =
@@ -342,7 +342,7 @@ let rec foldr f lst acc =
   ]
 ]
 
-#slide[
+#unistra.slide[
   #for (slide, (hi, stack)) in (
     (0, 6),
   ).enumerate(start: 1) {
@@ -396,13 +396,13 @@ digraph {
   + Example: C++ templates, ellipsisation
     Real worked example
 
-#slide[
+#unistra.slide[
   ```
 auto Cli<PrintfIo&>::Parser<Cli<PrintfIo&>::Command<1ul>, Cli<PrintfIo&>::Command<1ul, NumArg<unsigned int, 0u, 23u> >, Cli<PrintfIo&>::Command<1ul, ChoiceArg<Status, 2ul> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<2ul, ChoiceArg<FanGroup, 10ul> >, Cli<PrintfIo&>::Command<2ul, NumArg<unsigned char, (unsigned char)0, (unsigned char)100> >, Cli<PrintfIo&>::Command<2ul, ChoiceArg<FanGroup, 10ul>, NumArg<unsigned char, (unsigned char)0, (unsigned char)100> >, Cli<PrintfIo&>::PageBreak, Cli<PrintfIo&>::Command<1ul, ChoiceArg<FanSensors, 29ul> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<2ul, ChoiceArg<ClkSynth::Id, 2ul>, NumArg<unsigned short, (unsigned short)0, (unsigned short)65535> >, Cli<PrintfIo&>::Command<2ul, ChoiceArg<ClkSynth::Id, 2ul>, NumArg<unsigned short, (unsigned short)0, (unsigned short)65535>, NumArg<unsigned char, (unsigned char)0, (unsigned char)255> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<2ul, ChoiceArg<ClkSynth::VersionY, 6ul> >, Cli<PrintfIo&>::PageBreak, Cli<PrintfIo&>::Command<2ul, ChoiceArg<IoCards::Card, 4ul>, NumArg<bool, false, true> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<3ul>, Cli<PrintfIo&>::Command<3ul>, Cli<PrintfIo&>::Command<3ul, StrArg>, Cli<PrintfIo&>::Command<3ul> >::help(PrintfIo&, std::basic_string_view<char, std::char_traits<char> >, bool) const::{lambda<unsigned long... $N0>(std::integer_sequence<unsigned long, ($N0)...>)#1}::operator()<0ul, 1ul, 2ul, 3ul, 4ul, 5ul, 6ul, 7ul, 8ul, 9ul, 10ul, 11ul, 12ul, 13ul, 14ul, 15ul, 16ul, 17ul, 18ul, 19ul, 20ul>(std::integer_sequence<unsigned long, 0ul, 1ul, 2ul, 3ul, 4ul, 5ul, 6ul, 7ul, 8ul, 9ul, 10ul, 11ul, 12ul, 13ul, 14ul, 15ul, 16ul, 17ul, 18ul, 19ul, 20ul>) const
   ```
   Ouch!
 ]
-#slide[
+#unistra.slide[
   End result
   ```
 auto Cli⟨...⟩::Parser⟦...⟧::help(PrintfIo&, std::basic_string_view⟪...⟫, bool) const::{lambda⟨...⟩(std::integer_sequence⟨...⟩)#1}::operator()⟨...⟩(std::integer_sequence⟨...⟩) const
@@ -410,7 +410,7 @@ auto Cli⟨...⟩::Parser⟦...⟧::help(PrintfIo&, std::basic_string_view⟪...
   "Readable for C++" -- most people would say ugly, but then you run out of
   terms to describe the original one.
 ]
-#slide[
+#unistra.slide[
   ```sh
 sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
   ```
@@ -423,7 +423,7 @@ sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
   ```
   Same but for greater-than.
 ]
-#slide[
+#unistra.slide[
   Now we can ellipsisise the innermost balanced pair.
   #codly(offset: 1)
   ```sh
@@ -436,7 +436,7 @@ sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
     -e 's/<\([^<>]*\)>/⟪...⟫/g' \
   ```
 ]
-#slide[
+#unistra.slide[
   And again.
   #codly(offset: 1)
   ```sh
@@ -449,7 +449,7 @@ sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
     -e 's/<\([^<>]*\)>/⟬...⟭/g' |
   ```
 ]
-#slide[
+#unistra.slide[
     Repeated removal of innermost parentheses, as regex cannot do balanced
     pairs. Replace with non-parentheses.
     Results in:
