@@ -391,16 +391,17 @@ let rec foldl f acc lst =
   ]
 ]
 
+== Why tail calls -- no while loops
+== Sorting
 == Complexity
-=== Fibonacci
-
-=== Sorting
-
-
-= OCaml
-
-== Type checking
-== Tail calls
+== Type checking 1
+== Combinatorial functions
+== Type checking 2
+== Monadic syntax
+== Infix operators, custom let
+== Modules, functors
+== Exceptions
+== Option; monads
 
 = Outline
 #diagraph.raw-render(width: 80%,
