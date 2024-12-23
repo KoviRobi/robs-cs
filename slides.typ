@@ -26,10 +26,18 @@
         languages: (
           ocaml: (
             name: "OCaml",
-            icon: text(
-              fill: gradient.linear(rgb("#F29100"),rgb("#EC670F"), dir: ttb),
-              font: "CaskaydiaCove NF")[\u{e67a}#h(0.4em)],
-              color: rgb("#F29100")
+            icon: box(image(width: 1em, height: 0.8em, fit: "contain", "images/logos/ocaml-logo.svg"))+h(0.1em),
+            color: rgb("#f29100"),
+          ),
+          cpp: (
+            name: "C++",
+            icon: box(image(width: 1em, height: 0.8em, fit: "contain", "images/logos/cpp_logo.svg")),
+            color: rgb("#659ad2"),
+          ),
+          python: (
+            name: "python",
+            icon: box(baseline: 0.1em, image(width: 1em, height: 0.8em, fit: "contain", "images/logos/python-logo-only.svg")),
+            color: rgb("#ffd43b"),
           ),
         ),
         zebra-fill: luma(251),
@@ -262,6 +270,10 @@ fold_right (fun a b -> a::b) [1;2;3;4;5] []
   ```
 ]
 
+#codly(
+  display-name: false,
+  display-icon: false,
+)
 #unistra.slide[
   #let foldr = [
     ```ocaml
@@ -292,8 +304,6 @@ let rec foldr f lst acc =
     #for (slide, (hi, stack)) in entries.enumerate(start: 1) {
       only((slide,))[
         #codly(
-          display-name: false,
-          display-icon: false,
           highlights: (hi,),
         )
         #foldr
@@ -301,8 +311,6 @@ let rec foldr f lst acc =
     }
     #only(range(entries.len() + 1, entries.len() + 4))[
       #codly(
-        display-name: false,
-        display-icon: false,
         highlights: ((line: 4, start: 5, end: 25),),
       )
       #foldr
@@ -362,8 +370,6 @@ let rec foldr f lst acc =
     ).enumerate(start: 1) {
     only(slide)[
       #codly(
-        display-name: false,
-        display-icon: false,
         highlights: (hi,),
       )
         ```ocaml
@@ -390,6 +396,10 @@ let rec foldl f acc lst =
     ]
   ]
 ]
+#codly(
+  display-name: true,
+  display-icon: true,
+)
 
 == Why tail calls -- no while loops
 == Sorting
