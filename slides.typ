@@ -1,13 +1,17 @@
-#import "@preview/touying:0.5.3": *
+#import "@preview/touying:0.5.3" as touying: *
 #import "unistra/unistra.typ" as unistra: *
 #import "unistra/colors.typ": *
 #import "unistra/admonition.typ": *
 
+#import "@preview/fletcher:0.5.3" as fletcher: *
 #import "codly/codly.typ": *
 #import "@preview/bytefield:0.0.6": *
 #import "diagraph/lib.typ" as diagraph
 
 #import "utils.typ": *
+
+#let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
+#let fletcher-diagram = touying-reducer.with(reduce: fletcher.diagram, cover: fletcher.hide)
 
 #show: codly-init.with()
 #show: unistra-theme.with(
@@ -415,6 +419,165 @@ let rec foldl f acc lst =
   #pause
   Element reference modified between iterations.
 ]
+
+== Merge-sort
+#unistra.slide[
+  #fletcher-diagram(
+    spacing: (0em, .5em),
+    node-stroke: 1pt + black,
+    node-corner-radius: 0em,
+    node-shape: rect,
+
+    for x in range(15) {
+      node((x,  3), stroke: white, " ")
+    },
+
+    node((0,  0), "7"),
+    node((1,  0), "1"),
+    node((2,  0), "2"),
+    node((3,  0), "8"),
+    node((4,  0), "6"),
+    node((5,  0), "5"),
+    node((6,  0), "4"),
+    node((7,  0), "3"),
+    node((15, 0), stroke: none, " "),
+
+    (pause,),
+
+    node((0,  1), "7"),
+    node((1,  1), "1"),
+    node((2,  1), "2"),
+    node((3,  1), "8"),
+    node((5,  1), "6"),
+    node((6,  1), "5"),
+    node((7,  1), "4"),
+    node((8,  1), "3"),
+    node((15, 1), stroke: none, " "),
+
+    (pause,),
+
+    node((0,  2), "7"),
+    node((1,  2), "1"),
+    node((3,  2), "2"),
+    node((4,  2), "8"),
+    node((6,  2), "6"),
+    node((7,  2), "5"),
+    node((9,  2), "4"),
+    node((10, 2), "3"),
+
+    (pause,),
+
+    node((0,  3), "7"),
+    node((2,  3), "1"),
+    node((4,  3), "2"),
+    node((6,  3), "8"),
+    node((8,  3), "6"),
+    node((10, 3), "5"),
+    node((12, 3), "4"),
+    node((14, 3), "3"),
+    node((15, 3), stroke: none, " "),
+
+    (pause,),
+
+    node((0,  4), "1"),
+    node((1,  4), "7"),
+    node((3,  4), "2"),
+    node((4,  4), "8"),
+    node((6,  4), "5"),
+    node((7,  4), "6"),
+    node((9,  4), "3"),
+    node((10, 4), "4"),
+    node((15, 4), stroke: none, " "),
+
+    (pause,),
+
+    node((0,  5), "1"),
+    node((1,  5), "2"),
+    node((2,  5), "7"),
+    node((3,  5), "8"),
+    node((5,  5), "3"),
+    node((6,  5), "4"),
+    node((7,  5), "5"),
+    node((8,  5), "6"),
+
+    (pause,),
+
+    node((0,  6), "1"),
+    node((1,  6), "2"),
+    node((2,  6), "3"),
+    node((3,  6), "4"),
+    node((4,  6), "5"),
+    node((5,  6), "6"),
+    node((6,  6), "7"),
+    node((7,  6), "8"),
+    node((15, 6), stroke: none," "),
+
+    render: (grid, nodes, edges, options) => {
+      cetz.canvas({
+        draw-diagram(grid, nodes, edges, debug: options.debug)
+        let n0 = find-node-at(nodes, (15, 0))
+        let n1 = find-node-at(nodes, (15, 1))
+        let n2 = find-node-at(nodes, (15, 3))
+        let n3 = find-node-at(nodes, (15, 4))
+        let n4 = find-node-at(nodes, (15, 6))
+        if repr(n1.post) != "hide" {
+          cetz.decorations.brace(n0.pos.xyz, n2.pos.xyz, name: "split")
+          cetz.draw.content("split.content", anchor: "west", [Split])
+        }
+
+        if repr(n3.post) != "hide" {
+          cetz.decorations.brace(n2.pos.xyz, n4.pos.xyz, name: "merge")
+          cetz.draw.content("merge.content", anchor: "west", [Merge])
+        }
+      })
+    }
+  )
+]
+
+== Coding challenge
+#unistra.slide[
+  #v(-1em)
+  Implement merge-sort
+  #v(-0.5em)
+  ```ocaml
+let rec merge xs ys = ...
+let rec sort lst = ...
+  ```
+  #v(-0.5em)
+  #pause
+  / Hint 1: Merging sorted lists -- only need to consider first element
+  #pause
+  / Hint 2: Implement list splitting
+  #pause
+  / Hint 3: Loops forever? Trace it to debug
+  #v(-0.5em)
+  ```ocaml
+let isort : int list -> int list = sort;;
+#trace isort;;
+  ```
+]
+
+#unistra.slide[
+  ```ocaml
+let rec merge xs ys = match xs, ys with
+  | x::xs', y::ys' when x<y -> x::merge xs' ys
+  | x::xs', y::ys'          -> y::merge xs ys'
+  | lst, [] | [], lst -> lst
+  ```
+]
+
+#unistra.slide[
+  ```ocaml
+let rec split n = function x::xs when n>0 ->
+    let (a, b) = split (n-1) xs in (x::a, b)
+  | xs  -> ([], xs)
+let rec sort = function
+  | ([] | [_]) as sorted -> sorted
+  | lst -> let a, b = split (List.length lst / 2) lst in
+    merge (sort a) (sort b)
+  ```
+]
+
 
 == Complexity
 == Type checking 1
