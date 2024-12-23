@@ -401,8 +401,21 @@ let rec foldl f acc lst =
   display-icon: true,
 )
 
-== Why tail calls -- no while loops
-== Sorting
+== Why tail recursion
+#unistra.slide[
+  Compare imperative languages
+  ```cpp
+  for (auto & element : list) { /* ... */ }
+  ```
+  #pause
+  ```python
+  for element in list:
+    # ...
+  ```
+  #pause
+  Element reference modified between iterations.
+]
+
 == Complexity
 == Type checking 1
 == Combinatorial functions
