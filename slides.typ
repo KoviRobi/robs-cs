@@ -239,7 +239,7 @@ type 'a list = Nil | Cons of 'a * 'a list
   #only(2)[
     ```ocaml
 type 'a list = Nil | Cons of 'a * 'a list
-let l = Cons(a, Cons(b, Nil))
+let l = Cons("hello", Cons("world", Nil))
     ```
     #diagraph.raw-render(
     ```dot
@@ -249,20 +249,44 @@ let l = Cons(a, Cons(b, Nil))
       l -> C0;
       C0 [shape=none,label=<
         <table border="0" cellborder="1" cellspacing="0">
-          <tr><td>Cons</td><td port="hd">'a</td><td port="tl">'a list</td></tr>
+          <tr><td>Cons</td><td port="hd">pointer</td><td port="tl">pointer</td></tr>
         </table>>]
-      C0:s -> a:n;
+      C0:s -> "hello":n;
       C0:e -> C1;
       C1 [shape=none,label=<
         <table border="0" cellborder="1" cellspacing="0">
-          <tr><td>Cons</td><td port="hd">'a</td><td port="tl">'a list</td></tr>
+          <tr><td>Cons</td><td port="hd">pointer</td><td port="tl">pointer</td></tr>
         </table>>]
-      C1:s -> b:n;
+      C1:s -> "world":n;
       C1:e -> Nil;
     }
     ```)
   ]
-  #codly-reveal((1,5,7), start: 3, [
+  #only(3)[
+    ```ocaml
+type 'a list = Nil | Cons of 'a * 'a list
+let l = Cons(1, Cons(2, Nil))
+    ```
+    #diagraph.raw-render(
+    ```dot
+    digraph {
+      rankdir=LR;
+      node [shape=rectangle];
+      l -> C0;
+      C0 [shape=none,label=<
+        <table border="0" cellborder="1" cellspacing="0">
+          <tr><td>Cons</td><td port="hd">1</td><td port="tl">pointer</td></tr>
+        </table>>]
+      C0:e -> C1;
+      C1 [shape=none,label=<
+        <table border="0" cellborder="1" cellspacing="0">
+          <tr><td>Cons</td><td port="hd">2</td><td port="tl">pointer</td></tr>
+        </table>>]
+      C1:e -> Nil;
+    }
+    ```)
+  ]
+  #codly-reveal((1,5,7), start: 4, [
     ```ocaml
 type 'a list = [] | (::) of 'a * 'a list
 
