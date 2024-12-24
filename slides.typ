@@ -649,6 +649,82 @@ let rec sort = function
 
 
 == Complexity
+#unistra.slide[
+    - Replace known functions with cost
+  #only(1)[
+    - Time:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys = match xs, ys with
+  | x::xs', y::ys' when x<y -> x::merge xs' ys
+  | x::xs', y::ys'          -> y::merge xs ys'
+  | lst, [] | [], lst -> lst
+    ```
+  ]
+  #only(2)[
+    - Time:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys = match xs, ys with
+  | x::xs', y::ys' when x<y -> 1 + merge (xs-1) (ys-1)
+  | x::xs', y::ys'          -> 1 + merge (xs-1) (ys-1)
+  | lst, [] | [], lst -> 1
+    ```
+  ]
+  #only(3)[
+    - Time:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys =
+  | xs > 1 && ys > 1 -> 1 + merge (xs-1) (ys-1)
+  | _ -> 1
+    ```
+  ]
+  #only(4)[
+    - Time:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys = min(xs, ys)
+    ```
+  ]
+  #only(5)[
+    - Space:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys = match xs, ys with
+  | x::xs', y::ys' when x<y -> x::merge xs' ys
+  | x::xs', y::ys'          -> y::merge xs ys'
+  | lst, [] | [], lst -> lst
+    ```
+  ]
+  #only(6)[
+    - Space:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys = match xs, ys with
+  | x::xs', y::ys' when x<y -> 1 + merge (xs-1) (ys-1)
+  | x::xs', y::ys'          -> 1 + merge (xs-1) (ys-1)
+  | lst, [] | [], lst -> 1
+    ```
+  ]
+  #only(7)[
+    - Space:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys =
+  | xs > 1 && ys > 1 -> 1 + merge (xs-1) (ys-1)
+  | _ -> 1
+    ```
+  ]
+  #only(8)[
+    - Space (note, extra space):
+    #v(-0.5em)
+    ```ocaml
+let rec merge xs ys = min(xs, ys)
+    ```
+  ]
+]
+
 == Type checking 1
 == Combinatorial functions
 == Type checking 2
