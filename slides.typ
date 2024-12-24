@@ -133,7 +133,7 @@ type 'a list = Nil | Cons of 'a * 'a list;;
 
 let rec append x y = match x with
   | Nil -> y
-  | Cons(x, xs) -> Cons(x, append xs b)
+  | Cons(x, xs) -> Cons(x, append xs b);;
     ```
   ])
   #speaker-note[
@@ -224,12 +224,12 @@ let rec append x y = match x with
 #unistra.slide[
   #only(1)[
     ```ocaml
-type 'a list = Nil | Cons of 'a * 'a list;;
+type 'a list = Nil | Cons of 'a * 'a list
     ```
   ]
   #only(2)[
     ```ocaml
-type 'a list = Nil | Cons of 'a * 'a list;;
+type 'a list = Nil | Cons of 'a * 'a list
 let l = Cons(a, Cons(b, Nil))
     ```
     #diagraph.raw-render(
@@ -253,24 +253,17 @@ let l = Cons(a, Cons(b, Nil))
     }
     ```)
   ]
-  #codly-reveal((1,5), start: 3, [
+  #codly-reveal((1,5,7), start: 3, [
     ```ocaml
-type 'a list = [] | (::) of 'a * 'a list;;
+type 'a list = [] | (::) of 'a * 'a list
 
 let rec append xs ys = match xs with
   | [] -> ys
   | x::xs' -> x::append xs' ys
+
+let (@) = append
     ```
   ])
-  #only(5)[
-    ```ocaml
-type 'a list = [] | (::) of 'a * 'a list;;
-
-let rec (@) xs ys = match xs with
-  | [] -> ys
-  | x::xs' -> x::(xs' @ ys)
-    ```
-  ]
 ]
 
 == Tail recursion
