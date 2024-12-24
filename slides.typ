@@ -311,11 +311,11 @@ fold_right (fun a b -> a::b) [1;2;3;4;5] []
   ```
 ]
 
-#codly(
-  display-name: false,
-  display-icon: false,
-)
 #unistra.slide[
+  #codly(
+    display-name: false,
+    display-icon: false,
+  )
   #v(-1em)
   #let foldr = [
     ```ocaml
@@ -438,11 +438,11 @@ let rec foldl f acc lst =
       + ```ocaml foldl (+) 6 []```
     ]
   ]
+  #codly(
+    display-name: true,
+    display-icon: true,
+  )
 ]
-#codly(
-  display-name: true,
-  display-icon: true,
-)
 
 == Why tail recursion
 #unistra.slide[
