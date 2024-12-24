@@ -159,34 +159,66 @@ let rec append x y = match x with
 + Floating-point always boxed doubles
 
 == Boxing
-Here `x` is unboxed, stored on the stack
-#for (slide, (line, stack)) in (
-  (4, 1), (0, 2), (1, 3), (2, 3), (-1, 5), (2, 3), (4, 1)
-).enumerate(start: 1){
-only(slide)[
-  #components.side-by-side[
-    #codly(highlights:(
-      (line: line),
-    ))
-    ```ocaml
-let test () =
-  let x = 123
-  in print_int x
-let main() =
-  test()
-    ```
-  ][
-    #sublist([
-      + main
-      + test, returns to line 5
-        + ```ocaml x = 123```
-      + print_int, returns to line 3
-        + ```ocaml x = 123```
-    ], stack)
-  ]
-  But most values are boxed, so heap allocated
+#unistra.slide[
+  Here `i` is unboxed, stored on the stack
+  #for (slide, (line, stack)) in (
+    (4, 1), (0, 2), (1, 3), (2, 3), (-1, 5), (2, 3), (4, 1)
+  ).enumerate(start: 1){
+    only(slide)[
+      #components.side-by-side[
+        #codly(highlights:(
+          (line: line),
+        ))
+        ```ocaml
+    let test () =
+      let i = 123
+      in print_int i
+    let main() =
+      test()
+        ```
+      ][
+        #sublist([
+          + ```ocaml main```
+          + ```ocaml test```, returns to line 5
+            + ```ocaml i = 123```
+          + ```ocaml print_int```, returns to line 3
+            + ```ocaml i = 123```
+        ], stack)
+      ]
+      But most values are boxed, so heap allocated
+    ]
+  }
 ]
-}
+
+#unistra.slide[
+  Here `f` is boxed, stored on the heap
+  #for (slide, (line, stack)) in (
+    (4, 1), (0, 2), (1, 3), (2, 3), (-1, 5), (2, 3), (4, 1)
+  ).enumerate(start: 1){
+    only(slide)[
+      #components.side-by-side[
+        #codly(highlights:(
+          (line: line),
+        ))
+        ```ocaml
+    let test () =
+      let f = 1.23
+      in print_float f
+    let main() =
+      test()
+        ```
+      ][
+        #sublist([
+          + main
+          + ```ocaml test```, returns to line 5
+            + ```ocaml f = ```$angle.l"pointer to heap"angle.r$
+          + ```ocaml print_float```, returns to line 3
+            + ```ocaml x = ```$angle.l"pointer to heap"angle.r$
+        ], stack)
+      ]
+    ]
+  }
+]
 
 == Lists
 #unistra.slide[
