@@ -105,11 +105,13 @@ Than ours, a friend to man, to whom thou say'st,                                
 ]
 
 == MS Windows Setup
+#v(-1em)
 ```
 winget install Microsoft.VisualStudioCode
 winget install OCaml.opam
 ```
 Restart terminal
+#v(-0.5em)
 ```
 opam init
 opam --install ocaml-lsp-server odoc ocamlformat utop
@@ -125,6 +127,7 @@ code --install-extension ocamllabs.ocaml-platform
 
 == Syntax overview
 #unistra.slide[
+  #v(-1em)
   #codly-reveal((1,3,7), [
     ```ocaml
 let greet () = print_endline "Hello, world!";;
@@ -161,6 +164,7 @@ let rec append x y = match x with
 == Boxing
 #unistra.slide[
   Here `i` is unboxed, stored on the stack
+  #v(-0.5em)
   #for (slide, (line, stack)) in (
     (4, 1), (0, 2), (1, 3), (2, 3), (-1, 5), (2, 3), (4, 1)
   ).enumerate(start: 1){
@@ -185,13 +189,15 @@ let rec append x y = match x with
             + ```ocaml i = 123```
         ], stack)
       ]
-      But most values are boxed, so heap allocated
     ]
   }
+  #v(-0.5em)
+  But most values are boxed, so heap allocated
 ]
 
 #unistra.slide[
   Here `f` is boxed, stored on the heap
+  #v(-0.5em)
   #for (slide, (line, stack)) in (
     (4, 1), (0, 2), (1, 3), (2, 3), (-1, 5), (2, 3), (4, 1)
   ).enumerate(start: 1){
@@ -218,10 +224,13 @@ let rec append x y = match x with
       ]
     ]
   }
+  #v(-0.5em)
+  But most values are boxed, so heap allocated
 ]
 
 == Lists
 #unistra.slide[
+  #v(-1em)
   #only(1)[
     ```ocaml
 type 'a list = Nil | Cons of 'a * 'a list
@@ -268,6 +277,7 @@ let (@) = append
 
 == Tail recursion
 #unistra.slide[
+  #v(-1em)
   ```ocaml
 let rec fold_left f acc lst = match lst with
   | [] -> acc
@@ -280,6 +290,7 @@ let rec fold_right f lst acc = match lst with
 ]
 
 #unistra.slide[
+  #v(-1em)
   ```ocaml
 fold_left  (+) 0 [1;2;3]
   = 6;;
@@ -290,6 +301,7 @@ fold_right (+) [1;2;3] 0
 ]
 
 #unistra.slide[
+  #v(-1em)
   ```ocaml
 fold_left  (fun a b -> b::a) [] [1;2;3;4;5]
   = [5;4;3;2;1];;
@@ -304,6 +316,7 @@ fold_right (fun a b -> a::b) [1;2;3;4;5] []
   display-icon: false,
 )
 #unistra.slide[
+  #v(-1em)
   #let foldr = [
     ```ocaml
 let rec foldr f lst acc =
@@ -380,6 +393,7 @@ let rec foldr f lst acc =
 ]
 
 #unistra.slide[
+  #v(-1em)
   #components.side-by-side[
     #for (slide, hi) in (
       (line: 1, start: 3, end: 16),
@@ -433,14 +447,17 @@ let rec foldl f acc lst =
 == Why tail recursion
 #unistra.slide[
   Compare imperative languages
+  #v(-0.5em)
   ```cpp
   for (auto & element : list) { /* ... */ }
   ```
+  #v(-0.5em)
   #pause
   ```python
   for element in list:
     # ...
   ```
+  #v(-0.5em)
   #pause
   Element reference modified between iterations.
 ]
@@ -583,6 +600,7 @@ let isort : int list -> int list = sort;;
 ]
 
 #unistra.slide[
+  #v(-1em)
   ```ocaml
 let rec merge xs ys = match xs, ys with
   | x::xs', y::ys' when x<y -> x::merge xs' ys
@@ -592,10 +610,12 @@ let rec merge xs ys = match xs, ys with
 ]
 
 #unistra.slide[
+  #v(-1em)
   ```ocaml
 let rec split n = function x::xs when n>0 ->
     let (a, b) = split (n-1) xs in (x::a, b)
   | xs  -> ([], xs)
+
 let rec sort = function
   | ([] | [_]) as sorted -> sorted
   | lst -> let a, b = split (List.length lst / 2) lst in
