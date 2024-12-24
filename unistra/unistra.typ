@@ -172,12 +172,32 @@
             ),
           ),
           cell(
-            utils.call-or-display(
-              self,
-              context utils
-                .slide-counter
-                .display() + " / " + utils.last-slide-number,
-            ),
+            context {
+              // slides/subslides are tortoise/hare
+              let h1 = self.subslide
+              let h2 = self.repeat
+              let t1 = utils.slide-counter.get().first()
+              let t2 = utils.last-slide-counter.final().first()
+              // progress, with 1/1 being 0 not 1
+              let hprog = (h1 - 1)/calc.max(1, h2 - 1)
+              let tprog = (t1 - 1)/calc.max(1, t2 - 1)
+              [
+                #grid(columns: 5, column-gutter: 0.5em,
+                  h(2em * hprog),
+                  "󰤇 ",
+                  h(2em * (1 - hprog)),
+                  str(h1) + " / " + str(h2),
+                  sym.space.quad
+                )
+                #grid(columns: 5, column-gutter: 0.5em,
+                  h(2em * tprog),
+                  "󰴻 ",
+                  h(2em * (1 - tprog)),
+                  str(t1) + " / " + str(t2),
+                  sym.space.quad
+                )
+              ]
+            }
           ),
         )
       },
