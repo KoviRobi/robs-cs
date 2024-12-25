@@ -10,6 +10,8 @@
 
 #import "utils.typ": *
 
+// '<,'>!ocamlformat - --impl
+
 #let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
 #let fletcher-diagram = touying-reducer.with(reduce: fletcher.diagram, cover: fletcher.hide)
 
@@ -130,15 +132,16 @@ code --install-extension ocamllabs.ocaml-platform
 == Syntax overview
 #unistra.slide[
   #v(-1em)
-  #codly-reveal((1,3,7), [
+  #codly-reveal((1,3,8), [
     ```ocaml
-let greet () = print_endline "Hello, world!";;
+let greet () = print_endline "Hello, world!"
 
-type 'a list = Nil | Cons of 'a * 'a list;;
+type 'a list = Nil | Cons of 'a * 'a list
 
-let rec append x y = match x with
+let rec append x y =
+  match x with
   | Nil -> y
-  | Cons(x, xs) -> Cons(x, append xs y);;
+  | Cons (x, xs) -> Cons (x, append xs y)
     ```
   ])
   #pdfpc.speaker-note(```
@@ -177,11 +180,11 @@ let rec append x y = match x with
           (line: line),
         ))
         ```ocaml
-    let test () =
-      let i = 123
-      in print_int i
-    let main() =
-      test()
+let test () =
+  let i = 123 in
+  print_int i
+
+let main () = test ()
         ```
       ][
         #sublist([
@@ -210,11 +213,11 @@ let rec append x y = match x with
           (line: line),
         ))
         ```ocaml
-    let test () =
-      let f = 1.23
-      in print_float f
-    let main() =
-      test()
+let test () =
+  let f = 1.23 in
+  print_float f
+
+let main () = test ()
         ```
       ][
         #sublist([
@@ -242,7 +245,8 @@ type 'a list = Nil | Cons of 'a * 'a list
   #only(2)[
     ```ocaml
 type 'a list = Nil | Cons of 'a * 'a list
-let l = Cons("hello", Cons("world", Nil))
+
+let l = Cons ("hello", Cons ("world", Nil))
     ```
     #diagraph.raw-render(
     ```dot
@@ -268,7 +272,8 @@ let l = Cons("hello", Cons("world", Nil))
   #only(3)[
     ```ocaml
 type 'a list = Nil | Cons of 'a * 'a list
-let l = Cons(1, Cons(2, Nil))
+
+let l = Cons (1, Cons (2, Nil))
     ```
     #diagraph.raw-render(
     ```dot
@@ -289,15 +294,16 @@ let l = Cons(1, Cons(2, Nil))
     }
     ```)
   ]
-  #codly-reveal((1,5,7), start: 4, [
+  #codly-reveal((1,6,8), start: 4, [
     ```ocaml
-type 'a list = [] | (::) of 'a * 'a list
+type 'a list = [] | ( :: ) of 'a * 'a list
 
-let rec append xs ys = match xs with
+let rec append xs ys =
+  match xs with
   | [] -> ys
-  | x::xs' -> x::append xs' ys
+  | x :: xs' -> x :: append xs' ys
 
-let (@) = append
+let ( @ ) = append
     ```
   ])
 ]
@@ -308,41 +314,39 @@ let (@) = append
   ```ocaml
 let rec fold_left f acc lst = match lst with
   | [] -> acc
-  | l::ls -> fold_left f (f acc l) ls
+  | l :: ls -> fold_left f (f acc l) ls
 
 let rec fold_right f lst acc = match lst with
   | [] -> acc
-  | l::ls -> f l (fold_right f ls acc)
+  | l :: ls -> f l (fold_right f ls acc)
   ```
 ]
 
 #unistra.slide[
   #v(-1em)
   ```ocaml
-fold_left  (+) 0 [1;2;3]
+fold_left  ( + ) 0 [ 1; 2; 3 ]
   = 6;;
 
-fold_right (+) [1;2;3] 0
+fold_right ( + ) [ 1; 2; 3 ] 0
   = 6;;
   ```
 ]
 
 #unistra.slide[
+  #codly(display-name: false, display-icon: false)
   #v(-1em)
   ```ocaml
-fold_left  (fun a b -> b::a) [] [1;2;3;4;5]
+fold_left  (fun a b -> b :: a) [] [ 1; 2; 3; 4; 5 ]
   = [5;4;3;2;1];;
 
-fold_right (fun a b -> a::b) [1;2;3;4;5] []
+fold_right (fun a b -> a :: b) [ 1; 2; 3; 4; 5 ] []
   = [1;2;3;4;5];;
   ```
 ]
 
 #unistra.slide[
-  #codly(
-    display-name: false,
-    display-icon: false,
-  )
+  #codly(display-name: false, display-icon: false)
   #v(-1em)
   #let foldr = [
     ```ocaml
@@ -420,10 +424,7 @@ let rec foldr f lst acc =
 ]
 
 #unistra.slide[
-  #codly(
-    display-name: false,
-    display-icon: false,
-  )
+  #codly(display-name: false, display-icon: false)
   #v(-1em)
   #components.side-by-side[
     #for (slide, hi) in (
@@ -469,10 +470,7 @@ let rec foldl f acc lst =
       + ```ocaml foldl (+) 6 []```
     ]
   ]
-  #codly(
-    display-name: true,
-    display-icon: true,
-  )
+  #codly(display-name: true, display-icon: true)
 ]
 
 == Why tail recursion
