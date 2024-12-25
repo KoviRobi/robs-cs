@@ -45,7 +45,7 @@
 
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
-== Lists
+= Linked Lists
 #unistra.slide[
   #v(-1em)
   #only(1)[

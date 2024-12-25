@@ -40,7 +40,7 @@
 
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
-== Complexity
+= Complexity
 #unistra.slide[
     - Replace known functions with cost
   #only(1)[
@@ -62,6 +62,8 @@ let rec merge xl yl = match xl, yl with
   | xl>0 && yl>0            -> 1 + merge xl (yl-1)
   | xl=0 || yl=0      -> 1
     ```
+    #v(-0.5em)
+    (Note, pseudo-code)
   ]
   #only(3)[
     - Time:
@@ -69,9 +71,11 @@ let rec merge xl yl = match xl, yl with
     ```ocaml
 let rec merge xl yl = xl + yl
     ```
+    #v(-0.5em)
+    (Note, pseudo-code)
   ]
   #only(4)[
-    - Space:
+    - Space (note, extra space):
     #v(-0.5em)
     ```ocaml
 let rec merge xs ys = match xs, ys with
@@ -81,14 +85,16 @@ let rec merge xs ys = match xs, ys with
     ```
   ]
   #only(5)[
-    - Space:
+    - Space (note, extra space):
     #v(-0.5em)
     ```ocaml
 let rec merge xl yl = match xl, yl with
   | xl>0 && yl>0            -> 1 + merge (xl-1) yl
   | xl>0 && yl>0            -> 1 + merge xl (yl-1)
-  | xl=0 || yl=0      -> 1
+  | xl=0 || yl=0      -> 0
     ```
+    #v(-0.5em)
+    (Note, pseudo-code)
   ]
   #only(6)[
     - Space (note, extra space):
@@ -96,9 +102,63 @@ let rec merge xl yl = match xl, yl with
     ```ocaml
 let rec merge xl yl = xl + yl
     ```
+    #v(-0.5em)
+    (Note, pseudo-code)
   ]
 ]
 
-TODO: Turns out the merge-sort implementation is naive -- not $O(n log n)$, due
-to ```ocaml List.length```, and splitting list? Lecture notes only discuss
-complexity in terms of number of comparisons.
+
+#unistra.slide[
+  #v(-1em)
+  ```ocaml
+let rec split n = function x::xs when n>0 ->
+    let (a, b) = split (n-1) xs in (x::a, b)
+  | xs  -> ([], xs)
+  ```
+  #v(-0.5em)
+  Informally, just walks up to $n$ elements, or the length of the list.
+]
+
+#unistra.slide[
+  #v(-1em)
+  #only(1)[
+    ```ocaml
+let rec sort = function
+  | ([] | [_]) as sorted -> sorted
+  | lst -> let a, b = split (List.length lst / 2) lst in
+    merge (sort a) (sort b)
+    ```
+  ]
+  #only(2)[
+    ```ocaml
+let rec sort len =
+  | len=0 || len=1       -> 1
+  | len -> len + len/2
+    sort(len/2) + sort(len/2)
+    ```
+  ]
+  #only(3)[
+    ```ocaml
+let rec sort len =
+  | len=0 || len=1       -> 1
+  | len -> 3 * len/2
+    2 * (3 * len/4 + sort(len/4))
+    ```
+  ]
+  #only(4)[
+    ```ocaml
+let rec sort len =
+  | len=0 || len=1       -> 1
+  | len -> 3 * len/2
+    3 * len/2 + 2 * sort(len/4)
+    ```
+    #v(-0.5em)
+    Repeated expansion until list length is zero or one, so $log_2("len")$
+    expansions.
+  ]
+  #only(5)[
+    ```ocaml
+let rec sort len = (3 * len/2) * log_2(len)
+    ```
+  ]
+]
