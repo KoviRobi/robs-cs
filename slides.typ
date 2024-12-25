@@ -89,7 +89,7 @@ Than ours, a friend to man, to whom thou say'st,                                
   #pdfpc.speaker-note(```
     - Eager evaluation: Dynamic programming
     - F# is very similar to OCaml
-    - ReasonML is an OCaml extension
+    - ReasonML is/started as an OCaml extension
     - Eager evaluation is one fewer thing to learn on top
   ```)
 ]
@@ -320,6 +320,9 @@ let rec fold_right f lst acc = match lst with
   | [] -> acc
   | l :: ls -> f l (fold_right f ls acc)
   ```
+  #pdfpc.speaker-note(```
+    Fundamental list operation.
+  ```)
 ]
 
 #unistra.slide[
@@ -488,7 +491,12 @@ let rec foldl f acc lst =
   ```
   #v(-0.5em)
   #pause
-  Element reference modified between iterations.
+  Element reference changes between iterations.
+
+  #pdfpc.speaker-note(```
+    Fold is a effectively the loop over the list, hence why it is so
+    fundamental.
+  ```)
 ]
 
 == Merge-sort
@@ -713,13 +721,49 @@ let rec merge xl yl = xl + yl
 ]
 
 == Type checking 1
+- Introduce Church-encoded lists?
+- Use to introduce module interface files?
+- Use types to tame them?
+- From a type-annotation point
+```ocaml
+type ('el, 'acc) flist =
+  ('el -> 'acc -> 'acc) -> 'acc -> 'acc
+
+let empty : ('el, 'acc) flist = fun f x -> x
+
+let cons (l : 'el) (ls : ('el, 'acc) flist) :
+    ('el, 'acc) flist =
+ fun f x -> f l (ls f x)
+
+let to_list (ls: ('el, 'acc) flist) : 'el list =
+  ls (fun a b -> a::b) []
+
+let append
+    (xs:('el, 'acc) flist)
+    (ys: ('el, 'acc) flist) :
+  ('el, 'acc) flist =
+  fun f x -> xs f (ys f x)
+```
+
 == Combinatorial functions
+- Graph colouring?
+- Monadic syntax/custom let?
+
 == Type checking 2
+- Show how it helps with coding up the combinatorial function
+- From an inference point
+
+== Trees
+== Red-black tree
+- From SV2 material
+- Coding exercise
+== Modules/Functors?
+- Making a dictionary/set, custom comparator
+
 == Monadic syntax
 == Infix operators, custom let
-== Modules, functors
-== Exceptions
 == Option; monads
+== Exceptions
 
 = Outline
 #diagraph.raw-render(width: 80%,
