@@ -705,6 +705,10 @@ let rec merge xl yl = xl + yl
   ]
 ]
 
+TODO: Turns out the merge-sort implementation is naive -- not $O(n log n)$, due
+to ```ocaml List.length```, and splitting list? Lecture notes only discuss
+complexity in terms of number of comparisons.
+
 == Type checking 1
 - Introduce Church-encoded lists?
 - Use to introduce module interface files?
