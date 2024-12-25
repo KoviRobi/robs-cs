@@ -1,6 +1,5 @@
 #import "@preview/touying:0.5.3" as touying: *
 #import "../unistra/unistra.typ" as unistra: *
-#import "../unistra/colors.typ": *
 #import "../unistra/admonition.typ": *
 
 #import "@preview/fletcher:0.5.3" as fletcher: *

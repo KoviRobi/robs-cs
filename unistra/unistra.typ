@@ -1,5 +1,5 @@
 #import "@preview/touying:0.5.3": *
-#import "colors.typ": *
+#import "colors.typ": colorthemes
 #import "admonition.typ": *
 #import "settings.typ" as settings
 
@@ -181,20 +181,32 @@
               // progress, with 1/1 being 0 not 1
               let hprog = (h1 - 1)/calc.max(1, h2 - 1)
               let tprog = (t1 - 1)/calc.max(1, t2 - 1)
+              // Padding to the longest digit
+              let sh1 = str(h1)
+              let sh2 = str(h2)
+              let st1 = str(t1)
+              let st2 = str(t2)
+              let max2 = calc.max(st2.len(), sh2.len())
+              // TODO: Assumes 0 is the max width of any digits
+              let h1pad = measure("0").width * max2 - measure(sh1).width
+              let t1pad = measure("0").width * max2 - measure(st1).width
+              let h2pad = measure("0").width * max2 - measure(sh2).width
+              let t2pad = measure("0").width * max2 - measure(st2).width
+
               [
-                #grid(columns: 5, column-gutter: 0.5em,
+                #grid(columns: 4, column-gutter: 0.5em,
                   h(2em * hprog),
                   "󰤇 ",
                   h(2em * (1 - hprog)),
-                  str(h1) + " / " + str(h2),
-                  sym.space.quad
+                  box(pad(left: h1pad, sh1)) + " / " +
+                  box(pad(right: h2pad, sh2)),
                 )
-                #grid(columns: 5, column-gutter: 0.5em,
+                #grid(columns: 4, column-gutter: 0.5em,
                   h(2em * tprog),
                   "󰴻 ",
                   h(2em * (1 - tprog)),
-                  str(t1) + " / " + str(t2),
-                  sym.space.quad
+                  box(pad(left: t1pad, st1)) + " / " +
+                  box(pad(right: t2pad, st2)),
                 )
               ]
             }
