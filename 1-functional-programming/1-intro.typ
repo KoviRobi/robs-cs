@@ -1,15 +1,15 @@
 #import "@preview/touying:0.5.3" as touying: *
-#import "unistra/unistra.typ" as unistra: *
-#import "unistra/colors.typ": *
-#import "unistra/admonition.typ": *
+#import "../unistra/unistra.typ" as unistra: *
+#import "../unistra/colors.typ": *
+#import "../unistra/admonition.typ": *
 
 #import "@preview/fletcher:0.5.3" as fletcher: *
-#import "codly/codly.typ": *
+#import "../codly/codly.typ": *
 #import "@preview/codly-languages:0.1.3": *
 #import "@preview/bytefield:0.0.6": *
-#import "diagraph/lib.typ" as diagraph
+#import "../diagraph/lib.typ" as diagraph
 
-#import "utils.typ": *
+#import "../utils.typ": *
 
 // '<,'>!ocamlformat - --impl
 
@@ -24,7 +24,7 @@
     subtitle: [_Functional Programming_ 1],
     author: [Robert Kovacsics],
     date: datetime.today().display("[month repr:long] [day], [year repr:full]"),
-    logo: image(width: 80%, "branding/carallon/carallon_logo_white.png"),
+    logo: image(width: 80%, "../branding/carallon/carallon_logo_white.png"),
   ),
   config-common(
     // show-notes-on-second-screen: right,
@@ -44,7 +44,7 @@
 
 #show raw: set text(font: "CaskaydiaCove NF")
 
-#title-slide(logo: image(height: 95%, "branding/carallon/carallon_logo_white.png"))
+#title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
 #unistra.slide[
 #sym.space.quad When old age shall this generation waste,                                \
@@ -107,12 +107,12 @@ opam --install ocaml-lsp-server odoc ocamlformat utop
 code --install-extension ocamllabs.ocaml-platform
 ```
 
-#hero(image("./images/vs-code/1-ocaml-sandbox-select.png"))
-#hero(image("./images/vs-code/2-ocaml-sandbox-selected.png"))
-#hero(image("./images/vs-code/3-workspace-settings.png"))
-#hero(image("./images/vs-code/4-eval-selection.png"))
-#hero(image("./images/vs-code/5-doc-hover.png"))
-#hero(image("./images/vs-code/6-tab-completion.png"))
+#hero(image("../images/vs-code/1-ocaml-sandbox-select.png"))
+#hero(image("../images/vs-code/2-ocaml-sandbox-selected.png"))
+#hero(image("../images/vs-code/3-workspace-settings.png"))
+#hero(image("../images/vs-code/4-eval-selection.png"))
+#hero(image("../images/vs-code/5-doc-hover.png"))
+#hero(image("../images/vs-code/6-tab-completion.png"))
 
 == Syntax overview
 #unistra.slide[
