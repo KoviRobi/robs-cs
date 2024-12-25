@@ -5,6 +5,7 @@
 
 #import "@preview/fletcher:0.5.3" as fletcher: *
 #import "codly/codly.typ": *
+#import "@preview/codly-languages:0.1.3": *
 #import "@preview/bytefield:0.0.6": *
 #import "diagraph/lib.typ" as diagraph
 
@@ -29,23 +30,7 @@
     // show-notes-on-second-screen: right,
     preamble: {
       codly(
-        languages: (
-          ocaml: (
-            name: "OCaml",
-            icon: box(image(width: 1em, height: 0.8em, fit: "contain", "images/logos/ocaml-logo.svg"))+h(0.1em),
-            color: rgb("#f29100"),
-          ),
-          cpp: (
-            name: "C++",
-            icon: box(image(width: 1em, height: 0.8em, fit: "contain", "images/logos/cpp_logo.svg")),
-            color: rgb("#659ad2"),
-          ),
-          python: (
-            name: "python",
-            icon: box(baseline: 0.1em, image(width: 1em, height: 0.8em, fit: "contain", "images/logos/python-logo-only.svg")),
-            color: rgb("#ffd43b"),
-          ),
-        ),
+        languages: codly-languages,
         zebra-fill: luma(251),
         lang-fill: (lang) => lang.color.lighten(95%),
         highlight-inset: 0pt,
