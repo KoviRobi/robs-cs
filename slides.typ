@@ -17,8 +17,8 @@
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
   config-info(
-    title: [Rob's CS],
-    subtitle: [_Functional Programming_],
+    title: [Rob's CS 1],
+    subtitle: [_Functional Programming_ 1],
     author: [Robert Kovacsics],
     date: datetime.today().display("[month repr:long] [day], [year repr:full]"),
     logo: image(width: 80%, "branding/carallon/carallon_logo_white.png"),
@@ -78,16 +78,18 @@ Than ours, a friend to man, to whom thou say'st,                                
 
   Simple syntax.
 
+  Used in industry
+
   Eager evaluation.
 
-  Paradigm over syntax.
+  Concepts apply to other FP languages
 
-  #speaker-note[
-    / Eager evaluation: Dynamic programming
-    / Paradigm: Is the difficult bit, different syntax e.g. F#sym.sharp easy to
-      learn on top. Haskell is a bit more difficult on top, as it is lazy, but
-      it is a pretty language.
-  ]
+  #pdfpc.speaker-note(```
+    - Eager evaluation: Dynamic programming
+    - F# is very similar to OCaml
+    - ReasonML is an OCaml extension
+    - Eager evaluation is one fewer thing to learn on top
+  ```)
 ]
 
 == Ergonomics
@@ -136,10 +138,10 @@ type 'a list = Nil | Cons of 'a * 'a list;;
 
 let rec append x y = match x with
   | Nil -> y
-  | Cons(x, xs) -> Cons(x, append xs b);;
+  | Cons(x, xs) -> Cons(x, append xs y);;
     ```
   ])
-  #speaker-note[
+  #pdfpc.speaker-note(```
     Simple function definition, body is a single expression. Can be multiple
     with semicolons, and using parentheses or begin/end blocks.
 
@@ -149,7 +151,8 @@ let rec append x y = match x with
     as in an enum indicating kind.
 
     Pattern matching, to deconstruct types.
-  ]
+  ```
+  )
 ]
 
 = Quick core concepts
@@ -417,6 +420,10 @@ let rec foldr f lst acc =
 ]
 
 #unistra.slide[
+  #codly(
+    display-name: false,
+    display-icon: false,
+  )
   #v(-1em)
   #components.side-by-side[
     #for (slide, hi) in (
@@ -514,10 +521,10 @@ let rec foldl f acc lst =
     node((1,  1), "1"),
     node((2,  1), "2"),
     node((3,  1), "8"),
-    node((5,  1), "6"),
-    node((6,  1), "5"),
-    node((7,  1), "4"),
-    node((8,  1), "3"),
+    node((8,  1), "6"),
+    node((9,  1), "5"),
+    node((10, 1), "4"),
+    node((11, 1), "3"),
     node((15, 1), stroke: none, " "),
 
     (pause,),
@@ -665,29 +672,20 @@ let rec merge xs ys = match xs, ys with
     - Time:
     #v(-0.5em)
     ```ocaml
-let rec merge xs ys = match xs, ys with
-  | x::xs', y::ys' when x<y -> 1 + merge (xs-1) (ys-1)
-  | x::xs', y::ys'          -> 1 + merge (xs-1) (ys-1)
-  | lst, [] | [], lst -> 1
+let rec merge xl yl = match xl, yl with
+  | xl>0 && yl>0            -> 1 + merge (xl-1) yl
+  | xl>0 && yl>0            -> 1 + merge xl (yl-1)
+  | xl=0 || yl=0      -> 1
     ```
   ]
   #only(3)[
     - Time:
     #v(-0.5em)
     ```ocaml
-let rec merge xs ys =
-  | xs > 1 && ys > 1 -> 1 + merge (xs-1) (ys-1)
-  | _ -> 1
+let rec merge xl yl = xl + yl
     ```
   ]
   #only(4)[
-    - Time:
-    #v(-0.5em)
-    ```ocaml
-let rec merge xs ys = min(xs, ys)
-    ```
-  ]
-  #only(5)[
     - Space:
     #v(-0.5em)
     ```ocaml
@@ -697,30 +695,21 @@ let rec merge xs ys = match xs, ys with
   | lst, [] | [], lst -> lst
     ```
   ]
+  #only(5)[
+    - Space:
+    #v(-0.5em)
+    ```ocaml
+let rec merge xl yl = match xl, yl with
+  | xl>0 && yl>0            -> 1 + merge (xl-1) yl
+  | xl>0 && yl>0            -> 1 + merge xl (yl-1)
+  | xl=0 || yl=0      -> 1
+    ```
+  ]
   #only(6)[
-    - Space:
-    #v(-0.5em)
-    ```ocaml
-let rec merge xs ys = match xs, ys with
-  | x::xs', y::ys' when x<y -> 1 + merge (xs-1) (ys-1)
-  | x::xs', y::ys'          -> 1 + merge (xs-1) (ys-1)
-  | lst, [] | [], lst -> 1
-    ```
-  ]
-  #only(7)[
-    - Space:
-    #v(-0.5em)
-    ```ocaml
-let rec merge xs ys =
-  | xs > 1 && ys > 1 -> 1 + merge (xs-1) (ys-1)
-  | _ -> 1
-    ```
-  ]
-  #only(8)[
     - Space (note, extra space):
     #v(-0.5em)
     ```ocaml
-let rec merge xs ys = min(xs, ys)
+let rec merge xl yl = xl + yl
     ```
   ]
 ]
