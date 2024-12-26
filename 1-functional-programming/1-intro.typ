@@ -213,3 +213,21 @@ let main () = test ()
   #v(-0.5em)
   But most values are boxed, so heap allocated
 ]
+
+== Operators
+- Integer arithmetic ```ocaml +```, ```ocaml -```, ```ocaml *```, ```ocaml /```,
+  - Note: floating-point versions ```ocaml +.```, ```ocaml -.```,
+    ```ocaml *.```, ```ocaml /.```
+  - Note: explicit infix ```ocaml ~- ``` and ```ocaml ~-.```
+- String append ```ocaml ^```
+- Equality ```ocaml =``` and ```ocaml <>```, comparison ```ocaml <```, ```ocaml <=```, ```ocaml >```,
+  ```ocaml >=```
+  - Note, referential/physical/shallow equality ```ocaml ==``` and
+    ```ocaml !``````ocaml=``` [ligature ```ocaml !=```],
+    and structural/deep equality ```ocaml =``` and ```ocaml <>```
+
+#pdfpc.speaker-note(```
+See "The OCaml Manual" chapter 11 "The OCaml language" section 7 "Expressions"
+  subsections 1 "Precedence and associativity" and 5 "Operators" for more
+  details.
+```)
