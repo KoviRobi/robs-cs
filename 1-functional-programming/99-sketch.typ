@@ -41,39 +41,6 @@
 
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
-== Type checking 1
-- Introduce Church-encoded lists?
-- Use to introduce module interface files?
-- Use types to tame them?
-- From a type-annotation point
-```ocaml
-type ('el, 'acc) flist =
-  ('el -> 'acc -> 'acc) -> 'acc -> 'acc
-
-let empty : ('el, 'acc) flist = fun f x -> x
-
-let cons (l : 'el) (ls : ('el, 'acc) flist) :
-    ('el, 'acc) flist =
- fun f x -> f l (ls f x)
-
-let to_list (ls: ('el, 'acc) flist) : 'el list =
-  ls (fun a b -> a::b) []
-
-let append
-    (xs:('el, 'acc) flist)
-    (ys: ('el, 'acc) flist) :
-  ('el, 'acc) flist =
-  fun f x -> xs f (ys f x)
-```
-
-== Combinatorial functions
-- Graph colouring?
-- Monadic syntax/custom let?
-
-== Type checking 2
-- Show how it helps with coding up the combinatorial function
-- From an inference point
-
 == Trees
 == Red-black tree
 - From SV2 material
