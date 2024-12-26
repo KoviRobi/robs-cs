@@ -70,11 +70,11 @@
 /// Calculates page margin based on header and footer settings
 #let _get-page-margin() = {
   if settings.SHOW-HEADER and settings.SHOW-FOOTER {
-    (x: 2.8em, y: 2.5em)
+    (x: 2.8em, y: 2.0em)
   } else if settings.SHOW-HEADER {
-    (x: 2.8em, bottom: 0em)
+    (x: 2.8em, top: 2.0em)
   } else if settings.SHOW-FOOTER {
-    (x: 2em, left: 2.8em)
+    (x: 2.8em, bottom: 2.0em)
   } else {
     (x: 1em, y: 1em)
   }
@@ -147,69 +147,63 @@
       width: 100%,
       height: 100%,
       stroke: (top: 0.5pt + self.colors.black),
-      {
+      context {
+        // slides/subslides are tortoise/hare
+        let h1 = self.subslide
+        let h2 = self.repeat
+        let t1 = utils.slide-counter.get().first()
+        let t2 = utils.last-slide-counter.final().first()
+        // progress, with 1/1 being 0 not 1
+        let hprog = (h1 - 1)/calc.max(1, h2 - 1)
+        let tprog = (t1 - 1)/calc.max(1, t2 - 1)
+        // Padding to the longest digit
+        let sh1 = str(h1)
+        let sh2 = str(h2)
+        let st1 = str(t1)
+        let st2 = str(t2)
+        let max2 = calc.max(st2.len(), sh2.len())
+        // TODO: Assumes 0 is the max width of any digits
+        let h1pad = measure("0").width * max2 - measure(sh1).width
+        let t1pad = measure("0").width * max2 - measure(st1).width
+        let h2pad = measure("0").width * max2 - measure(sh2).width
+        let t2pad = measure("0").width * max2 - measure(st2).width
         set text(size: 1.5em)
         grid(
           columns: (20%, 60%, 20%),
-          rows: 1.5em,
+          rows: 1em,
           cell(box(self.info.logo, height: 100%, fill: none)),
           cell(
-            box(
+            box(width: 100%,
               text(
                 self.info.title,
-                weight: "bold",
+                weight: 600,
               ) + if has-title-and-subtitle and settings.FOOTER-SHOW-SUBTITLE {
                 settings.FOOTER-UPPER-SEP
               } else {
                 ""
               } + if settings.FOOTER-SHOW-SUBTITLE {
                 self.info.subtitle
-              } + "\n" + utils.call-or-display(
+              }) +
+            box(width: 100%,
+              utils.call-or-display(
                 self,
                 [#self.info.author | #self.info.date],
-              ),
-              width: 100%,
-            ),
-          ),
+          ))),
           cell(
-            context {
-              // slides/subslides are tortoise/hare
-              let h1 = self.subslide
-              let h2 = self.repeat
-              let t1 = utils.slide-counter.get().first()
-              let t2 = utils.last-slide-counter.final().first()
-              // progress, with 1/1 being 0 not 1
-              let hprog = (h1 - 1)/calc.max(1, h2 - 1)
-              let tprog = (t1 - 1)/calc.max(1, t2 - 1)
-              // Padding to the longest digit
-              let sh1 = str(h1)
-              let sh2 = str(h2)
-              let st1 = str(t1)
-              let st2 = str(t2)
-              let max2 = calc.max(st2.len(), sh2.len())
-              // TODO: Assumes 0 is the max width of any digits
-              let h1pad = measure("0").width * max2 - measure(sh1).width
-              let t1pad = measure("0").width * max2 - measure(st1).width
-              let h2pad = measure("0").width * max2 - measure(sh2).width
-              let t2pad = measure("0").width * max2 - measure(st2).width
-
-              [
-                #grid(columns: 4, column-gutter: 0.5em,
-                  h(2em * hprog),
-                  "󰤇 ",
-                  h(2em * (1 - hprog)),
-                  box(pad(left: h1pad, sh1)) + " / " +
-                  box(pad(right: h2pad, sh2)),
-                )
-                #grid(columns: 4, column-gutter: 0.5em,
-                  h(2em * tprog),
-                  "󰴻 ",
-                  h(2em * (1 - tprog)),
-                  box(pad(left: t1pad, st1)) + " / " +
-                  box(pad(right: t2pad, st2)),
-                )
-              ]
-            }
+            grid(columns: 4, column-gutter: 0.5em, align: top,
+              h(2em * hprog),
+              "󰤇 ",
+              h(2em * (1 - hprog)),
+              box(pad(left: h1pad, sh1)) + " / " +
+              box(pad(right: h2pad, sh2)),
+            ) +
+            grid(columns: 4, column-gutter: 0.5em, align: bottom,
+              h(2em * tprog),
+              "󰴻 ",
+              h(2em * (1 - tprog)),
+              box(pad(left: t1pad, st1)) + " / " +
+              box(pad(right: t2pad, st2)),
+            )
           ),
         )
       },
