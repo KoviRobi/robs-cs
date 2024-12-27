@@ -41,13 +41,6 @@
 
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
-== Trees
-== Red-black tree
-- From SV2 material
-- Coding exercise
-== Modules/Functors?
-- Making a dictionary/set, custom comparator
-
 == Monadic syntax
 == Infix operators, custom let
 == Option; monads
