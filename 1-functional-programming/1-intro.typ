@@ -11,6 +11,11 @@
 
 // '<,'>!ocamlformat - --impl
 
+#let note(str) = [
+  #speaker-note(str)
+  #pdfpc.speaker-note(raw(repr(str)))
+]
+
 #show: codly-init.with()
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
@@ -66,12 +71,12 @@ Than ours, a friend to man, to whom thou say'st,                                
 
   Concepts apply to other FP languages
 
-  #pdfpc.speaker-note(```
+  #note[
     - Eager evaluation: Dynamic programming
-    - F# is very similar to OCaml
+    - F♯ is very similar to OCaml
     - ReasonML is/started as an OCaml extension
     - Eager evaluation is one fewer thing to learn on top
-  ```)
+  ]
 ]
 
 == Ergonomics
@@ -124,7 +129,7 @@ let rec append x y =
   | Cons (x, xs) -> Cons (x, append xs y)
     ```
   ])
-  #pdfpc.speaker-note(```
+  #note[
     Simple function definition, body is a single expression. Can be multiple
     with semicolons, and using parentheses or begin/end blocks.
 
@@ -214,6 +219,7 @@ let main () = test ()
   But most values are boxed, so heap allocated
 ]
 
+
 == Operators
 - Integer arithmetic ```ocaml +```, ```ocaml -```, ```ocaml *```, ```ocaml /```,
   - Note: floating-point versions ```ocaml +.```, ```ocaml -.```,
@@ -226,8 +232,9 @@ let main () = test ()
     ```ocaml !``````ocaml=``` [ligature ```ocaml !=```],
     and structural/deep equality ```ocaml =``` and ```ocaml <>```
 
-#pdfpc.speaker-note(```
-See "The OCaml Manual" chapter 11 "The OCaml language" section 7 "Expressions"
-  subsections 1 "Precedence and associativity" and 5 "Operators" for more
-  details.
-```)
+#note[
+- Main thing to consider here is equals/not-equals, and explicit prefix.
+- See "The OCaml Manual" chapter 11 "The OCaml language" section 7
+  "Expressions" subsections 1 "Precedence and associativity" and 5 "Operators"
+  for more details.
+]
