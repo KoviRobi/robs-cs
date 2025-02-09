@@ -38,41 +38,6 @@ Concepts apply to other FP languages
   - Eager evaluation is one fewer thing to learn on top
 ]
 
-== Ergonomics
-#slide[
-  OCaml interpreter is minimal:
-  / #sym.arrow.r.double: Use `utop`, or an editor + lang server
-
-  Or I have a docker image with Jupyter OCaml
-  #pause
-
-  Helpful interpreter commands:
-  / `#help;;`: if you forget
-  / `#use "file.ml";;`: to load a file
-  / `#show thing;;`: to show type, or module contents
-]
-
-== MS Windows Setup
-#v(-1em)
-```
-winget install Microsoft.VisualStudioCode
-winget install OCaml.opam
-```
-Restart terminal
-#v(-0.5em)
-```
-opam init
-opam --install ocaml-lsp-server odoc ocamlformat utop
-code --install-extension ocamllabs.ocaml-platform
-```
-
-#hero(image("../images/vs-code/1-ocaml-sandbox-select.png"))
-#hero(image("../images/vs-code/2-ocaml-sandbox-selected.png"))
-#hero(image("../images/vs-code/3-workspace-settings.png"))
-#hero(image("../images/vs-code/4-eval-selection.png"))
-#hero(image("../images/vs-code/5-doc-hover.png"))
-#hero(image("../images/vs-code/6-tab-completion.png"))
-
 == Syntax overview
 #slide[
   #v(-1em)
