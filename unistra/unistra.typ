@@ -183,12 +183,12 @@
                 ""
               } + if settings.FOOTER-SHOW-SUBTITLE {
                 self.info.subtitle
-              }) +
+              }) /* +
             box(width: 100%,
               utils.call-or-display(
                 self,
                 [#self.info.author | #self.info.date],
-          ))),
+          ))*/),
           cell(
             grid(columns: 4, column-gutter: 0.5em, align: top,
               h(2em * hprog),
@@ -196,7 +196,7 @@
               h(2em * (1 - hprog)),
               box(pad(left: h1pad, sh1)) + " / " +
               box(pad(right: h2pad, sh2)),
-            ) +
+            ) + v(-0.8em) +
             grid(columns: 4, column-gutter: 0.5em, align: bottom,
               h(2em * tprog),
               "󰴻 ",

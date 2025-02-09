@@ -1,50 +1,15 @@
-#import "@preview/touying:0.5.3" as touying: *
-#import "../unistra/unistra.typ" as unistra: *
-#import "../unistra/admonition.typ": *
-
-#import "@preview/fletcher:0.5.3" as fletcher: *
-#import "../codly/codly.typ": *
-#import "@preview/codly-languages:0.1.3": *
-#import "@preview/bytefield:0.0.6": *
-#import "../diagraph/lib.typ" as diagraph
-
-#import "../utils.typ": *
+#import "../0-preamble.typ": *
 
 // '<,'>!ocamlformat - --impl
 
-#let slide = unistra.slide
-#let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
-#let fletcher-diagram = touying-reducer.with(reduce: fletcher.diagram, cover: fletcher.hide)
-
-#show: codly-init.with()
-#show: unistra-theme.with(
-  aspect-ratio: "16-9",
-  config-info(
-    title: [Rob's CS 2],
-    subtitle: [Linked Lists],
-    author: [Robert Kovacsics],
-    date: datetime.today().display("[month repr:long] [day], [year repr:full]"),
-    logo: image(width: 80%, "../branding/carallon/carallon_logo_white.png"),
-  ),
-  config-common(
-    // show-notes-on-second-screen: right,
-    preamble: {
-      codly(
-        languages: codly-languages,
-        zebra-fill: luma(251),
-        lang-fill: (lang) => lang.color.lighten(95%),
-        highlight-inset: 0pt,
-        highlight-outset: 0.32em,
-        highlight-clip: false,
-        highlight-stroke: color => 0pt,
-      )
-    }
-  ),
+#show: init(
+  title: [Rob's CS 2],
+  subtitle: [Linked Lists],
 )
 
 #show raw: set text(font: "CaskaydiaCove NF")
 
-#title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
+#title-slide
 
 = Linked Lists
 #slide[
