@@ -10,6 +10,8 @@
 
 // '<,'>!ocamlformat - --impl
 
+#let slide = unistra.slide
+
 #show: codly-init.with()
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
@@ -41,7 +43,7 @@
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
 = Complexity
-#unistra.slide[
+#slide[
     - Replace known functions with cost
   #only(1)[
     - Time:
@@ -108,7 +110,7 @@ let rec merge xl yl = xl + yl
 ]
 
 
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let rec split n = function x::xs when n>0 ->
@@ -119,7 +121,7 @@ let rec split n = function x::xs when n>0 ->
   Informally, just walks up to $n$ elements, or the length of the list.
 ]
 
-#unistra.slide[
+#slide[
   #v(-1em)
   #only(1)[
     ```ocaml

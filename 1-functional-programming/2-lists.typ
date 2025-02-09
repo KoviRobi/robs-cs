@@ -12,6 +12,7 @@
 
 // '<,'>!ocamlformat - --impl
 
+#let slide = unistra.slide
 #let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
 #let fletcher-diagram = touying-reducer.with(reduce: fletcher.diagram, cover: fletcher.hide)
 
@@ -46,7 +47,7 @@
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
 = Linked Lists
-#unistra.slide[
+#slide[
   #v(-1em)
   #only(1)[
     ```ocaml
@@ -120,7 +121,7 @@ let ( @ ) = append
 ]
 
 == Tail recursion
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let rec fold_left f acc lst = match lst with
@@ -136,7 +137,7 @@ let rec fold_right f lst acc = match lst with
   ```)
 ]
 
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 fold_left  ( + ) 0 [ 1; 2; 3 ]
@@ -147,7 +148,7 @@ fold_right ( + ) [ 1; 2; 3 ] 0
   ```
 ]
 
-#unistra.slide[
+#slide[
   #codly(display-name: false, display-icon: false)
   #v(-1em)
   ```ocaml
@@ -159,7 +160,7 @@ fold_right (fun a b -> a :: b) [ 1; 2; 3; 4; 5 ] []
   ```
 ]
 
-#unistra.slide[
+#slide[
   #codly(display-name: false, display-icon: false)
   #v(-1em)
   #let foldr = [
@@ -237,7 +238,7 @@ let rec foldr f lst acc =
   ]
 ]
 
-#unistra.slide[
+#slide[
   #codly(display-name: false, display-icon: false)
   #v(-1em)
   #components.side-by-side[
@@ -288,7 +289,7 @@ let rec foldl f acc lst =
 ]
 
 == Why tail recursion
-#unistra.slide[
+#slide[
   Compare imperative languages
   #v(-0.5em)
   ```cpp
@@ -311,7 +312,7 @@ let rec foldl f acc lst =
 ]
 
 == Merge-sort
-#unistra.slide[
+#slide[
   #fletcher-diagram(
     spacing: (0em, .5em),
     node-stroke: 1pt + black,
@@ -425,7 +426,7 @@ let rec foldl f acc lst =
 ]
 
 == Coding challenge
-#unistra.slide[
+#slide[
   #v(-1em)
   Implement merge-sort
   #v(-0.5em)
@@ -447,7 +448,7 @@ let isort : int list -> int list = sort;;
   ```
 ]
 
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let rec merge xs ys = match xs, ys with
@@ -457,7 +458,7 @@ let rec merge xs ys = match xs, ys with
   ```
 ]
 
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let rec split n = function x::xs when n>0 ->

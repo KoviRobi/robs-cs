@@ -11,6 +11,8 @@
 
 // '<,'>!ocamlformat - --impl
 
+#let slide = unistra.slide
+
 #show: codly-init.with()
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
@@ -68,13 +70,13 @@ digraph {
   + Example: C++ templates, ellipsisation
     Real worked example
 
-#unistra.slide[
+#slide[
   ```
 auto Cli<PrintfIo&>::Parser<Cli<PrintfIo&>::Command<1ul>, Cli<PrintfIo&>::Command<1ul, NumArg<unsigned int, 0u, 23u> >, Cli<PrintfIo&>::Command<1ul, ChoiceArg<Status, 2ul> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<2ul, ChoiceArg<FanGroup, 10ul> >, Cli<PrintfIo&>::Command<2ul, NumArg<unsigned char, (unsigned char)0, (unsigned char)100> >, Cli<PrintfIo&>::Command<2ul, ChoiceArg<FanGroup, 10ul>, NumArg<unsigned char, (unsigned char)0, (unsigned char)100> >, Cli<PrintfIo&>::PageBreak, Cli<PrintfIo&>::Command<1ul, ChoiceArg<FanSensors, 29ul> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<2ul, ChoiceArg<ClkSynth::Id, 2ul>, NumArg<unsigned short, (unsigned short)0, (unsigned short)65535> >, Cli<PrintfIo&>::Command<2ul, ChoiceArg<ClkSynth::Id, 2ul>, NumArg<unsigned short, (unsigned short)0, (unsigned short)65535>, NumArg<unsigned char, (unsigned char)0, (unsigned char)255> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<2ul, ChoiceArg<ClkSynth::VersionY, 6ul> >, Cli<PrintfIo&>::PageBreak, Cli<PrintfIo&>::Command<2ul, ChoiceArg<IoCards::Card, 4ul>, NumArg<bool, false, true> >, Cli<PrintfIo&>::Command<2ul>, Cli<PrintfIo&>::Command<3ul>, Cli<PrintfIo&>::Command<3ul>, Cli<PrintfIo&>::Command<3ul, StrArg>, Cli<PrintfIo&>::Command<3ul> >::help(PrintfIo&, std::basic_string_view<char, std::char_traits<char> >, bool) const::{lambda<unsigned long... $N0>(std::integer_sequence<unsigned long, ($N0)...>)#1}::operator()<0ul, 1ul, 2ul, 3ul, 4ul, 5ul, 6ul, 7ul, 8ul, 9ul, 10ul, 11ul, 12ul, 13ul, 14ul, 15ul, 16ul, 17ul, 18ul, 19ul, 20ul>(std::integer_sequence<unsigned long, 0ul, 1ul, 2ul, 3ul, 4ul, 5ul, 6ul, 7ul, 8ul, 9ul, 10ul, 11ul, 12ul, 13ul, 14ul, 15ul, 16ul, 17ul, 18ul, 19ul, 20ul>) const
   ```
   Ouch!
 ]
-#unistra.slide[
+#slide[
   End result
   ```
 auto Cli⟨...⟩::Parser⟦...⟧::help(PrintfIo&, std::basic_string_view⟪...⟫, bool) const::{lambda⟨...⟩(std::integer_sequence⟨...⟩)#1}::operator()⟨...⟩(std::integer_sequence⟨...⟩) const
@@ -82,7 +84,7 @@ auto Cli⟨...⟩::Parser⟦...⟧::help(PrintfIo&, std::basic_string_view⟪...
   "Readable for C++" -- most people would say ugly, but then you run out of
   terms to describe the original one.
 ]
-#unistra.slide[
+#slide[
   ```sh
 sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
   ```
@@ -95,7 +97,7 @@ sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
   ```
   Same but for greater-than.
 ]
-#unistra.slide[
+#slide[
   Now we can ellipsisise the innermost balanced pair.
   #codly(offset: 1)
   ```sh
@@ -108,7 +110,7 @@ sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
     -e 's/<\([^<>]*\)>/⟪...⟫/g' \
   ```
 ]
-#unistra.slide[
+#slide[
   And again.
   #codly(offset: 1)
   ```sh
@@ -121,7 +123,7 @@ sed -e 's/\(([^()]*)\)<\(([^()]*)\)/\1⍃\2/g' \
     -e 's/<\([^<>]*\)>/⟬...⟭/g' |
   ```
 ]
-#unistra.slide[
+#slide[
     Repeated removal of innermost parentheses, as regex cannot do balanced
     pairs. Replace with non-parentheses.
     Results in:

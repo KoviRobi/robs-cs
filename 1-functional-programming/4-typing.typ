@@ -10,6 +10,8 @@
 
 // '<,'>!ocamlformat - --impl
 
+#let slide = unistra.slide
+
 #show: codly-init.with()
 #show: unistra-theme.with(
   aspect-ratio: "16-9",
@@ -41,7 +43,7 @@
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
 = Infix operators
-#unistra.slide[
+#slide[
 - Already know
   - Arithmetic: integer ```ocaml +```, ```ocaml -```, ```ocaml *```, ```ocaml /```;
     floating point ```ocaml +.```, ```ocaml -.```, ```ocaml *.```, ```ocaml /.```
@@ -61,7 +63,7 @@ let ( |> ) x f = f x
   ```
   #v(-0.5em)
 ]
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let a = foo (bar (baz (quux arg)))
@@ -73,7 +75,7 @@ let c = arg |> baz |> bar |> foo
 ]
 
 = Types
-#unistra.slide[
+#slide[
   But first, a difficult problem. Linked lists again. From scratch 🙃
   #pause
   #admonition(title: "Disclaimer")[
@@ -85,7 +87,7 @@ let c = arg |> baz |> bar |> foo
 ]
 
 == Functions as lists
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let empty = fun f x -> x
@@ -98,7 +100,7 @@ let l_1_2_3 = fun f x -> f 1 @@ f 2 @@ f 3 x
   - How to append ```ocaml l_1_2``` and ```ocaml l_1_2_3```?
 ]
 
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let cons el lst = fun f x -> f el (lst f x)
@@ -109,7 +111,7 @@ let append l1 l2 = fun f x -> l1 f (l2 f x)
 ]
 
 == Interfaces
-#unistra.slide[
+#slide[
   #v(-1em)
   #codly(header: [#sym.angle.l;fun_lists.mli#sym.angle.r#sym.eq.triple])
   ```ocaml
@@ -124,7 +126,7 @@ val append :
   ```
 ]
 
-#unistra.slide[
+#slide[
   #only(1,
   ```ocaml
 let cons (el: 'el) (lst: ('el, 'acc) fl) =
@@ -171,7 +173,7 @@ let append
 
 == Combinatorial functions
 - Graph colouring?
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let rec all_colors colors = function
@@ -187,7 +189,7 @@ let rec all_colors colors = function
 ]
 
 - Monadic syntax/custom let?
-#unistra.slide[
+#slide[
   #v(-1em)
   ```ocaml
 let rec all_colors colors = function
@@ -201,7 +203,7 @@ let rec all_colors colors = function
   ```
 ]
 
-#unistra.slide[#v(-1em)
+#slide[#v(-1em)
 ```ocaml
 let rec combs = function
   | [] -> [[]]
@@ -210,7 +212,7 @@ let rec combs = function
 ```
 ]
 
-#unistra.slide[
+#slide[
   #v(-1em)
 ```ocaml
 let rec insert_all el = function

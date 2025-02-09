@@ -11,6 +11,8 @@
 
 // '<,'>!ocamlformat - --impl
 
+#let slide = unistra.slide
+
 #let note(str) = [
   #speaker-note(str)
   #pdfpc.speaker-note(raw(repr(str)))
@@ -46,7 +48,7 @@
 
 #title-slide(logo: image(height: 95%, "../branding/carallon/carallon_logo_white.png"))
 
-#unistra.slide[
+#slide[
 #sym.space.quad When old age shall this generation waste,                                \
 #sym.space.quad #sym.space.quad Thou shalt remain, in midst of other woe                 \
 Than ours, a friend to man, to whom thou say'st,                                         \
@@ -59,28 +61,22 @@ Than ours, a friend to man, to whom thou say'st,                                
 
 = OCaml overview
 == Why OCaml?
-#unistra.slide[
+Because I know it. :p
+Simple syntax.
+Used in industry
+Eager evaluation.
 
-  Because I know it. :p
+Concepts apply to other FP languages
 
-  Simple syntax.
-
-  Used in industry
-
-  Eager evaluation.
-
-  Concepts apply to other FP languages
-
-  #note[
-    - Eager evaluation: Dynamic programming
-    - F♯ is very similar to OCaml
-    - ReasonML is/started as an OCaml extension
-    - Eager evaluation is one fewer thing to learn on top
-  ]
+#note[
+  - Eager evaluation: Dynamic programming
+  - F♯ is very similar to OCaml
+  - ReasonML is/started as an OCaml extension
+  - Eager evaluation is one fewer thing to learn on top
 ]
 
 == Ergonomics
-#unistra.slide[
+#slide[
   OCaml interpreter is minimal:
   / #sym.arrow.r.double: Use `utop`, or an editor + lang server
 
@@ -115,7 +111,7 @@ code --install-extension ocamllabs.ocaml-platform
 #hero(image("../images/vs-code/6-tab-completion.png"))
 
 == Syntax overview
-#unistra.slide[
+#slide[
   #v(-1em)
   #codly-reveal((1,3,8), [
     ```ocaml
@@ -141,6 +137,7 @@ let rec append x y =
     Pattern matching, to deconstruct types.
   ```
   )
+  ]
 ]
 
 = Quick core concepts
@@ -153,7 +150,7 @@ let rec append x y =
 + Floating-point always boxed doubles
 
 == Boxing
-#unistra.slide[
+#slide[
   Here `i` is unboxed, stored on the stack
   #v(-0.5em)
   #for (slide, (line, stack)) in (
@@ -186,7 +183,7 @@ let main () = test ()
   But most values are boxed, so heap allocated
 ]
 
-#unistra.slide[
+#slide[
   Here `f` is boxed, stored on the heap
   #v(-0.5em)
   #for (slide, (line, stack)) in (
