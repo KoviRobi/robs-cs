@@ -53,7 +53,7 @@ number.
 /**
 Reveal only `n` elements of the list (counting nested elements separately)
  */
-#let sublist(list, n) = {
-  let (sub, _) = sublist_content(sublist_array, list, n)
+#let sublist(n, body) = {
+  let (sub, _) = sublist_content(sublist_array, body, n)
   sub
 }

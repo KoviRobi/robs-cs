@@ -132,13 +132,13 @@ let test () =
 let main () = test ()
         ```
       ][
-        #sublist([
+        #sublist(stack)[
           + ```ocaml main```
           + ```ocaml test```, returns to line 5
             + ```ocaml i = 123```
           + ```ocaml print_int```, returns to line 3
             + ```ocaml i = 123```
-        ], stack)
+        ]
       ]
     ]
   }
@@ -165,13 +165,13 @@ let test () =
 let main () = test ()
         ```
       ][
-        #sublist([
+        #sublist(stack)[
           + main
           + ```ocaml test```, returns to line 5
             + ```ocaml f = ```$angle.l"pointer to heap"angle.r$
           + ```ocaml print_float```, returns to line 3
             + ```ocaml x = ```$angle.l"pointer to heap"angle.r$
-        ], stack)
+        ]
       ]
     ]
   }
@@ -181,16 +181,20 @@ let main () = test ()
 
 
 == Operators
-- Integer arithmetic ```ocaml +```, ```ocaml -```, ```ocaml *```, ```ocaml /```,
-  - Note: floating-point versions ```ocaml +.```, ```ocaml -.```,
-    ```ocaml *.```, ```ocaml /.```
-  - Note: explicit infix ```ocaml ~- ``` and ```ocaml ~-.```
-- String append ```ocaml ^```
-- Equality ```ocaml =``` and ```ocaml <>```, comparison ```ocaml <```, ```ocaml <=```, ```ocaml >```,
-  ```ocaml >=```
-  - Note, referential/physical/shallow equality ```ocaml ==``` and
-    ```ocaml !``````ocaml=``` [ligature ```ocaml !=```],
-    and structural/deep equality ```ocaml =``` and ```ocaml <>```
+#for n in range(1, 7) {
+    only(n, sublist(n)[
+      - Integer arithmetic ```ocaml +```, ```ocaml -```, ```ocaml *```, ```ocaml /```,
+        - Note: floating-point versions ```ocaml +.```, ```ocaml -.```,
+          ```ocaml *.```, ```ocaml /.```
+        - Note: explicit prefix ```ocaml ~- ``` and ```ocaml ~-.```
+      - String append ```ocaml ^```
+      - Equality ```ocaml =``` and ```ocaml <>```, comparison ```ocaml <```, ```ocaml <=```, ```ocaml >```,
+        ```ocaml >=```
+        - Note, physical equality ```ocaml ==``` and ```ocaml !``````ocaml=```
+          (ligature ```ocaml !=```), and structural equality ```ocaml =```
+          and ```ocaml <>```
+  ])
+}
 
 #note[
 - Main thing to consider here is equals/not-equals, and explicit prefix.

@@ -167,7 +167,7 @@ let rec foldr f lst acc =
   ][
     #for (slide, (hi, stack)) in entries.enumerate(start: 1) {
       only(slide,)[
-        #sublist([
+        #sublist(stack)[
           + ```ocaml foldr (+) [1;2;3] 0```
             + line 5 ```ocaml (+) 1 _```
           + ```ocaml foldr (+) [2;3]   0```
@@ -175,7 +175,7 @@ let rec foldr f lst acc =
           + ```ocaml foldr (+) [3]     0```
             + line 5 ```ocaml (+) 3 _```
           + ```ocaml foldr (+) []      0```
-        ], stack)
+        ]
       ]
     }
     #only(entries.len() + 1,)[
