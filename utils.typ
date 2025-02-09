@@ -7,10 +7,12 @@ number.
 */
 #let codly-reveal(pauses, content, start: 1) = {
   for (slide, end) in pauses.enumerate(start: start) {
-    only(slide)[
-      #codly-range(0, end: end)
-      #content
-    ]
+    if end > 0 {
+      only(slide)[
+        #codly-range(0, end: end)
+        #content
+      ]
+    }
   }
 }
 
