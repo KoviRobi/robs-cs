@@ -869,7 +869,7 @@
           size: 25pt,
           lang: settings.LANGUAGE,
         )
-        set outline(target: heading.where(level: 1), title: none, fill: none)
+        set outline(target: heading.where(level: 1), title: none)
         set enum(numbering: n => [*#n;.*])
         set highlight(extent: 1pt)
 
