@@ -235,97 +235,100 @@ let rec foldl f acc lst =
 
 == Merge-sort
 #slide[
-  #fletcher-diagram(
-    spacing: (0em, .5em),
-    node-stroke: 1pt + black,
-    node-corner-radius: 0em,
-    node-shape: rect,
-
-    for x in range(15) {
-      node((x,  2), stroke: white, " ")
-    },
-
-    (pause,),
-
-    node((0,  0), "7"),
-    node((1,  0), "1"),
-    node((2,  0), "2"),
-    node((3,  0), "8"),
-    node((8, 0), stroke: none, " "),
-
-    (pause,),
-
-    node((0, 1), "7"),
-    node((1, 1), "1"),
-    node((4, 1), "2"),
-    node((5, 1), "8"),
-    node((8, 1), stroke: none, " "),
-    (pause,),
-
-    node((0, 2), "7"),
-    node((2, 2), "1"),
-    node((4, 2), "2"),
-    node((6, 2), "8"),
-    node((8, 2), stroke: none, " "),
-
-    (pause,),
-
-    node((0, 3), "1"),
-    node((1, 3), "7"),
-    node((4, 3), "2"),
-    node((5, 3), "8"),
-    node((8, 3), stroke: none, " "),
-
-    (pause,),
-
-    node((0, 4), "1"),
-    node((1, 4), "2"),
-    node((2, 4), "7"),
-    node((3, 4), "8"),
-    node((8, 4), stroke: none, " "),
-
-    render: (grid, nodes, edges, options) => {
-      cetz.canvas({
-        draw-diagram(grid, nodes, edges, debug: options.debug)
-        let n0 = find-node-at(nodes, (8, 0))
-        let n1 = find-node-at(nodes, (8, 1))
-        let n2 = find-node-at(nodes, (8, 2))
-        let n3 = find-node-at(nodes, (8, 3))
-        let n4 = find-node-at(nodes, (8, 4))
-        if repr(n1.post) != "hide" {
-          cetz.decorations.brace(n0.pos.xyz, n2.pos.xyz, name: "split")
-          cetz.draw.content("split.content", anchor: "west", [Split])
-        }
-
-        if repr(n3.post) != "hide" {
-          cetz.decorations.brace(n2.pos.xyz, n4.pos.xyz, name: "merge")
-          cetz.draw.content("merge.content", anchor: "west", [Merge])
-        }
-      })
-    }
-  )
-]
-
-== Merge Sort -- Implementation
-#slide[
-  #v(-1em)
-  ```ocaml
+  #components.side-by-side(columns: (2fr, 3fr))[
+    #v(-1em)
+    Split
+    #v(-0.5em)
+    #local(
+      display-name: false,
+      display-icon: false,
+      number-format: none,
+    )[
+      ```ocaml
+[7;  1;  2;  8]
+[7;  1] [2;  8]
+[7] [1] [2] [8]
+      ```
+    ]
+    #v(-0.5em)
+    #only("4-")[
+      Merge
+      #v(-0.5em)
+      #local(
+        display-name: false,
+        display-icon: false,
+        annotation-format: none,
+        number-format: none,
+      )[
+        ```ocaml
+  [7] [1] [2] [8]
+  [1;  7] [2] [8]
+  [1;  2;  7;  8]
+        ```
+      ]
+    ]
+  ][
+    #v(-1em)
+    #only(1)[
+      #local(display-name: false, display-icon: false)[
+        ```ocaml
 let rec sort = function
-  | ([] | [ _ ]) as sorted -> sorted
-  | lst ->
-      let mid = List.length lst / 2 in
-      let lhs = take mid lst in
-      let rhs = drop mid lst in
-      merge (sort lhs) (sort rhs)
-  ```
+
+  | l ->
+    let mid = (len l) / 2 in
+
+
+
+
+        ```
+      ]
+    ]
+    #only(2)[
+      #local(display-name: false, display-icon: false)[
+        ```ocaml
+let rec sort = function
+
+  | l ->
+    let mid = (len l) / 2 in
+    let lh = take mid l in
+    let rh = drop mid l in
+
+
+        ```
+      ]
+    ]
+    #only(3)[
+      #local(display-name: false, display-icon: false)[
+        ```ocaml
+let rec sort = function
+  | ([] | [ _ ]) as l -> l
+  | l ->
+    let mid = (len l) / 2 in
+    let lh = take mid l in
+    let rh = drop mid l in
+    merge (sort lh, sort rh)
+        ```
+      ]
+    ]
+    #only(4)[
+      #local(display-name: false, display-icon: false)[
+        ```ocaml
+let rec merge = function
+  | (x :: xs' as xs),
+    (y :: ys' as ys) ->
+    if x < y
+    then x :: merge (xs', ys)
+    else y :: merge (xs, ys')
+  | lst, [] | [], lst -> lst
+        ```
+      ]
+    ]
+  ]
 ]
 
-#slide[
-  #v(-1em)
-  ```ocaml
-let rec merge xs ys = match xs, ys with
-  | x::xs', y::ys' when x<y -> x::merge xs' ys
-  | x::xs', y::ys'          -> y::merge xs ys'
-  | lst, [] | [], lst -> lst
-  ```
-]
+== Coding practice
+Implement ```ocaml take``` and ```ocaml drop```.
+```ocaml
+val take : int -> 'a list -> 'a list
+val drop : int -> 'a list -> 'a list
+```
