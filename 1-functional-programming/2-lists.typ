@@ -242,97 +242,56 @@ let rec foldl f acc lst =
     node-shape: rect,
 
     for x in range(15) {
-      node((x,  3), stroke: white, " ")
+      node((x,  2), stroke: white, " ")
     },
+
+    (pause,),
 
     node((0,  0), "7"),
     node((1,  0), "1"),
     node((2,  0), "2"),
     node((3,  0), "8"),
-    node((4,  0), "6"),
-    node((5,  0), "5"),
-    node((6,  0), "4"),
-    node((7,  0), "3"),
-    node((15, 0), stroke: none, " "),
+    node((8, 0), stroke: none, " "),
 
     (pause,),
 
-    node((0,  1), "7"),
-    node((1,  1), "1"),
-    node((2,  1), "2"),
-    node((3,  1), "8"),
-    node((8,  1), "6"),
-    node((9,  1), "5"),
-    node((10, 1), "4"),
-    node((11, 1), "3"),
-    node((15, 1), stroke: none, " "),
+    node((0, 1), "7"),
+    node((1, 1), "1"),
+    node((4, 1), "2"),
+    node((5, 1), "8"),
+    node((8, 1), stroke: none, " "),
+    (pause,),
+
+    node((0, 2), "7"),
+    node((2, 2), "1"),
+    node((4, 2), "2"),
+    node((6, 2), "8"),
+    node((8, 2), stroke: none, " "),
 
     (pause,),
 
-    node((0,  2), "7"),
-    node((1,  2), "1"),
-    node((4,  2), "2"),
-    node((5,  2), "8"),
-    node((8,  2), "6"),
-    node((9,  2), "5"),
-    node((12,  2), "4"),
-    node((13, 2), "3"),
+    node((0, 3), "1"),
+    node((1, 3), "7"),
+    node((4, 3), "2"),
+    node((5, 3), "8"),
+    node((8, 3), stroke: none, " "),
 
     (pause,),
 
-    node((0,  3), "7"),
-    node((2,  3), "1"),
-    node((4,  3), "2"),
-    node((6,  3), "8"),
-    node((8,  3), "6"),
-    node((10, 3), "5"),
-    node((12, 3), "4"),
-    node((14, 3), "3"),
-    node((15, 3), stroke: none, " "),
-
-    (pause,),
-
-    node((0,  4), "1"),
-    node((1,  4), "7"),
-    node((4,  4), "2"),
-    node((5,  4), "8"),
-    node((8,  4), "5"),
-    node((9,  4), "6"),
-    node((12,  4), "3"),
-    node((13, 4), "4"),
-    node((15, 4), stroke: none, " "),
-
-    (pause,),
-
-    node((0,  5), "1"),
-    node((1,  5), "2"),
-    node((2,  5), "7"),
-    node((3,  5), "8"),
-    node((8,  5), "3"),
-    node((9,  5), "4"),
-    node((10,  5), "5"),
-    node((11,  5), "6"),
-
-    (pause,),
-
-    node((0,  6), "1"),
-    node((1,  6), "2"),
-    node((2,  6), "3"),
-    node((3,  6), "4"),
-    node((4,  6), "5"),
-    node((5,  6), "6"),
-    node((6,  6), "7"),
-    node((7,  6), "8"),
-    node((15, 6), stroke: none," "),
+    node((0, 4), "1"),
+    node((1, 4), "2"),
+    node((2, 4), "7"),
+    node((3, 4), "8"),
+    node((8, 4), stroke: none, " "),
 
     render: (grid, nodes, edges, options) => {
       cetz.canvas({
         draw-diagram(grid, nodes, edges, debug: options.debug)
-        let n0 = find-node-at(nodes, (15, 0))
-        let n1 = find-node-at(nodes, (15, 1))
-        let n2 = find-node-at(nodes, (15, 3))
-        let n3 = find-node-at(nodes, (15, 4))
-        let n4 = find-node-at(nodes, (15, 6))
+        let n0 = find-node-at(nodes, (8, 0))
+        let n1 = find-node-at(nodes, (8, 1))
+        let n2 = find-node-at(nodes, (8, 2))
+        let n3 = find-node-at(nodes, (8, 3))
+        let n4 = find-node-at(nodes, (8, 4))
         if repr(n1.post) != "hide" {
           cetz.decorations.brace(n0.pos.xyz, n2.pos.xyz, name: "split")
           cetz.draw.content("split.content", anchor: "west", [Split])
