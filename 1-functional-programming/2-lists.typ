@@ -16,76 +16,60 @@
   #v(-1em)
   #only(1)[
     ```ocaml
-type 'a list = Nil | Cons of 'a * 'a list
+type 'a list = [] | ( :: ) of 'a * ('a list)
     ```
   ]
-  #only(2)[
-    ```ocaml
-type 'a list = Nil | Cons of 'a * 'a list
-
-let l = Cons ("hello", Cons ("world", Nil))
-    ```
-    #diagraph.raw-render(
-    ```dot
-    digraph {
-      rankdir=LR;
-      node [shape=rectangle];
-      l -> C0;
-      C0 [shape=none,label=<
-        <table border="0" cellborder="1" cellspacing="0">
-          <tr><td>Cons</td><td port="hd">pointer</td><td port="tl">pointer</td></tr>
-        </table>>]
-      C0:s -> "hello":n;
-      C0:e -> C1;
-      C1 [shape=none,label=<
-        <table border="0" cellborder="1" cellspacing="0">
-          <tr><td>Cons</td><td port="hd">pointer</td><td port="tl">pointer</td></tr>
-        </table>>]
-      C1:s -> "world":n;
-      C1:e -> Nil;
-    }
-    ```)
-  ]
-  #only(3)[
-    ```ocaml
-type 'a list = Nil | Cons of 'a * 'a list
-
-let l = Cons (1, Cons (2, Nil))
-    ```
-    #diagraph.raw-render(
-    ```dot
-    digraph {
-      rankdir=LR;
-      node [shape=rectangle];
-      l -> C0;
-      C0 [shape=none,label=<
-        <table border="0" cellborder="1" cellspacing="0">
-          <tr><td>Cons</td><td port="hd">1</td><td port="tl">pointer</td></tr>
-        </table>>]
-      C0:e -> C1;
-      C1 [shape=none,label=<
-        <table border="0" cellborder="1" cellspacing="0">
-          <tr><td>Cons</td><td port="hd">2</td><td port="tl">pointer</td></tr>
-        </table>>]
-      C1:e -> Nil;
-    }
-    ```)
-  ]
-  #codly-reveal((1,6,8), start: 4, [
+  #codly-reveal((0, 1,3,8))[
     ```ocaml
 type 'a list = [] | ( :: ) of 'a * 'a list
+
+let l = [1; 2]
 
 let rec append xs ys =
   match xs with
   | [] -> ys
   | x :: xs' -> x :: append xs' ys
-
-let ( @ ) = append
     ```
-  ])
+  ]
+  #only(3)[
+    #diagram(
+      node((0, 0), box(inset: 0.5em, stroke: black + 1pt, ```ocaml l```)),
+      edge("->"),
+      node((1, 0), grid(columns: 3, inset: 0.5em, stroke: black + 1pt)[
+        ```ocaml ::```][```ocaml 1```][#sym.space.en]),
+      edge((rel: (4em, 0mm), to: (1,0)), auto, snap-to: (none, auto), "->"),
+      node((2, 0), grid(columns: 3, inset: 0.5em, stroke: black + 1pt)[
+        ```ocaml ::```][```ocaml 2```][#sym.space.en]),
+      edge((rel: (4em, 0mm), to: (2, 0)), auto, snap-to: (none, auto), "->"),
+      node((3, 0), box(inset: 0.5em, stroke: black + 1pt, ```ocaml []```))
+    )
+  ]
 ]
 
-== Tail recursion
+== Looping
+#slide[
+  Compare imperative languages
+  #v(-0.5em)
+  ```cpp
+  for (auto & element : list) { /* ... */ }
+  ```
+  #v(-0.5em)
+  #pause
+  ```python
+  for element in list:
+    # ...
+  ```
+  #v(-0.5em)
+  #pause
+  Element reference changes between iterations.
+
+  #pdfpc.speaker-note(```
+    Fold is a effectively the loop over the list, hence why it is so
+    fundamental.
+  ```)
+]
+
+== Recursion
 #slide[
   #v(-1em)
   ```ocaml
@@ -126,6 +110,7 @@ fold_right (fun a b -> a :: b) [ 1; 2; 3; 4; 5 ] []
   ]
 ]
 
+== Recursion -- Example
 #slide[
   #v(-1em)
   #let foldr = local(display-name: false, display-icon: false)[
@@ -134,7 +119,7 @@ let rec foldr f lst acc =
   match lst with
   | [] -> acc
   | l::ls ->
-    f l (foldr f  ls acc)
+    f l (foldr f ls acc)
     ```
   ]
   #let entries = (
@@ -153,7 +138,7 @@ let rec foldr f lst acc =
     ((line: 2, start: 3, end: 16), 7),
     ((line: 3, start: 3, end: 13), 7),
   )
-  #components.side-by-side[
+  #components.side-by-side(columns: (3fr, 2fr))[
     #for (slide, (hi, stack)) in entries.enumerate(start: 1) {
       only((slide,))[
         #codly(highlights: (hi,))
@@ -199,10 +184,11 @@ let rec foldr f lst acc =
   ]
 ]
 
+== Tail Recursion
 #slide[
   #codly(display-name: false, display-icon: false)
   #v(-1em)
-  #components.side-by-side[
+  #components.side-by-side(columns: (3fr, 2fr))[
     #for (slide, hi) in (
       (line: 2, start: 3, end: 16),
       (line: 4, start: 3, end: 12),
@@ -245,29 +231,6 @@ let rec foldl f acc lst =
     ]
   ]
   #codly(display-name: true, display-icon: true)
-]
-
-== Why tail recursion
-#slide[
-  Compare imperative languages
-  #v(-0.5em)
-  ```cpp
-  for (auto & element : list) { /* ... */ }
-  ```
-  #v(-0.5em)
-  #pause
-  ```python
-  for element in list:
-    # ...
-  ```
-  #v(-0.5em)
-  #pause
-  Element reference changes between iterations.
-
-  #pdfpc.speaker-note(```
-    Fold is a effectively the loop over the list, hence why it is so
-    fundamental.
-  ```)
 ]
 
 == Merge-sort
@@ -384,26 +347,17 @@ let rec foldl f acc lst =
   )
 ]
 
-== Coding challenge
+== Merge Sort -- Implementation
 #slide[
   #v(-1em)
-  Implement merge-sort
-  #v(-0.5em)
   ```ocaml
-let rec merge xs ys = ...
-let rec sort lst = ...
-  ```
-  #v(-0.5em)
-  #pause
-  / Hint 1: Merging sorted lists -- only need to consider first element
-  #pause
-  / Hint 2: Implement list splitting
-  #pause
-  / Hint 3: Loops forever? Trace it to debug
-  #v(-0.5em)
-  ```ocaml
-let isort : int list -> int list = sort;;
-#trace isort;;
+let rec sort = function
+  | ([] | [ _ ]) as sorted -> sorted
+  | lst ->
+      let mid = List.length lst / 2 in
+      let lhs = take mid lst in
+      let rhs = drop mid lst in
+      merge (sort lhs) (sort rhs)
   ```
 ]
 
@@ -414,19 +368,5 @@ let rec merge xs ys = match xs, ys with
   | x::xs', y::ys' when x<y -> x::merge xs' ys
   | x::xs', y::ys'          -> y::merge xs ys'
   | lst, [] | [], lst -> lst
-  ```
-]
-
-#slide[
-  #v(-1em)
-  ```ocaml
-let rec split n = function x::xs when n>0 ->
-    let (a, b) = split (n-1) xs in (x::a, b)
-  | xs  -> ([], xs)
-
-let rec sort = function
-  | ([] | [_]) as sorted -> sorted
-  | lst -> let a, b = split (List.length lst / 2) lst in
-    merge (sort a) (sort b)
   ```
 ]
