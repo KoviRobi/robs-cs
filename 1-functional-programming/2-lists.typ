@@ -114,21 +114,21 @@ fold_right ( + ) [ 1; 2; 3 ] 0
 ]
 
 #slide[
-  #codly(display-name: false, display-icon: false)
   #v(-1em)
-  ```ocaml
+  #local(display-name: false, display-icon: false)[
+    ```ocaml
 fold_left  (fun a b -> b :: a) [] [ 1; 2; 3; 4; 5 ]
   = [5;4;3;2;1];;
 
 fold_right (fun a b -> a :: b) [ 1; 2; 3; 4; 5 ] []
   = [1;2;3;4;5];;
-  ```
+    ```
+  ]
 ]
 
 #slide[
-  #codly(display-name: false, display-icon: false)
   #v(-1em)
-  #let foldr = [
+  #let foldr = local(display-name: false, display-icon: false)[
     ```ocaml
 let rec foldr f lst acc =
   match lst with
@@ -138,34 +138,30 @@ let rec foldr f lst acc =
     ```
   ]
   #let entries = (
-    ((line: 1, start: 3, end: 16), 1),
-    ((line: 3, start: 3, end: 12), 1),
-    ((line: 4, start: 5, end: 25), 2),
+    ((line: 2, start: 3, end: 16), 1),
+    ((line: 4, start: 3, end: 12), 1),
+    ((line: 5, start: 5, end: 25), 2),
 
-    ((line: 1, start: 3, end: 16), 3),
-    ((line: 3, start: 3, end: 12), 3),
-    ((line: 4, start: 5, end: 25), 4),
+    ((line: 2, start: 3, end: 16), 3),
+    ((line: 4, start: 3, end: 12), 3),
+    ((line: 5, start: 5, end: 25), 4),
 
-    ((line: 1, start: 3, end: 16), 5),
-    ((line: 3, start: 3, end: 12), 5),
-    ((line: 4, start: 5, end: 25), 6),
+    ((line: 2, start: 3, end: 16), 5),
+    ((line: 4, start: 3, end: 12), 5),
+    ((line: 5, start: 5, end: 25), 6),
 
-    ((line: 1, start: 3, end: 16), 7),
-    ((line: 2, start: 3, end: 13), 7),
+    ((line: 2, start: 3, end: 16), 7),
+    ((line: 3, start: 3, end: 13), 7),
   )
   #components.side-by-side[
     #for (slide, (hi, stack)) in entries.enumerate(start: 1) {
       only((slide,))[
-        #codly(
-          highlights: (hi,),
-        )
+        #codly(highlights: (hi,))
         #foldr
       ]
     }
     #only(range(entries.len() + 1, entries.len() + 4))[
-      #codly(
-        highlights: ((line: 4, start: 5, end: 25),),
-      )
+      #codly(highlights: ((line: 4, start: 5, end: 25),))
       #foldr
     ]
   ][
@@ -208,25 +204,23 @@ let rec foldr f lst acc =
   #v(-1em)
   #components.side-by-side[
     #for (slide, hi) in (
-      (line: 1, start: 3, end: 16),
-      (line: 3, start: 3, end: 12),
-      (line: 4, start: 5, end: 25),
+      (line: 2, start: 3, end: 16),
+      (line: 4, start: 3, end: 12),
+      (line: 5, start: 5, end: 25),
 
-      (line: 1, start: 3, end: 16),
-      (line: 3, start: 3, end: 12),
-      (line: 4, start: 5, end: 25),
+      (line: 2, start: 3, end: 16),
+      (line: 4, start: 3, end: 12),
+      (line: 5, start: 5, end: 25),
 
-      (line: 1, start: 3, end: 16),
-      (line: 3, start: 3, end: 12),
-      (line: 4, start: 5, end: 25),
+      (line: 2, start: 3, end: 16),
+      (line: 4, start: 3, end: 12),
+      (line: 5, start: 5, end: 25),
 
-      (line: 1, start: 3, end: 16),
-      (line: 2, start: 3, end: 13),
+      (line: 2, start: 3, end: 16),
+      (line: 3, start: 3, end: 13),
     ).enumerate(start: 1) {
     only(slide)[
-      #codly(
-        highlights: (hi,),
-      )
+      #codly(highlights: (hi,))
         ```ocaml
 let rec foldl f acc lst =
   match lst with
