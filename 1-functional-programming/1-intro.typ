@@ -33,34 +33,6 @@ Than ours, a friend to man, to whom thou say'st,                                
 - Compilers
 - Operating Systems
 
-/*
-#diagraph.raw-render(
-  width: 80%,
-  edges: (
-    OCaml: (CompTheory: [$lambda$ calculus]),
-    RegEx: (
-      CompTheory: [Automata],
-      Complexity: [Backtracking\ vs automata],
-      Memoization: [Backtracking],
-    ),
-  ),
-```dot
-digraph {
-  OCaml -> Prolog
-  OCaml -> Types
-  OCaml -> CompTheory [label="lambda calculus"]
-  OCaml -> RegEx
-  OCaml -> Memoization
-  RegEx -> Memoization [label="for backtracking implementations"]
-  RegEx -> CompTheory [label="finite-state automata"]
-  RegEx -> Complexity [label="naive backtracking vs automata"]
-  OCaml -> Compilers
-  OCaml -> Algorithms
-  OCaml -> OS [label="MirageOS"]
-}
-```
-)
-*/
 
 == Why Functional Programming?
 - Easier to reason about

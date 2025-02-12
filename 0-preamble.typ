@@ -5,7 +5,6 @@
 
 #import "@preview/codly:1.2.0": *
 #import "@preview/codly-languages:0.1.3": *
-#import "diagraph/lib.typ" as diagraph
 #import "@preview/fletcher:0.5.3" as fletcher: *
 
 #import "utils.typ": *

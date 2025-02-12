@@ -17,19 +17,21 @@
 == Exceptions
 
 = Outline
-#diagraph.raw-render(width: 80%,
 ```dot
 digraph {
-  FoCS -> Prolog
-  FoCS -> Types
-  FoCS -> CompTheory [label="(lambda calculus)"]
-  FoCS -> RegEx
-  RegEx -> CompTheory [label="(finite-state\nautomata)"]
-  RegEx -> Complexity [label="(naive backtracking\nvs automata)"]
-  RegEx -> Memoization [label="(for backtracking\nimplementations)"]
+  OCaml -> Prolog
+  OCaml -> Types
+  OCaml -> CompTheory [label="lambda calculus"]
+  OCaml -> RegEx
+  OCaml -> Memoization
+  RegEx -> Memoization [label="for backtracking implementations"]
+  RegEx -> CompTheory [label="finite-state automata"]
+  RegEx -> Complexity [label="naive backtracking vs automata"]
+  OCaml -> Compilers
+  OCaml -> Algorithms
+  OCaml -> OS [label="MirageOS"]
 }
 ```
-)
 
 = Regex
 + Introduce
