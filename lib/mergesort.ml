@@ -1,6 +1,13 @@
 let len = List.length
-let take (_n, _list) = failwith "Not implemented"
-let drop (_n, _list) = failwith "Not implemented"
+
+let rec take = function
+  | 0, _ | _, [] -> []
+  | n, x :: xs -> x :: take (n - 1, xs)
+
+let rec drop = function
+  | 0, l -> l
+  | _, [] -> []
+  | n, _ :: xs -> drop (n - 1, xs)
 
 let rec merge = function
   | x :: xs', (y :: _ as ys) when x < y -> x :: merge (xs', ys)
