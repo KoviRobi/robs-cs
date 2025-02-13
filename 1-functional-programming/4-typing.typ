@@ -11,6 +11,8 @@
 
 #title-slide
 
+TODO: Currying
+
 = Infix operators
 #slide[
 - Already know

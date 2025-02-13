@@ -57,13 +57,20 @@ Than ours, a friend to man, to whom thou say'st,                                
 == Syntax overview
 #slide[
   #v(-1em)
-  #codly-reveal((1,3,5,7), [
+  #codly(display-name: true, display-icon: true)
+  #only(1)[
+    ```ocaml
+let greet () = print_endline "Hello, world!";;
+    ```
+  ]
+  #codly(display-name: false, display-icon: false)
+  #codly-reveal((0,3,5,7), [
     ```ocaml
 let greet () = print_endline "Hello, world!";;
 
 type fruit = Apple | Orange;;
 
-match fruit with Apple -> "red" | Orange -> "orange";;
+match thing with Apple -> "red" | Orange -> "orange";;
 
 if predicate then true_case else false_case;;
     ```
@@ -83,16 +90,16 @@ if predicate then true_case else false_case;;
 
 #slide[
   #v(-1em)
-  #codly-reveal((1, 3, 5, 8))[
+  #codly-reveal((1, 3, 8))[
     ```ocaml
 fun (x, y) -> x + y;;
 
 function Apple -> "red" | Orange -> "orange";;
 
-match lst with
-  | [x] when x < 5 -> x
-  | [x, y] when x * y < x + y -> y
-  | _ -> 0
+match arg with
+  | (num, min, _) when num < min -> min
+  | (num, _, max) when num > max -> max
+  | (num, _, _) -> num
     ```
   ]
 ]
@@ -123,16 +130,16 @@ match lst with
 
 == Infix
 #v(-1em)
-#codly-reveal((1,3,5,8))[
+#codly-reveal((1,3,6,8))[
   ```ocaml
 1 + 2;;
 
 ( + ) 1 2;;
 
-"This" *@$! "bug";;
-
 let ( *@$! ) lhs rhs =
   Printf.printf "%s beautiful %s\n" lhs rhs;;
+
+"This" *@$! "bug";;
   ```
 ]
 #note[

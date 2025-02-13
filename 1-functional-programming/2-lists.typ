@@ -19,28 +19,54 @@
 type 'a list = [] | ( :: ) of 'a * ('a list)
     ```
   ]
-  #codly-reveal((0, 1,3,8))[
+  #only(4)[
+    #codly(display-name: false, display-icon: false)
     ```ocaml
 type 'a list = [] | ( :: ) of 'a * 'a list
 
-let l = [1; 2]
-
-let rec append xs ys =
-  match xs with
-  | [] -> ys
-  | x :: xs' -> x :: append xs' ys
+let l = 1 :: (2 :: (3 :: []))
     ```
   ]
-  #only(3)[
+  #only(5)[
+    ```ocaml
+type 'a list = [] | ( :: ) of 'a * 'a list
+
+let l = 1 :: 2 :: 3 :: []
+    ```
+  ]
+  #codly-reveal((0,1,3,0,0,8))[
+    ```ocaml
+type 'a list = [] | ( :: ) of 'a * 'a list
+
+let l = [1; 2; 3]
+
+let rec append (xs, ys) =
+  match xs with
+  | [] -> ys
+  | x :: xs' -> x :: append (xs', ys)
+    ```
+  ]
+  #only("3-5")[
     #diagram(
       node((0, 0), box(inset: 0.5em, stroke: black + 1pt, ```ocaml l```)),
+
       edge("->"),
+
       node((1, 0), grid(columns: 3, inset: 0.5em, stroke: black + 1pt)[
         ```ocaml ::```][```ocaml 1```][#sym.space.en]),
-      edge((rel: (4em, 0mm), to: (1,0)), auto, snap-to: (none, auto), "->"),
-      node((2, 0), grid(columns: 3, inset: 0.5em, stroke: black + 1pt)[
+
+      edge((rel: (4em, 0mm), to: (1,0)), (rel: (-5em, 0mm), to: (1, 1)), snap-to: (none, auto), "->"),
+
+      node((1, 1), grid(columns: 3, inset: 0.5em, stroke: black + 1pt)[
         ```ocaml ::```][```ocaml 2```][#sym.space.en]),
+
+      edge((rel: (4em, 0mm), to: (1,1)), auto, snap-to: (none, auto), "->"),
+
+      node((2, 0), grid(columns: 3, inset: 0.5em, stroke: black + 1pt)[
+        ```ocaml ::```][```ocaml 3```][#sym.space.en]),
+
       edge((rel: (4em, 0mm), to: (2, 0)), auto, snap-to: (none, auto), "->"),
+
       node((3, 0), box(inset: 0.5em, stroke: black + 1pt, ```ocaml []```))
     )
   ]
@@ -48,6 +74,7 @@ let rec append xs ys =
 
 == Looping
 #slide[
+  #codly(display-name: true, display-icon: true)
   Compare imperative languages
   #v(-0.5em)
   ```cpp
@@ -67,20 +94,23 @@ let rec append xs ys =
     Fold is a effectively the loop over the list, hence why it is so
     fundamental.
   ```)
+  #codly(display-name: false, display-icon: false)
 ]
 
 == Recursion
 #slide[
   #v(-1em)
-  ```ocaml
-let rec fold_left f acc lst = match lst with
+  #codly-reveal((3,7))[
+    ```ocaml
+let rec fold_left (f, acc, lst) = match lst with
   | [] -> acc
-  | l :: ls -> fold_left f (f acc l) ls
+  | l :: ls -> fold_left (f, f (acc, l), ls)
 
-let rec fold_right f lst acc = match lst with
+let rec fold_right (f, lst, acc) = match lst with
   | [] -> acc
-  | l :: ls -> f l (fold_right f ls acc)
-  ```
+  | l :: ls -> f (l, fold_right (f, ls, acc))
+    ```
+  ]
   #pdfpc.speaker-note(```
     Fundamental list operation.
   ```)
@@ -89,51 +119,51 @@ let rec fold_right f lst acc = match lst with
 #slide[
   #v(-1em)
   ```ocaml
-fold_left  ( + ) 0 [ 1; 2; 3 ]
+fold_left  ( (fun (a, b) -> a + b),   0, [1; 2; 3])
   = 6;;
 
-fold_right ( + ) [ 1; 2; 3 ] 0
+
+fold_right ( (fun (a, b) -> a + b),  [1; 2; 3],  0)
   = 6;;
   ```
 ]
 
 #slide[
   #v(-1em)
-  #local(display-name: false, display-icon: false)[
-    ```ocaml
-fold_left  (fun a b -> b :: a) [] [ 1; 2; 3; 4; 5 ]
-  = [5;4;3;2;1];;
+  ```ocaml
+fold_left  ( (fun (a, b) -> b :: a), [], [1; 2; 3])
+  = [3; 2; 1];;
 
-fold_right (fun a b -> a :: b) [ 1; 2; 3; 4; 5 ] []
-  = [1;2;3;4;5];;
-    ```
-  ]
+
+fold_right ( (fun (a, b) -> a :: b), [1; 2; 3], [])
+  = [1; 2; 3];;
+  ```
 ]
 
 == Recursion -- Example
 #slide[
   #v(-1em)
-  #let foldr = local(display-name: false, display-icon: false)[
+  #let foldr = [
     ```ocaml
-let rec foldr f lst acc =
+let rec foldr (f, lst, acc) =
   match lst with
   | [] -> acc
   | l::ls ->
-    f l (foldr f ls acc)
+    f (l, foldr (f, ls, acc))
     ```
   ]
   #let entries = (
     ((line: 2, start: 3, end: 16), 1),
     ((line: 4, start: 3, end: 12), 1),
-    ((line: 5, start: 5, end: 25), 2),
+    ((line: 5, start: 5, end: 29), 2),
 
     ((line: 2, start: 3, end: 16), 3),
     ((line: 4, start: 3, end: 12), 3),
-    ((line: 5, start: 5, end: 25), 4),
+    ((line: 5, start: 5, end: 29), 4),
 
     ((line: 2, start: 3, end: 16), 5),
     ((line: 4, start: 3, end: 12), 5),
-    ((line: 5, start: 5, end: 25), 6),
+    ((line: 5, start: 5, end: 29), 6),
 
     ((line: 2, start: 3, end: 16), 7),
     ((line: 3, start: 3, end: 13), 7),
@@ -145,8 +175,8 @@ let rec foldr f lst acc =
         #foldr
       ]
     }
-    #only(range(entries.len() + 1, entries.len() + 4))[
-      #codly(highlights: ((line: 4, start: 5, end: 25),))
+    #only(range(entries.len() + 1, entries.len() + 5))[
+      #codly(highlights: ((line: 5, start: 5, end: 29),))
       #foldr
     ]
   ][
@@ -181,26 +211,28 @@ let rec foldr f lst acc =
       + ```ocaml foldr (+) [1;2;3] 0```
         + line 5 ```ocaml (+) 1 5```
     ]
+    #only(entries.len() + 4,)[
+      + ```ocaml 6```
+    ]
   ]
 ]
 
 == Tail Recursion
 #slide[
-  #codly(display-name: false, display-icon: false)
   #v(-1em)
   #components.side-by-side(columns: (3fr, 2fr))[
     #for (slide, hi) in (
       (line: 2, start: 3, end: 16),
       (line: 4, start: 3, end: 12),
-      (line: 5, start: 5, end: 25),
+      (line: 5, start: 5, end: 29),
 
       (line: 2, start: 3, end: 16),
       (line: 4, start: 3, end: 12),
-      (line: 5, start: 5, end: 25),
+      (line: 5, start: 5, end: 29),
 
       (line: 2, start: 3, end: 16),
       (line: 4, start: 3, end: 12),
-      (line: 5, start: 5, end: 25),
+      (line: 5, start: 5, end: 29),
 
       (line: 2, start: 3, end: 16),
       (line: 3, start: 3, end: 13),
@@ -208,11 +240,11 @@ let rec foldr f lst acc =
     only(slide)[
       #codly(highlights: (hi,))
         ```ocaml
-let rec foldl f acc lst =
+let rec foldl (f, acc, lst) =
   match lst with
   | [] -> acc
   | l::ls ->
-    foldl f (f acc l) ls
+    foldl (f, f (acc, l), ls)
         ```
       ]
     }
@@ -230,7 +262,6 @@ let rec foldl f acc lst =
       + ```ocaml foldl (+) 6 []```
     ]
   ]
-  #codly(display-name: true, display-icon: true)
 ]
 
 == Merge-sort
@@ -239,39 +270,31 @@ let rec foldl f acc lst =
     #v(-1em)
     Split
     #v(-0.5em)
-    #local(
-      display-name: false,
-      display-icon: false,
-      number-format: none,
-    )[
-      ```ocaml
+    #local(number-format: none)[
+      #codly-reveal((1,2,3,3,3,3))[
+        ```ocaml
 [7;  1;  2;  8]
 [7;  1] [2;  8]
 [7] [1] [2] [8]
-      ```
+        ```
+      ]
     ]
     #v(-0.5em)
-    #only("4-")[
-      Merge
-      #v(-0.5em)
-      #local(
-        display-name: false,
-        display-icon: false,
-        annotation-format: none,
-        number-format: none,
-      )[
+    #only("4-")[Merge]
+    #v(-0.5em)
+    #local(number-format: none)[
+      #codly-reveal((0,0,0,1,2,3))[
         ```ocaml
-  [7] [1] [2] [8]
-  [1;  7] [2] [8]
-  [1;  2;  7;  8]
+[7] [1] [2] [8]
+[1;  7] [2] [8]
+[1;  2;  7;  8]
         ```
       ]
     ]
   ][
     #v(-1em)
     #only(1)[
-      #local(display-name: false, display-icon: false)[
-        ```ocaml
+      ```ocaml
 let rec sort = function
 
   | l ->
@@ -280,12 +303,10 @@ let rec sort = function
 
 
 
-        ```
-      ]
+      ```
     ]
     #only(2)[
-      #local(display-name: false, display-icon: false)[
-        ```ocaml
+      ```ocaml
 let rec sort = function
 
   | l ->
@@ -294,12 +315,10 @@ let rec sort = function
     let rh = drop mid l in
 
 
-        ```
-      ]
+      ```
     ]
     #only(3)[
-      #local(display-name: false, display-icon: false)[
-        ```ocaml
+      ```ocaml
 let rec sort = function
   | ([] | [ _ ]) as l -> l
   | l ->
@@ -307,12 +326,34 @@ let rec sort = function
     let lh = take mid l in
     let rh = drop mid l in
     merge (sort lh, sort rh)
-        ```
-      ]
+      ```
     ]
     #only(4)[
-      #local(display-name: false, display-icon: false)[
-        ```ocaml
+      ```ocaml
+let rec merge = function
+  | (x :: ...      ),
+    (y :: ...      ) ->
+    if x < y
+    then x :: ...
+    else y :: ...
+
+
+      ```
+    ]
+    #only(5)[
+      ```ocaml
+let rec merge = function
+  | (x :: xs' as xs),
+    (y :: ys' as ys) ->
+    if x < y
+    then x :: merge (xs', ys)
+    else y :: merge (xs, ys')
+
+
+      ```
+    ]
+    #only(6)[
+      ```ocaml
 let rec merge = function
   | (x :: xs' as xs),
     (y :: ys' as ys) ->
@@ -320,15 +361,29 @@ let rec merge = function
     then x :: merge (xs', ys)
     else y :: merge (xs, ys')
   | lst, [] | [], lst -> lst
-        ```
-      ]
+      ```
     ]
   ]
 ]
 
 == Coding practice
 Implement ```ocaml take``` and ```ocaml drop```.
+#v(-0.5em)
 ```ocaml
-val take : int -> 'a list -> 'a list
-val drop : int -> 'a list -> 'a list
+val take : (int * 'a list) -> 'a list
+val drop : (int * 'a list) -> 'a list
 ```
+#v(-0.5em)
+Some structure is provided at
+#v(-0.5em)
+```sh
+git clone https://github.com/KoviRobi/robs-cs
+git checkout exercises/1-mergesort
+dune runtest
+```
+
+#hero(image("../images/vs-code/7-clone-repo.png"))
+#hero(image("../images/vs-code/8-checkout-branch.png"))
+#hero(image("../images/vs-code/9-ml-interface.png"))
+#hero(image("../images/vs-code/10-ml-implementation.png"))
+#hero(image("../images/vs-code/11-dune-runtest.png"))

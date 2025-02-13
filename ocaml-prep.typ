@@ -30,7 +30,7 @@ opam init
 
   + Install some useful developer tools
     ```powershell
-opam install ocaml-lsp-server odoc ocamlformat utop
+opam install ocaml-lsp-server odoc ocamlformat utop dune
     ```
 
 + Installing VS Code
