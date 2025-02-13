@@ -1,3 +1,6 @@
-(test
+(tests
  (libraries mergesort)
- (name test_mergesort))
+ (names
+   hint_1_test_take_drop_reversible
+   hint_2_test_take_drop_simple
+   hint_3_test_take_drop_explicit))
