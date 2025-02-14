@@ -1,5 +1,4 @@
-#import "@preview/codly:1.2.0": *
-#import "@preview/codly-languages:0.1.3": *
+#import "0-preamble.typ": *
 
 #show: codly-init.with()
 #codly(

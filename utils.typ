@@ -1,4 +1,4 @@
-#import "@preview/touying:0.5.3": *
+#import "@preview/touying:0.5.5": *
 #import "@preview/codly:1.2.0": *
 
 /**

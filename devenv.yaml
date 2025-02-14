@@ -1,15 +1,25 @@
-# yaml-language-server: $schema=https://devenv.sh/devenv.schema.json
 inputs:
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling
 
-# If you're using non-OSS software, you can set allowUnfree to true.
-# allowUnfree: true
-
-# If you're willing to use a package that's vulnerable
-# permittedInsecurePackages:
-#  - "openssl-1.1.1w"
-
-# If you have more than one devenv you can merge them
-#imports:
-# - ./backend
+  # These make my own typst cache, mostly corresponding to upstream typst
+  # versions, except fletcher which hasn't had a tag since 0.5.3 but it is
+  # possibly 0.5.4 or 0.5.5
+  typst/preview/touying:0.5.5:
+    url: github:touying-typ/touying/0.5.5
+    flake: false
+  typst/preview/codly:1.2.0:
+    url: github:Dherse/codly/v1.2.0
+    flake: false
+  typst/preview/codly-languages:0.1.6:
+    url: github:swaits/typst-collection/codly-languages-0.1.6
+    flake: false
+  typst/preview/cetz:0.3.2:
+    url: github:cetz-package/cetz/v0.3.2
+    flake: false
+  typst/preview/fletcher:0.5.5:
+    url: github:Jollywatt/typst-fletcher/a2c0ef5d4cf3944878dc29ed49d992be2b97aae9
+    flake: false
+  typst/preview/oxifmt:0.2.1:
+    url: github:PgBiel/typst-oxifmt/v0.2.1
+    flake: false

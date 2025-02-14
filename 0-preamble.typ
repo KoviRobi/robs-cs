@@ -1,11 +1,11 @@
-#import "@preview/touying:0.5.3" as touying: *
+#import "@preview/touying:0.5.5" as touying: *
 #import "unistra/unistra.typ" as unistra: *
 #import "unistra/colors.typ": *
 #import "unistra/admonition.typ": *
 
 #import "@preview/codly:1.2.0": *
-#import "@preview/codly-languages:0.1.3": *
-#import "@preview/fletcher:0.5.3" as fletcher: *
+#import "@preview/codly-languages:0.1.6": *
+#import "@preview/fletcher:0.5.5" as fletcher: *
 
 #import "utils.typ": *
 
