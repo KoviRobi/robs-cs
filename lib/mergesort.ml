@@ -1,4 +1,6 @@
 let len = List.length
+
+(* TODO: Replace these two functions with implementation *)
 let take (_n, _list) = failwith "Not implemented"
 let drop (_n, _list) = failwith "Not implemented"
 
