@@ -314,8 +314,8 @@
           ]),
         ),
       ),
-      c1: self.colors.nblue.E,
-      c2: self.colors.cyan.E,
+      c1: rgb("#633683"),
+      c2: rgb("#633683").lighten(75%).saturate(25%)
     )
   }
 
