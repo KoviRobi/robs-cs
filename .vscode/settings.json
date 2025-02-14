@@ -1,0 +1,9 @@
+{
+  "ocaml.sandbox": {
+    "kind": "opam",
+    "switch": "default"
+  },
+  "editor.formatOnSave": true,
+  "editor.fontFamily": "'CaskaydiaCove NFM', Consolas, 'Courier New', monospace",
+  "editor.fontLigatures": true
+}
