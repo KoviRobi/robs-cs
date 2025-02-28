@@ -13,6 +13,9 @@
 
 TODO: Currying
 
+TODO: Use scheduler as a complex example that gets simpler to write, instead of
+graph colouring? Maybe easier to understand than graph colouring
+
 = Infix operators
 #slide[
 - Already know
