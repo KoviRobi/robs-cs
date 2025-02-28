@@ -35,7 +35,12 @@
         // show-notes-on-second-screen: right,
         preamble: {
         codly(
-          languages: codly-languages,
+          languages: codly-languages + (
+            ml: (
+              name: "PseudOCaml",
+              color: rgb("#484444"),
+            ),
+          ),
           zebra-fill: luma(251),
           lang-fill: (lang) => lang.color.lighten(95%),
           highlight-inset: 0pt,
