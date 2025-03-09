@@ -10,7 +10,7 @@ jobs:
           export TYPST_ROOT="$PWD"
           mkdir out
           typst compile ./ocaml-prep.typ ./out/ocaml-prep.pdf
-          for typ in ./1-functional-programming/*.typ; do
+          for typ in ./slides/*/*.typ; do
             typst compile "$typ" "./out/$(basename -s.typ "$typ").pdf"
             polylux2pdfpc "$typ"
             mv "${typ%.typ}.pdfpc" ./out

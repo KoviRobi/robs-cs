@@ -1,4 +1,4 @@
-#import "../0-preamble.typ": *
+#import "../../preamble.typ": *
 
 // '<,'>!ocamlformat - --impl
 
@@ -382,8 +382,8 @@ git checkout exercises/1-mergesort
 dune runtest
 ```
 
-#hero(image("../images/vs-code/7-clone-repo.png"))
-#hero(image("../images/vs-code/8-checkout-branch.png"))
-#hero(image("../images/vs-code/9-ml-interface.png"))
-#hero(image("../images/vs-code/10-ml-implementation.png"))
-#hero(image("../images/vs-code/11-dune-runtest.png"))
+#hero(image("../../images/vs-code/7-clone-repo.png"))
+#hero(image("../../images/vs-code/8-checkout-branch.png"))
+#hero(image("../../images/vs-code/9-ml-interface.png"))
+#hero(image("../../images/vs-code/10-ml-implementation.png"))
+#hero(image("../../images/vs-code/11-dune-runtest.png"))
