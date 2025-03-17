@@ -24,6 +24,13 @@ let
       typst
       ;
   };
+
+  pages-env = [
+    (pkgs.python3.withPackages (pkgs: [
+      pkgs.css-html-js-minify
+    ]))
+    pkgs.scour
+  ];
 in
 {
   cachix.enable = false;
@@ -55,30 +62,33 @@ in
     docker-typst = pkgs.dockerTools.streamLayeredImage {
       name = "ghcr.io/KoviRobi/robs-cs-typst";
       tag = "latest";
-      contents = typst-env ++ [
-        pkgs.coreutils
-        pkgs.dockerTools.binSh
-        pkgs.dockerTools.usrBinEnv
-        pkgs.dockerTools.caCertificates
-        pkgs.stdenv.cc.libc.bin
-        (pkgs.writeTextDir "/etc/os-release" ''
-          DEFAULT_HOSTNAME=nixos
-          HOME_URL="https://nixos.org/"
-          ID=nixos
-          NAME=NixOS
-          SUPPORT_URL="https://nixos.org/community.html"
-        '')
-        pkgs.gnutar
-        pkgs.gzip
-        # Github runs its own Node JS for the actions, which we cannot patch so
-        # we use the nix-ld dynamic linker as the docker OS dynamic linker, see
-        # NIX_LD and NIX_LD_LIBRARY_PATH below
-        (pkgs.runCommand "nix-ld-linker" { } ''
-          ldpath="$(cat ${pkgs.nix-ld}/nix-support/ldpath)"
-          mkdir -p "$out/$(dirname "$ldpath")"
-          ln -s ${pkgs.nix-ld}/libexec/nix-ld "$out/$ldpath"
-        '')
-      ];
+      contents =
+        typst-env
+        ++ pages-env
+        ++ [
+          pkgs.coreutils
+          pkgs.dockerTools.binSh
+          pkgs.dockerTools.usrBinEnv
+          pkgs.dockerTools.caCertificates
+          pkgs.stdenv.cc.libc.bin
+          (pkgs.writeTextDir "/etc/os-release" ''
+            DEFAULT_HOSTNAME=nixos
+            HOME_URL="https://nixos.org/"
+            ID=nixos
+            NAME=NixOS
+            SUPPORT_URL="https://nixos.org/community.html"
+          '')
+          pkgs.gnutar
+          pkgs.gzip
+          # Github runs its own Node JS for the actions, which we cannot patch so
+          # we use the nix-ld dynamic linker as the docker OS dynamic linker, see
+          # NIX_LD and NIX_LD_LIBRARY_PATH below
+          (pkgs.runCommand "nix-ld-linker" { } ''
+            ldpath="$(cat ${pkgs.nix-ld}/nix-support/ldpath)"
+            mkdir -p "$out/$(dirname "$ldpath")"
+            ln -s ${pkgs.nix-ld}/libexec/nix-ld "$out/$ldpath"
+          '')
+        ];
       config = {
         Env = [
           "TYPST_PACKAGE_PATH=${self.devenv.env.TYPST_PACKAGE_PATH}"
@@ -179,8 +189,10 @@ in
   # https://devenv.sh/packages/
   packages =
     typst-env
+    ++ pages-env
     ++ ocaml-env
     ++ [
+      pkgs.skopeo
       pkgs.git
       pkgs.pdfpc
     ];
