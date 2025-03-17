@@ -1,6 +1,7 @@
 {
   self,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -80,8 +81,8 @@ in
       ];
       config = {
         Env = [
-          "TYPST_PACKAGE_PATH=${self.devenv.outputs.typst-packages}"
-          "TYPST_FONT_PATHS=${pkgs.nerd-fonts.caskaydia-cove}/share/fonts/truetype/NerdFonts/CaskaydiaCove"
+          "TYPST_PACKAGE_PATH=${self.devenv.env.TYPST_PACKAGE_PATH}"
+          "TYPST_FONT_PATHS=${self.devenv.env.TYPST_FONT_PATHS}"
           "NIX_LD=${pkgs.stdenv.cc.bintools.dynamicLinker}"
           "NIX_LD_LIBRARY_PATH=${
             pkgs.lib.makeLibraryPath [
@@ -186,7 +187,10 @@ in
 
   env = {
     TYPST_PACKAGE_PATH = self.devenv.outputs.typst-packages;
-    TYPST_FONT_PATHS = "${pkgs.nerd-fonts.caskaydia-cove}/share/fonts/truetype/NerdFonts/CaskaydiaCove";
+    TYPST_FONT_PATHS = lib.makeSearchPathOutput "out" "share/fonts" [
+      pkgs.nerd-fonts.caskaydia-cove
+      pkgs.noto-fonts-color-emoji
+    ];
   };
 
   # https://devenv.sh/scripts/
