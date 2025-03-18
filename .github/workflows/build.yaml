@@ -1,4 +1,7 @@
+name: Build PDFs
+
 on: [push]
+
 jobs:
   pdfs:
     runs-on: ubuntu-latest
@@ -10,8 +13,12 @@ jobs:
           export TYPST_ROOT="$PWD"
           mkdir out
           typst compile ./ocaml-prep.typ ./out/ocaml-prep.pdf
-          for typ in ./slides/*/*.typ; do
-            typst compile "$typ" "./out/$(basename -s.typ "$typ").pdf"
+          shopt -s nullglob globstar
+          for typ in ./slides/**/*.typ; do
+            base=${typ#./slides/}
+            base=${base%.typ}
+          mkdir -p $(dirname "./out/${base}")
+            typst compile "$typ" "./out/${base}.pdf"
             polylux2pdfpc "$typ"
             mv "${typ%.typ}.pdfpc" ./out
           done

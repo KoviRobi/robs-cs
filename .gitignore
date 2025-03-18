@@ -19,5 +19,7 @@ devenv.local.nix
 # pre-commit
 .pre-commit-config.yaml
 
-# HTML/SVG out
+# Output directories
+/pdf/
+/svg/
 /public/
