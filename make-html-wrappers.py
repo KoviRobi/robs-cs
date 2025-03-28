@@ -35,6 +35,7 @@ li>a:visited {
 	color: slategrey;
 }
 li>a:focus::after {
+	font-family: "Noto Sans Symbols";
 	content: " ⎆";
 	text-decoration: none;
 	color: initial;
@@ -66,6 +67,7 @@ li>a:focus::after {
 	border-left: 0.1em solid white;
 }
 .arrow {
+	font-family: "Noto Sans Symbols 2";
 	font-size: calc(max(12pt, max(16vw, 9vh)  / 4));
 	line-height: 1;
 	padding: calc(max(16vh, 9vh) / 12);
