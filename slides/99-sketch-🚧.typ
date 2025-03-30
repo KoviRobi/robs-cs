@@ -3,8 +3,8 @@
 // '<,'>!ocamlformat - --impl
 
 #show: init(
-  title: [Rob's CS 1],
-  subtitle: [_Functional Programming_ 1],
+  title: [Rob's CS ??],
+  subtitle: [Sketches],
 )
 
 #show raw: set text(font: "CaskaydiaCove NF")
