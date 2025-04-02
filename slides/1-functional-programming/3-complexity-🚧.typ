@@ -11,11 +11,6 @@
 
 #title-slide
 
-Want this section to be as short as possible. Illustrate first with regexp
-example for some practical example?
-
-Sort + uniq?
-
 = Why
 - Complexity is about scaling
   #pause
@@ -200,8 +195,8 @@ let rec merge (xl, yl) = match xl, yl with
     #v(-0.5em)
     ```ml
 let rec merge (xl, yl) = match xl, yl with
-  | xl>0 && yl>0       -> 1 + (1 + merge (xl-2, yl))
-  | xl>0 && yl>0       -> 1 + (1 + merge (xl, yl-2))
+  | xl>1 && yl>0       -> 1 + (1 + merge (xl-2, yl))
+  | xl>0 && yl>1       -> 1 + (1 + merge (xl, yl-2))
   | xl>0 && yl>0       -> 1 + (1 + merge (xl-1, yl-1))
   | xl=0 || yl=0      -> 1
     ```
@@ -261,7 +256,7 @@ let rec merge xl yl = xl + yl
 let rec sort = function
   | ([] | [ _ ]) as l -> l
   | l ->
-      let mid = len l / 2 in
+      let mid = (len l) / 2 in
       let lh = take (mid, l) in
       let rh = drop (mid, l) in
       merge (sort lh, sort rh)
@@ -271,35 +266,79 @@ let rec sort = function
     ```ml
 let rec sort len =
   | len = 0 or 1      -> l
-  | len -> len + len/2
-    sort(len/2) + sort(len/2)
+  | len ->
+      len +
+      len/2 +
+      len/2 +
+      sort(len/2) + sort(len/2)
     ```
   ]
   #only(3)[
-    ```ocaml
+    ```ml
 let rec sort len =
-  | len=0 || len=1       -> 1
-  | len -> 3 * len/2
-    2 * (3 * len/4 + sort(len/4))
+  | len = 0 or 1      -> l
+  | len ->
+      2 * len +
+      2 * sort(len/2)
     ```
   ]
   #only(4)[
-    ```ocaml
+    ```ml
 let rec sort len =
   | len=0 || len=1       -> 1
-  | len -> 3 * len/2
-    3 * len/2 + 2 * sort(len/4)
+  | len ->
+      2 * len +
+      2 * (2 * len/2 + 2 * sort(len/4))
+    ```
+  ]
+  #only(5)[
+    ```ml
+let rec sort len =
+  | len=0 || len=1       -> 1
+  | len ->
+      4 * len +
+      2 * sort(len/4)
     ```
     #v(-0.5em)
     Repeated expansion until list length is zero or one, so $log_2("len")$
     expansions.
   ]
-  #only(5)[
-    ```ocaml
-let rec sort len = (3 * len/2) * log_2(len)
+  #only(6)[
+    ```ml
+let rec sort len = 2 * len * log_2(len)
     ```
 
   ]
 ]
 
-- TODO: Visualise as tree
+#v(0em)
+#fletcher-diagram(
+  spacing: (0.3em, 2em),
+  node-outset: 0.5em,
+  node((0, 0), $2*"len"$, name: <top>),
+  node((6, 0), $space.third=2*"len"$),
+  pause,
+    node((-2, 1), $2*"len"/2$, name: <l>),
+    node(( 0, 1), $+$),
+    node(( 2, 1), $2*"len"/2$, name: <r>),
+    node(( 6, 1), $+#h(-3pt)=2*"len"$),
+    edge(<top>, <l>),
+    edge(<top>, <r>),
+    pause,
+      node((-3, 2), $2*"len"/4$, name: <ll>),
+      node((-2, 2), $+$),
+      node((-1, 2), $2*"len"/4$, name: <lr>),
+      node(( 0, 2), $+$),
+      node(( 2, 2), $+$),
+      node(( 1, 2), $2*"len"/4$, name: <rl>),
+      node(( 2, 2), $+$),
+      node(( 3, 2), $2*"len"/4$, name: <rr>),
+      edge(<l>, <ll>),
+      edge(<l>, <lr>),
+      edge(<r>, <rl>),
+      edge(<r>, <rr>),
+      node(( 6, 2), $+#h(-0.1em)=2*"len"$),
+      pause,
+        node((0, 3), $dots.v$),
+        node((6, 3), $dots.v$),
+)

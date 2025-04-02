@@ -11,8 +11,51 @@
 
 #title-slide
 
-TODO: Currying
+= Passing arguments
+/ #"Q:": How many arguments do OCaml functions take
+#pause
+#only((2,3))[
+/ #"A:": One
+]
+#only(3)[
+```ocaml
+(* val add :  int * int  -> int *)
+let add(x_y) = match x_y with
+  (x, y) -> x + y
+```
+]
+#only(4)[
+/ #"A:": One, with pattern matching
+```ocaml
+(* val add : (int * int) -> int *)
+let add(x, y) = x + y
+```
+]
 
+= Multiple arguments
+/ #"Q:": So what's
+  ```ocaml
+let add x y = x + y
+  ```
+#pause
+/ #"A:": Function returning a function
+#only(2)[
+  ```ocaml
+(* val add : int -> (int -> int) *)
+let add x = fun y -> x + y
+  ```
+]
+#only(3)[
+  ```ocaml
+(* val add : int ->  int -> int  *)
+let add x = fun y -> x + y
+  ```
+]
+
+=
+
+TODO: Currying
+TODO: Interface files?
 TODO: Use scheduler as a complex example that gets simpler to write, instead of
 graph colouring? Maybe easier to understand than graph colouring
 
