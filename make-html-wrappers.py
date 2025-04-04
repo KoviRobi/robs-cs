@@ -1,25 +1,29 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 import asyncio
 import re
 import shutil
 import typing as t
 from asyncio.subprocess import Process
 from pathlib import Path
+from dataclasses import dataclass
 
 from css_html_js_minify import css_minify, html_minify
 
-# Slides in PATTERN/PATTERN/num.svg structure
-DIR_PATTERN = re.compile(r"(?P<num>\d+)-(?P<name>.*)")
+# Topics in PATTERN/PATTERN/num.svg structure
+DIR_PATTERN = re.compile(
+    r"(?P<id>(?P<appendix>appendix-)?(?P<num>\d+))-(?P<name>.*)|(?P<index>index)"
+)
 FILE_PATTERN = re.compile(r"(?P<num>\d+)\.svg")
 IN = Path("svg")
 OUT = Path("public")
 
 
-def titlecase(s: str) -> str:
-    return " ".join(w.capitalize() for w in s.split("-"))
-
-
 stylesheet = """\
+.centered li::marker {
+	content: "";
+}
 .centered {
 	margin: auto;
 	width: fit-content;
@@ -106,7 +110,7 @@ body {{
 		</style>
 	</head>
 	<body>
-		<ol class="centered" id="navigation">{links}</ol>
+		<menu class="centered" id="navigation">{links}</menu>
 		<script type="text/javascript">
 function until(value, predicate, next, limit) {{
 	limit = limit || 100;
@@ -194,6 +198,89 @@ document.addEventListener('keydown', event =>
 """
 
 
+def titlecase(s: str) -> str:
+    return " ".join(w.capitalize() for w in s.split("-"))
+
+
+@dataclass
+class DirPattern:
+    """
+    Represents a fragment of a table-of-contents path, e.g. one of the items in
+    ["section 1 'Foo'", "subsection 2 'Bar'"]
+    """
+
+    appendix: bool
+    num: int
+    title: str
+
+    @classmethod
+    def from_match(cls, match: re.Match[str]) -> DirPattern:
+        "Returns DirPattern from a DIR_PATTERN match"
+        return DirPattern(
+            appendix=bool(match["appendix"]),
+            num=int(match["num"]),
+            title=titlecase(match["name"] or ""),
+        )
+
+    def __lt__(self, other: DirPattern) -> bool:
+        return (self.appendix == other.appendix and self.num < other.num) or (
+            not self.appendix and other.appendix
+        )
+
+    def __eq__(self, other) -> bool:
+        return self.appendix == other.appendix and self.num == other.num
+
+    def to_html(self, id: str | None = None, link: None | Path = None) -> str:
+        ret = "<li>"
+        if self.appendix:
+            ret += "Appendix "
+            counter = ""
+            num = self.num - 1
+            while True:
+                counter = chr(ord("A") + num % 26) + counter
+                num = num // 26
+                if num == 0:
+                    break
+            ret += f"{counter}. "
+        else:
+            ret += f"{self.num}. "
+        if link is not None:
+            ret += f'<a id="{id}" href="{link}">'
+        ret += self.title
+        if link is not None:
+            ret += "</a>"
+        ret += "</li>"
+        return ret
+
+
+@dataclass
+class Topic:
+    path: Path
+    parts: list[DirPattern]
+    slides: list[int]
+
+    @classmethod
+    def match(cls, path: Path) -> Topic | None:
+        matches = [DIR_PATTERN.match(part) for part in path.parts]
+        if all(matches):
+            matches = t.cast(list[re.Match[str]], matches)
+            return Topic(
+                path=path,
+                parts=[
+                    DirPattern.from_match(match)
+                    for match in matches
+                    if not match["index"]
+                ],
+                slides=[],
+            )
+
+    def __lt__(self, other) -> bool:
+        return self.parts < other.parts
+
+    def __eq__(self, other) -> bool:
+        return self.parts == other.parts
+
+
 def prev_link(i, root, slideset, target):
     if i > 1:
         return f'<a id="ArrowLeft"  class="bot-left arrow"  href="{target}">⮈</a>'
@@ -206,64 +293,55 @@ def next_link(i, end, root, slideset, target):
     return f'<a id="ArrowUp"  class="bot-right arrow"  href="{root}/index.html?focus=slideset{slideset + 1}">⮉</a>'
 
 
-def find_slides() -> list[tuple[tuple[re.Match], list[int]]]:
-    slides: dict[tuple[re.Match], list[int]] = {}
+def find_topics() -> list[Topic]:
+    topics: list[Topic] = []
     for dirname, dirs, files in IN.walk():
         dirs[:] = [dir for dir in dirs if DIR_PATTERN.match(dir)]
-        partsmatch = tuple(
-            DIR_PATTERN.match(part) for part in dirname.relative_to(IN).parts
-        )
-        if all(partsmatch):
-            partsmatch = t.cast(tuple[re.Match], partsmatch)
-            nums: list[int] = []
-            for file in files:
-                match = FILE_PATTERN.match(file)
-                if match:
-                    nums.append(int(match["num"]))
-            if nums != []:
-                slides[partsmatch] = nums
-    return list(
-        sorted(
-            slides.items(),
-            key=lambda kv: tuple(int(part["num"]) for part in kv[0]),
-        )
-    )
+        if topic := Topic.match(dirname.relative_to(IN)):
+            topic.slides = [
+                int(match["num"])
+                for file in files
+                if (match := FILE_PATTERN.match(file))
+                if match["num"]
+            ]
+            if topic.slides != []:
+                topics.append(topic)
+    topics.sort()
+    return topics
 
 
 async def amain():
     OUT.mkdir(parents=True, exist_ok=True)
-    slides = find_slides()
+    topics = find_topics()
 
     # For stripping SVGs
     scour = shutil.which("scour")
     assert scour
     scours: list[Process] = []
 
-    oldpath = Path(".")
+    oldparts = []
     contents = ""
     slideset = 0
-    for dirs, nums in slides:
-        path = Path(*(dir[0] for dir in dirs))
-        common = sum(o == d for o, d in zip(oldpath.parts, path.parts))
-        contents += "</ol>" * max(0, len(oldpath.parts) - common - 1)
-        for i in range(len(path.parts) - common - 1):
-            contents += f'<li>{titlecase(dirs[i]["name"])}</li><ol>'
-        title = titlecase(dirs[-1]["name"])
-        contents += (
-            f'<li><a id="slideset{slideset}" href="{path}/1.html">{title}</a></li>'
+    for topic in topics:
+        common = sum(o == d for o, d in zip(oldparts, topic.parts))
+        contents += "</menu>" * max(0, len(oldparts) - common - 1)
+        for i in range(len(topic.parts) - common - 1):
+            contents += topic.parts[i].to_html() + "<menu>"
+        contents += topic.parts[-1].to_html(
+            f"slideset{slideset}", topic.path / f"{min(topic.slides)}.html"
         )
-        oldpath = path
+        oldparts = topic.parts
         #
-        end = max(nums)
-        (OUT / path).mkdir(parents=True, exist_ok=True)
-        for i in nums:
+        end = max(topic.slides)
+        (OUT / topic.path).mkdir(parents=True, exist_ok=True)
+        for i in topic.slides:
             scours.append(
                 await asyncio.subprocess.create_subprocess_exec(
                     scour,
                     "-i",
-                    str(IN / path / f"{i}.svg"),
+                    str(IN / topic.path / f"{i}.svg"),
                     "-o",
-                    str(OUT / path / f"{i}.svg"),
+                    str(OUT / topic.path / f"{i}.svg"),
                     "--enable-viewboxing",
                     "--enable-id-stripping",
                     "--enable-comment-stripping",
@@ -271,13 +349,13 @@ async def amain():
                     "--indent=none",
                 )
             )
-            html = OUT / path / f"{i}.html"
+            html = OUT / topic.path / f"{i}.html"
             root = "../" * max(0, len(html.parts) - len(OUT.parts) - 1)
             root = root.rstrip("/")
             html.write_text(
                 html_minify(
                     slide_fmt.format(
-                        title=title,
+                        title=topic.parts[-1].title,
                         root=root,
                         svg=f"{i}.svg",
                         prev=prev_link(i, root, slideset, f"{i-1}.html"),
@@ -286,11 +364,14 @@ async def amain():
                 ),
             )
         slideset += 1
-    contents += "</ol>" * len(oldpath.parts)
+    contents += "</menu>" * len(oldparts)
 
     (OUT / "index.html").write_text(html_minify(index.format(links=contents)))
     (OUT / "stylesheet.css").write_text(css_minify(stylesheet))
-    return max(await asyncio.gather(*(scour.wait() for scour in scours)))
+    if scours == []:
+        return 0
+    else:
+        return max(await asyncio.gather(*(scour.wait() for scour in scours)))
 
 
 if __name__ == "__main__":
