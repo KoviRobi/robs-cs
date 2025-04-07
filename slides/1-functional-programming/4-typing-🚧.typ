@@ -4,245 +4,545 @@
 
 #show: init(
   title: [Rob's CS 4],
-  subtitle: [Learning to Type],
+  subtitle: [Fun to Type],
 )
 
 #show raw: set text(font: "CaskaydiaCove NF")
 
 #title-slide
 
-= Passing arguments
+= Multiple arguments
+#slide[
 / #"Q:": How many arguments do OCaml functions take
 #pause
-#only((2,3))[
-/ #"A:": One
+#only(2)[
+  / #"A:": One
 ]
 #only(3)[
-```ocaml
-(* val add :  int * int  -> int *)
-let add(x_y) = match x_y with
-  (x, y) -> x + y
-```
-]
-#only(4)[
-/ #"A:": One, with pattern matching
-```ocaml
+  / #"A:": One
+    #v(-0.5em)
+    ```ocaml
 (* val add : (int * int) -> int *)
-let add(x, y) = x + y
-```
+let add (x__y) = match x__y with
+        (x, y) -> x + y
+    ```
+    ]
+#only(4)[
+  / #"A:": One
+    #v(-0.5em)
+    ```ocaml
+(* val add :  int * int  -> int *)
+let add (x__y) = match x__y with
+        (x, y) -> x + y
+    ```
+    ]
+#only(5)[
+  / #"A:": One, with pattern matching
+    #v(-0.5em)
+    ```ocaml
+(* val add :  int * int  -> int *)
+let add (x, y) = x + y
+    ```
+  ]
 ]
 
-= Multiple arguments
+#slide[
 / #"Q:": So what's
+  #v(-0.5em)
   ```ocaml
 let add x y = x + y
   ```
 #pause
 / #"A:": Function returning a function
-#only(2)[
-  ```ocaml
+  #only(2)[
+    ```ocaml
 (* val add : int -> (int -> int) *)
-let add x = fun y -> x + y
-  ```
-]
-#only(3)[
-  ```ocaml
+let add = fun x -> (fun y -> x + y)
+    ```
+  ]
+  #only(3)[
+    ```ocaml
+(* val add : int ->  int -> int  *)
+let add = fun x ->  fun y -> x + y
+    ```
+  ]
+  #only(4)[
+    ```ocaml
 (* val add : int ->  int -> int  *)
 let add x = fun y -> x + y
-  ```
-]
-
-=
-
-TODO: Currying
-TODO: Interface files?
-TODO: Use scheduler as a complex example that gets simpler to write, instead of
-graph colouring? Maybe easier to understand than graph colouring
-
-= Infix operators
-#slide[
-- Already know
-  - Arithmetic: integer ```ocaml +```, ```ocaml -```, ```ocaml *```, ```ocaml /```;
-    floating point ```ocaml +.```, ```ocaml -.```, ```ocaml *.```, ```ocaml /.```
-    #pause
-  - Equality: deep ```ocaml =```, ```ocaml <>```; shallow ```ocaml ==```, ```ocaml !=```;
-    comparisons ```ocaml <```, ```ocaml <=```, ```ocaml >```, ```ocaml >=```
-    #pause
-  - List cons ```ocaml ::``` and append ```ocaml @```
-  #pause
-  - String append ```ocaml ^```
-  #pause
-- New: function application ```ocaml @@``` and reverse application ```ocaml |>```
-  #v(-0.5em)
-  ```ocaml
-let ( @@ ) f x = f x
-let ( |> ) x f = f x
-  ```
-  #v(-0.5em)
-]
-#slide[
-  #v(-1em)
-  ```ocaml
-let a = foo (bar (baz (quux arg)))
-
-let b = foo @@ bar @@ baz @@ arg
-
-let c = arg |> baz |> bar |> foo
-  ```
-]
-
-= Types
-#slide[
-  But first, a difficult problem. Linked lists again. From scratch 🙃
-  #pause
-  #admonition(title: "Disclaimer")[
-  Original, sensible, conventional linked lists are the one
-  actually used.
-
-    But this will come back in Computation Theory.
+    ```
   ]
 ]
 
-== Functions as lists
 #slide[
-  #v(-1em)
-  ```ocaml
-let empty = fun f x -> x
-let l_1 = fun f x -> f 1 x
-let l_1_2 = fun f x -> f 1 @@ f 2 x
-let l_1_2_3 = fun f x -> f 1 @@ f 2 @@ f 3 x
-  ```
+  / #"Q:": Why use
+    #v(-0.5em)
+    ```ocaml
+let add x y = x + y
+    ```
+    #v(-0.5em)
+    instead of #only(3)[#h(1fr)#sym.arrow.t curry #h(1em) uncurry #sym.arrow.b#h(1fr)]
+    #v(-0.5em)
+    ```ocaml
+let add (x, y) = x + y
+    ```
+  #pause
+  / #"A:": Partial application
+]
+
+= Partial application
+#slide[
+  Contrived but simple example
   #v(-0.5em)
-  - How to cons ```ocaml 0``` onto ```ocaml l_1_2_3```?
-  - How to append ```ocaml l_1_2``` and ```ocaml l_1_2_3```?
+  #codly-reveal((1,3,6,8))[
+    ```ocaml
+let add x y = x + y
+
+let add1 = add 1
+
+let 2 = add1 1
+let 3 = add1 (add1 1)
+
+let [11; 12; 13] = List.map (add 10) [1; 2; 3]
+    ```
+  ]
+]
+
+= Functions all the way down
+#slide[
+  #align(center, table(columns: 2, stroke: 0em, inset: 0.5em, align: (right, left))[
+    C           ][ Everything is a number][
+    Bash        ][ Everything is a string][
+    Ruby        ][ Everything is an object][
+    OCaml       ][ Everything is a function])
+]
+
+= Functions as lists
+#slide[
+  #v(-0.8em)
+  #admonition(title: "Warning", primary-color: yellow.E, secondary-color: yellow.D, tertiary-color: yellow.A)[
+  This is for learning purposes.
+
+  It is attempted here by a highly trained stunt programmer. 🛹
+
+  Do not try this in production.
+
+  (Do try this at home.)
+  ]
 ]
 
 #slide[
-  #v(-1em)
+  Remember lists?
+  #v(-0.5em)
   ```ocaml
-let cons el lst = fun f x -> f el (lst f x)
-
-let append l1 l2 = fun f x -> l1 f (l2 f x)
+type 'a list = [] | ( :: ) of 'a * 'a list
+let empty = []
+let cons el lst = el :: lst
   ```
-  Can we make this simpler?
+  #pause
+  #v(-0.5em)
+
+  #only(2)[
+    How about encoding `match lst with ...`?
+    #v(-0.5em)
+    ```ocaml
+let empty = fun ifCons ifEmpty -> ifEmpty
+let cons el lst = fun ifCons ifEmpty -> ifCons el lst
+    ```
+    #v(-0.5em)
+    (Scott encoding)
+  ]
+  #only(3)[
+    How about encoding `fold_right`?
+    #v(-0.5em)
+    ```ocaml
+let empty = fun f init -> init
+let cons el lst = fun f init -> f el (lst f init)
+    ```
+    #v(-0.5em)
+    (Church encoding)
+  ]
+  #note[
+    Scott encoding is very simple, for each type constructor (e.g. empty list,
+    cons), we create a function which takes one function for each case (each
+    option in the pattern match) and calls the correct one with the values
+    contained in that case.
+
+    Church encoding is only a little more complicated, because here for
+    recursive values (e.g. the tail of the list), we call the value contained
+    within with the arguments for the current case).
+  ]
 ]
 
-== Interfaces
 #slide[
-  #v(-1em)
-  #codly(header: [#sym.angle.l;fun_lists.mli#sym.angle.r#sym.eq.triple])
-  ```ocaml
-type ('el, 'acc) fl =
-  ('el -> 'acc -> 'acc) -> 'acc -> 'acc
-val empty : ('a, 'b) fl
-val cons : 'el -> ('el, 'acc) fl -> ('el, 'acc) fl
-val append :
-  ('el, 'acc) fl ->
-  ('el, 'acc) fl ->
-  ('el, 'acc) fl
-  ```
+  #codly(display-icon: false, display-name: false, number-format: none)
+  How do we work out types? Take
+  #let mkhi(hi) = local(highlights: hi)[
+    #v(-0.5em)
+    ```ocaml
+let empty = fun ifCons -> fun ifEmpty -> ifEmpty
+    ```
+    #v(-0.5em)
+  ]
+  #alternatives[
+    #v(-0.5em)
+    ```ocaml
+let empty = fun ifCons ifEmpty -> ifEmpty
+    ```
+    #v(-0.5em)
+  ][
+    #mkhi(none)
+    Remember ```ocaml fun a b -> body``` is just shorthand.
+  ][
+    #mkhi((
+      (line: 1, start: 13, end: 15),
+      (line: 1, start: 17, end: 48, fill: green.B),
+    ))
+    Functions must have a function type, i.e.
+    #v(-0.5em)
+    ```ocaml
+(fun arg -> body) : 'argType -> 'bodyType
+    ```
+    #v(-0.5em)
+    So assume `empty` has type ```ocaml 't1 -> 't2```.
+
+    Currently ```ocaml 't1``` and ```ocaml 't2``` could be any type.
+
+    #v(1fr)
+    ```ocaml
+empty : 't1 -> 't2
+    ```
+    #v(1em)
+  ][
+    #mkhi(((line: 1, start: 17, end: 22),))
+    The type of ```ocaml ifCons``` must be the same as ```ocaml 't1```.
+
+    Using the type variable ```ocaml 'ifCons``` to denote the type of
+    ```ocaml ifCons``` for simplicity.
+
+    #v(1fr)
+    ```ocaml
+empty : 'ifCons -> 't2
+    ```
+    #v(1em)
+  ][
+    #mkhi((
+      (line: 1, start: 27, end: 29),
+      (line: 1, start: 31, end: 48, fill: green.B),
+    ))
+    The type ```ocaml 't2``` must be the same as a function type
+    ```ocaml 't3 -> 't4```.
+
+    #v(1fr)
+    ```ocaml
+empty : 'ifCons -> 't3 -> 't4
+    ```
+    #v(1em)
+  ][
+    #mkhi(((line: 1, start: 31, end: 37),))
+    The type of ```ocaml ifEmpty``` must be the same as ```ocaml 't3```.
+
+    #v(1fr)
+    ```ocaml
+empty : 'ifCons -> 'ifEmpty -> 't4
+    ```
+    #v(1em)
+  ][
+    #mkhi(((line: 1, start: 42, end: 48),))
+    The type of ```ocaml ifEmpty``` must be the same as ```ocaml 't4```.
+
+    #v(1fr)
+    ```ocaml
+empty : 'ifCons -> 'ifEmpty -> 'ifEmpty
+    ```
+    #v(1em)
+  ][
+    #mkhi(none)
+    We can rename to get
+    #v(1fr)
+    ```ocaml
+empty : 'a -> 'b -> 'b
+    ```
+    #v(1em)
+  ]
 ]
 
 #slide[
-  #only(1,
+  A more complicated type
+  #let mkhi(hi) = local(highlights: hi)[
+    #v(-0.5em)
+    ```ocaml
+let cons = fun el lst f init -> f el (lst f init)
+    ```
+    #v(-0.5em)
+  ]
+  #let mkhi2(hi) = local(display-icon: false, display-name: false, highlights: hi)[
+    #v(-0.5em)
+    ```ocaml
+let cons = fun el lst f init -> (f el) ((lst f) init)
+    ```
+    #v(-0.5em)
+]
+  #alternatives[
+    #v(-0.5em)
+    #local(display-icon: false, display-name: false)[
+      ```ocaml
+let cons el lst = fun f init -> f el (lst f init)
+      ```
+    ]
+    #v(-0.5em)
+  ][
+    #mkhi(none)
+    Remember ```ocaml let f a = body``` is just shorthand.
+  ][
+    #mkhi((
+      (line: 1, start: 12, end: 14),
+      (line: 1, start: 16, end: 49, fill: green.B),
+    ))
+    Assume `cons` has type ```ocaml 't1 -> 't2```.
+
+    #v(1fr)
+    ```ocaml
+cons : 't1 -> 't2
+    ```
+    #v(1em)
+  ][
+    #mkhi(((line: 1, start: 16, end: 17),))
+    The type of ```ocaml el``` must be the same as ```ocaml 't1```.
+
+    Using the type variable ```ocaml 'el``` to denote the type of
+    ```ocaml el``` for simplicity.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 't2
+    ```
+    #v(1em)
+  ][
+    #mkhi((
+      (line: 1, start: 12, end: 14),
+      (line: 1, start: 19, end: 49, fill: green.B),
+    ))
+    The type ```ocaml 't2``` must be the same as a function type
+    ```ocaml 't3 -> 't4```.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 't3 -> 't4
+    ```
+    #v(1em)
+  ][
+    #mkhi(((line: 1, start: 19, end: 21),))
+    The type of ```ocaml lst``` must be the same as ```ocaml 'lst```.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 'lst -> 't4
+    ```
+    #v(1em)
+  ][
+    #mkhi((
+      (line: 1, start: 12, end: 14),
+      (line: 1, start: 23, end: 49, fill: green.B),
+    ))
+    The type ```ocaml 't4``` must be the same as a function type
+    ```ocaml 't5 -> 't6```.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 'lst -> 't5 -> 't6
+    ```
+    #v(1em)
+  ][
+    #mkhi(((line: 1, start: 23, end: 23),))
+    The type of ```ocaml f``` must be the same as ```ocaml 'f```.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 'lst -> 'f -> 't6
+    ```
+    #v(1em)
+  ][
+    #mkhi((
+      (line: 1, start: 12, end: 14),
+      (line: 1, start: 25, end: 49, fill: green.B),
+    ))
+    The type ```ocaml 't6``` must be the same as a function type
+    ```ocaml 't7 -> 't8```.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 'lst -> 'f -> 't7 -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi(((line: 1, start: 25, end: 28),))
+    The type of ```ocaml init``` must be the same as ```ocaml 'init```.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2(none)
+    Let's add parentheses to disambiguate.
+
+    #v(1fr)
+    ```ocaml
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2((
+      (line: 1, start: 33, end: 38),
+      (line: 1, start: 40, end: 53, fill: green.B),
+    ))
+    The expression ```ocaml (f el) ((lst f) init)``` has type
+    ```ocaml 't8```. \
+    It is a function application, so ```ocaml f el``` must have type
+    ```ocaml 't9 -> 't8``` \
+    and ```ocaml (lst f) init``` have type ```ocaml 't9```
+
+    #v(1fr)
+    ```ocaml
+f el : 't9 -> 't8
+(lst f) init : 't9
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2((
+      (line: 1, start: 34, end: 34),
+      (line: 1, start: 36, end: 37, fill: green.B),
+    ))
+    Another function application, ```ocaml f : 't10 -> 't11``` and
+    ```ocaml el : 't10```. \
+    We also know ```ocaml f : 'f``` and ```ocaml el : 'el```.
+
+    #v(1fr)
+    ```ocaml
+f : 'el -> 't11
+f el : 't9 -> 't8
+(lst f) init : 't9
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2((
+      (line: 1, start: 34, end: 34),
+      (line: 1, start: 36, end: 37, fill: green.B),
+    ))
+    We can rewrite that in terms of the type ```ocaml 'f```.
+
+    #v(1fr)
+    ```ocaml
+'f = 'el -> 't9 -> 't8
+(lst f) init : 't9
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2((
+      (line: 1, start: 41, end: 47),
+      (line: 1, start: 49, end: 52, fill: green.B),
+    ))
+    More function applications.
+
+    #v(1fr)
+    ```ocaml
+'f = 'el -> 't9 -> 't8
+lst f : 'init -> 't9
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2((
+      (line: 1, start: 42, end: 44),
+      (line: 1, start: 46, end: 46, fill: green.B),
+    ))
+    More function applications.
+
+    #v(1fr)
+    ```ocaml
+'f = 'el -> 't9 -> 't8
+lst : 'f -> 'init -> 't9
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2(none)
+    So we have the type ```ocaml 'lst```.
+
+    #v(1fr)
+    ```ocaml
+'f = 'el -> 't9 -> 't8
+'lst = 'f -> 'init -> 't9
+cons : 'el -> 'lst -> 'f -> 'init -> 't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2(none)
+    Now we can rewrite the whole type.
+
+  #v(1fr)
   ```ocaml
-let cons (el: 'el) (lst: ('el, 'acc) fl) =
-  ??? : ('el, 'acc) fl
-  ```)
-  #only(2,
-  ```ocaml
-let cons (el: 'el) (lst: ('el, 'acc) fl) =
-  ??? : ('el -> 'acc -> 'acc) -> 'acc -> 'acc
-  ```)
-  #only(3,
-  ```ocaml
-let cons (el: 'el) (lst: ('el, 'acc) fl) =
-  fun (f: 'el -> 'acc -> 'acc) (x: 'acc) ->
-    ??? : 'acc
-  ```)
+cons : 'el ->
+       (('el -> 't9 -> 't8) -> 'init -> 't9) ->
+       ('el -> 't9 -> 't8) ->
+       'init ->
+       't8
+    ```
+    #v(1em)
+  ][
+    #mkhi2(none)
+    And rename to get the same result as OCaml.
+
+    #v(1fr)
+    ```ocaml
+cons : 'a ->
+       (('a -> 'b -> 'c) -> 'd -> 'b) ->
+       ('a -> 'b -> 'c) ->
+       'd ->
+       'c
+    ```
+    #v(1em)
+  ]
 ]
 
-== Type checking 1
-- Currying?
-- Introduce Church-encoded lists?
-- Use to introduce module interface files?
-- Use types to tame them?
-- From a type-annotation point
+= Exercise
+Can you work out the type of the Scott encoded ```ocaml cons```?
+(It is much simpler than the Church encoded ```ocaml cons```.)
+
+#v(-0.5em)
 ```ocaml
-type ('el, 'acc) fl =
-  ('el -> 'acc -> 'acc) -> 'acc -> 'acc
-
-let empty : ('el, 'acc) fl = fun f x -> x
-
-let cons (l : 'el) (ls : ('el, 'acc) fl) :
-    ('el, 'acc) fl =
- fun f x -> f l (ls f x)
-
-let to_list (ls: ('el, 'acc) fl) : 'el list =
-  ls (fun a b -> a::b) []
-
-let append
-    (xs:('el, 'acc) fl)
-    (ys: ('el, 'acc) fl) :
-  ('el, 'acc) fl =
-  fun f x -> xs f (ys f x)
+let cons el lst = fun ifCons ifEmpty -> ifCons el lst
 ```
 
-== Combinatorial functions
-- Graph colouring?
-#slide[
-  #v(-1em)
-  ```ocaml
-let rec all_colors colors = function
-  | [] -> [[]]
-  | v::vertices ->
-    List.concat_map (fun color ->
-      (List.map
-        (fun rest_colors ->
-          (v, color)::rest_colors)
-        (all_colors colors vertices)))
-      colors
-  ```
-]
-
-- Monadic syntax/custom let?
-#slide[
-  #v(-1em)
-  ```ocaml
-let rec all_colors colors = function
-  | [] -> [[]]
-  | v::vertices ->
-    let ( let* ) x f = List.concat_map f x in
-    let ( let+ ) x f = List.map f x in
-    let* color = colors in
-    let+ rest_colors = all_colors colors vertices in
-    (v, color)::rest_colors
-  ```
-]
-
-#slide[#v(-1em)
+= Answer
+#v(-1em)
 ```ocaml
-let rec combs = function
-  | [] -> [[]]
-  | x::xs -> let cs = combs xs in
-    List.map (fun xs -> x::xs) cs @ cs
+let cons el lst = fun ifCons ifEmpty -> ifCons el lst
 ```
-]
-
-#slide[
-  #v(-1em)
+#v(-0.5em)
+#pause
+First we know it is a curried function of four arguments
+#v(-0.5em)
 ```ocaml
-let rec insert_all el = function
-  | [] -> [[el]]
-  | x::xs -> (el::x::xs)::
-    List.map (fun ys -> x::ys) (insert_all el xs)
-let rec perms = function
-  | [] -> [[]]
-  | x::xs -> let ps = perms xs in
-    List.concat_map (insert_all x) ps
+cons : 'el -> 'lst -> 'ifCons -> 'ifEmpty -> 't1
 ```
-]
-
-== Type checking 2
-- Show how it helps with coding up the combinatorial function
-- From an inference point
+#v(-0.5em)
+#pause
+Then we know ```ocaml ifCons``` is a curried function of two arguments.
+#v(-0.5em)
+```ocaml
+'ifCons = 'el -> 'lst -> 't1
+```
+#v(-0.5em)
+#pause
+So we get
+#v(-0.5em)
+```ocaml
+cons : 'el -> 'lst -> ('el -> 'lst -> 't1) -> 'ifE -> 't1
+```
+#v(-0.5em)
