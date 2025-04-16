@@ -379,6 +379,7 @@ reduce to?
 [Hint: Easier graphically]
 ]
 
+= Answer
 #slide[
 #let gap = h(0em)
 #h(1fr) $T(n) = T((3n)/4) + T(n/8) + n$ #h(1fr) and #h(1fr) $T(1) = 1$ #h(1fr)
