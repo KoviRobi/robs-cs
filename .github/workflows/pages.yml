@@ -45,7 +45,7 @@ jobs:
             typst compile "$typ" "${svg}"
           done
 
-          python make-html-wrappers.py
+          python tools/make-html-wrappers.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
