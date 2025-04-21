@@ -47,14 +47,14 @@ re.match("a?"*n + "a"*n, "a"*n)
 print(time.process_time() - start)
   ```
 ]
-#note(```
+#only("3-")[
+We will come back to regular expressions later in the course
+]
+#note[
 - Show example
 - What do you expect for `n = 28`?
-- `grep`]
-```)
-#pause
-#pause
-We will come back to regular expressions later in the course
+- `grep`
+]
 
 = Example 2 -- Deduplicating items
 #components.side-by-side(columns: (2fr, 1fr))[
