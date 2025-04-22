@@ -159,8 +159,6 @@ for cursor in range(len(l)):
   - $O(n)$ bags of potatoes? #text(font: "Noto Color Emoji")[🥔👜]
     #pause
     - Complexity measured in input size
-      #pause
-      - Bytes
     #pause
     - $O(n)$ is an upper bound
       #pause
@@ -266,7 +264,7 @@ let rec sort = function
   #only(2)[
     ```ml
 let rec sort len =
-  | len = 0 or 1      -> l
+  | len = 0 or 1      -> 1
   | len ->
       len +
       len/2 +
@@ -277,7 +275,7 @@ let rec sort len =
   #only(3)[
     ```ml
 let rec sort len =
-  | len = 0 or 1      -> l
+  | len = 0 or 1      -> 1
   | len ->
       2 * len +
       2 * sort(len/2)
@@ -294,7 +292,7 @@ let rec sort len =
   #only(4)[
     ```ml
 let rec sort len =
-  | len=0 || len=1       -> 1
+  | len = 0 or 1      -> 1
   | len ->
       2 * len +
       2 * (2 * len/2 + 2 * sort(len/4))
@@ -310,7 +308,7 @@ let rec sort len =
   #only(5)[
     ```ml
 let rec sort len =
-  | len=0 || len=1       -> 1
+  | len = 0 or 1      -> 1
   | len ->
       4 * len +
       4 * sort(len/4)
@@ -335,135 +333,47 @@ let rec sort len = 2 * len * log_2(len)
 
 = Graphical version
 #let gap = h(4em)
-#h(1fr) $T(n) = 2 T(n) + 2n$ #h(1fr) and #h(1fr) $T(0 "or" 1) = 1$ #h(1fr)
-#fletcher-diagram(
-  spacing: (0.3em, 2em),
-  node-outset: 0.5em,
-  node((0, 0), $2n$, name: <top>),
-  node((4, 0), $#gap space.third=2n$),
-  pause,
-    node((-2, 1), $(2n)/2$, name: <l>),
-    node(( 0, 1), $+$),
-    node(( 2, 1), $(2n)/2$, name: <r>),
-    node(( 4, 1), $#gap+#h(-3pt)=2n$),
-    edge(<top>, <l>),
-    edge(<top>, <r>),
+#v(-0.5em)
+#alternatives[
+  $T(0 "or" 1) &= 1 \
+  T(n) &= 2 T(n\/2) + 2n$
+][
+  $T(0 "or" 1) &= 1 \
+  T(n) &= 2 (2n\/2 + 2T(n\/4)) + 2n$
+][
+  $T(0 "or" 1) &= 1 \
+  T(n) &= 2 (2n\/2 + 2(2n\/4 + 2T(n\/4))) + 2n$
+]
+#stack(dir: ltr,
+  fletcher-diagram(
+    spacing: (0.3em, 2em),
+    node-outset: 0.5em,
+    node((0, 0), $2n$, name: <top>),
+    node((4, 0), $#gap space.third=2n$),
     pause,
-      node((-3, 2), $(2n)/4$, name: <ll>),
-      node((-2, 2), $+$),
-      node((-1, 2), $(2n)/4$, name: <lr>),
-      node(( 0, 2), $+$),
-      node(( 2, 2), $+$),
-      node(( 1, 2), $(2n)/4$, name: <rl>),
-      node(( 2, 2), $+$),
-      node(( 3, 2), $(2n)/4$, name: <rr>),
-      edge(<l>, <ll>),
-      edge(<l>, <lr>),
-      edge(<r>, <rl>),
-      edge(<r>, <rr>),
-      node(( 4, 2), $#gap+#h(-0.1em)=2n$),
+      node((-2, 1), $(2n)/2$, name: <l>),
+      node(( 0, 1), $+$),
+      node(( 2, 1), $(2n)/2$, name: <r>),
+      node(( 4, 1), $#gap+#h(-3pt)=2n$),
+      edge(<top>, <l>),
+      edge(<top>, <r>),
       pause,
-        node((0, 3), $dots.v$),
-        node((4, 3), $dots.v$),
+        node((-3, 2), $(2n)/4$, name: <ll>),
+        node((-2, 2), $+$),
+        node((-1, 2), $(2n)/4$, name: <lr>),
+        node(( 0, 2), $+$),
+        node(( 2, 2), $+$),
+        node(( 1, 2), $(2n)/4$, name: <rl>),
+        node(( 2, 2), $+$),
+        node(( 3, 2), $(2n)/4$, name: <rr>),
+        edge(<l>, <ll>),
+        edge(<l>, <lr>),
+        edge(<r>, <rl>),
+        edge(<r>, <rr>),
+        node(( 4, 2), $#gap+#h(-0.1em)=2n$),
+  ),
+  [
+    #pause
+    $lr(} #v(8em)) log(n)$ expansions
+  ]
 )
-
-= Exercise
-#slide[
-What does the equation
-$
-T(1) = 1 \
-T(n) = T((3n)/4) + T(n/8) + n
-$
-reduce to?
-
-[Hint: Easier graphically]
-]
-
-= Answer
-#slide[
-#let gap = h(0em)
-#h(1fr) $T(n) = T((3n)/4) + T(n/8) + n$ #h(1fr) and #h(1fr) $T(1) = 1$ #h(1fr)
-#fletcher-diagram(
-  spacing: (-0.0em, 2em),
-  node-outset: 0.5em,
-  node((0, 0), $n$, name: <top>),
-  node((8, 0), $#gap space.third=n$),
-  pause,
-    node((-4, 1), $(3n)/4$, name: <l>),
-    node(( 0, 1), $+$),
-    node(( 4, 1), $n/8$, name: <r>),
-    edge(<top>, <l>),
-    edge(<top>, <r>),
-    pause,
-    node(( 8, 1), $#gap +#h(-3pt)=(7n)/8$),
-    pause,
-      node((-6, 2), $(9n)/16$, name: <ll>),
-      node((-4, 2), $+$),
-      node((-2, 2), $(3n)/32$, name: <lr>),
-      node(( 0, 2), $+$),
-      node(( 2, 2), $(3n)/32$, name: <rl>),
-      node(( 4, 2), $+$),
-      node(( 6, 2), $n/64$, name: <rr>),
-      edge(<l>, <ll>),
-      edge(<l>, <lr>),
-      edge(<r>, <rl>),
-      edge(<r>, <rr>),
-      pause,
-      node(( 8, 2), $#gap +#h(-0.1em)=(49n)/64$),
-      pause,
-        node((-7, 3), $(27n)/64$, name: <lll>),
-        node((-6, 3), $+$),
-        node((-5, 3), $(9n)/128$, name: <llr>),
-        node((-4, 3), $+$),
-        node((-3, 3), $(9n)/128$, name: <lrl>),
-        node((-2, 3), $+$),
-        node((-1, 3), $(3n)/256$, name: <lrr>),
-        node(( 0, 3), $+$),
-        node(( 1, 3), $(9n)/128$, name: <rll>),
-        node(( 2, 3), $+$),
-        node(( 3, 3), $(3n)/256$, name: <rlr>),
-        node(( 4, 3), $+$),
-        node(( 5, 3), $(3n)/256$, name: <rrl>),
-        node(( 6, 3), $+$),
-        node(( 7, 3), $n/512$, name: <rrr>),
-        edge(<ll>, <lll>),
-        edge(<ll>, <llr>),
-        edge(<lr>, <lrl>),
-        edge(<lr>, <lrr>),
-        edge(<rl>, <rll>),
-        edge(<rl>, <rlr>),
-        edge(<rr>, <rrl>),
-        edge(<rr>, <rrr>),
-        pause,
-        node(( 8, 3), $#gap +#h(-0.1em)=(#(49*7) n)/#(64*8)$),
-)
-]
-#slide[
-  Geometric sum $n + (7n)/8 + (49n)/64 + (343n)/512 + dots.c.h$
-  #v(-0.5em)
-  $
-  "Let" S_i =& a x^0 + a x^1 + dots.c.h + a x^i \
-  => S_i (1-x) =& a x^0 + a x^1 - a x^1 + dots.c.h + a x^i - a x^i - a x^(i+1) \
-  => S_i = a (1 - x^(i+1))/(1-x)
-  $
-  #v(-0.5em)
-  So
-  #v(-1em)
-  $
-  a = n; #h(1em) x=7/8
-  $
-]
-#slide[
-  Expanding at most $n * (3/4)^i = 1$ iterations. Solved for $i$:
-  $
-  i= log(1\/n)/log(3\/4) = log(n)/log(4\/3) = c log(n) "where" c = 1/log(4\/3)
-  $
-  So
-  $
-  S_i
-  = a (1-x^(i+1))/(1-x)
-  = n((1-(7/8)^(c log(n))/(1-7/8))
-  = 8n(1-(7/8)^(c log(n)))
-  < 8n
-  $
-]
