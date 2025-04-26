@@ -201,6 +201,7 @@ in
     TYPST_PACKAGE_PATH = self.devenv.outputs.typst-packages;
     TYPST_FONT_PATHS = lib.makeSearchPathOutput "out" "share/fonts" [
       pkgs.nerd-fonts.caskaydia-cove
+      pkgs.noto-fonts
       pkgs.noto-fonts-color-emoji
     ];
   };
