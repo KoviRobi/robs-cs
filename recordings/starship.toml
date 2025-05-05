@@ -1,0 +1,49 @@
+add_newline = false
+format = "\u001b\\]133;A\u001b\\\\$all$line_break$character\u001b\\]133;B\u001b\\\\"
+
+[aws]
+disabled = true
+
+[directory]
+truncation_symbol = "…/"
+
+[nix_shell]
+disabled = true
+
+[typst]
+disabled = true
+
+[git_status]
+disabled = true
+
+[git_branch]
+disabled = true
+
+[git_commit]
+disabled = true
+only_detached = false
+tag_disabled = false
+
+[hostname]
+disabled = true
+format = "[🖳  $ssh_symbol$hostname]($style) in "
+ssh_only = false
+ssh_symbol = "\b\b\b🖧  "
+
+[shell]
+disabled = true
+
+[shlvl]
+disabled = true
+symbol = "↕"
+threshold = 3
+
+[status]
+disabled = true
+
+[time]
+disabled = true
+
+[username]
+disabled = true
+show_always = true

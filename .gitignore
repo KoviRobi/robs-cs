@@ -9,6 +9,10 @@ CascadiaCode.zip
 
 # Typst outputs
 *.pdf
+#
+# polylux2pdfpc
+*.pdfpc
+
 # Devenv
 .devenv*
 devenv.local.nix
@@ -23,3 +27,6 @@ devenv.local.nix
 /pdf/
 /svg/
 /public/
+
+# Recordings
+*.mkv

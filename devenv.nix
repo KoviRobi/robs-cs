@@ -195,6 +195,7 @@ in
       pkgs.skopeo
       pkgs.git
       pkgs.pdfpc
+      pkgs.obs-studio
     ];
 
   env = {
