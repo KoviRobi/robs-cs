@@ -3,7 +3,7 @@
 // '<,'>!ocamlformat - --impl
 
 #show: init(
-  title: [Rob's CS 6],
+  title: [Rob's CS 7],
   subtitle: [Modules],
 )
 

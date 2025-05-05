@@ -3,7 +3,7 @@
 // '<,'>!ocamlformat - --impl
 
 #show: init(
-  title: [Rob's CS 5],
+  title: [Rob's CS 6],
   subtitle: [Trees: They Are Us. Treeeeeeeeees],
 )
 

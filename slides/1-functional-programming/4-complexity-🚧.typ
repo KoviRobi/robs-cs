@@ -3,7 +3,7 @@
 // '<,'>!ocamlformat - --impl
 
 #show: init(
-  title: [Rob's CS 3],
+  title: [Rob's CS 4],
   subtitle: [Getting Complex],
 )
 
@@ -328,6 +328,11 @@ let rec sort len =
 let rec sort len = 2 * len * log_2(len)
     ```
 
+    #v(1fr)
+    $
+    T(n) &= 2n log_2(n)
+    $
+    #v(0.8em)
   ]
 ]
 
@@ -377,3 +382,25 @@ let rec sort len = 2 * len * log_2(len)
     $lr(} #v(8em)) log(n)$ expansions
   ]
 )
+
+= Coding practice
+Implement ```ocaml uniq``` which removes neighbouring duplicates
+#v(-0.5em)
+```ocaml
+val uniq : int list -> int list
+```
+#v(-0.5em)
+Example
+#v(-0.5em)
+```ocaml
+let [1;2;3;1] = uniq [1;2;2;3;1]
+```
+
+= Answer
+#v(-1em)
+```ocaml
+let rec uniq = function
+  | ([] | [_]) as l -> l
+  | a::b::rest when a <> b -> a::uniq(b::rest)
+  | a::b::rest             -> uniq(b::rest)
+```

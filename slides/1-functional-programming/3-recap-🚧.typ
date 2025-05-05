@@ -11,6 +11,14 @@
 
 #title-slide
 
+= Expression oriented
+- Everything has a value
+  ```ocaml
+let foo x = if x then 1 else 2
+  ```
+  No need for `return 1` or `return 2`
+- Types of both `then` and `else` clauses have to be the same
+
 = Syntax overview
 #slide[
   #v(-1em)
@@ -51,6 +59,18 @@ match arg with
   | (num, _, _) -> num
   ```
 ]
+
+= Tail calls
+
+```ocaml
+let rec sum(n) =
+  if n = 0 then 0 else n + sum(n-1)
+
+let sum'(n) =
+  let rec loop (n, acc) =
+  if n = 0 then acc else loop(n-1, n + acc)
+  in loop(n, 0)
+```
 
 = Linked Lists
 #slide[

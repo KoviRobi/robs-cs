@@ -42,10 +42,10 @@ Than ours, a friend to man, to whom thou say'st,                                
 - Learn a different way of thinking
 
 == Why OCaml?
-- Because I know it. :p
-- Simple syntax.
+- Because I know it :p
+- Simple syntax
 - Used in industry
-- Eager evaluation.
+- Eager evaluation
 - Concepts apply to other FP languages
 #note[
   - Eager evaluation: Dynamic programming
