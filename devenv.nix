@@ -115,72 +115,82 @@ in
       };
     };
 
-    docker-ocaml = pkgs.dockerTools.streamNixShellImage {
+    docker-ocaml = pkgs.dockerTools.streamLayeredImage {
       name = "ghcr.io/KoviRobi/robs-cs-ocaml";
       tag = "latest";
-      drv = pkgs.mkShell {
-        packages =
-          ocaml-env
-          # Compatibility for devcontainer
-          ++ [
-            pkgs.coreutils
-            pkgs.dockerTools.binSh
-            pkgs.dockerTools.usrBinEnv
-            pkgs.dockerTools.caCertificates
-
-            # VSCode devenv tools
-            # VSCode reads /etc/os-release to find stuff out about the
-            # container, so put something there
-            (pkgs.writeTextDir "/etc/os-release" ''
-              DEFAULT_HOSTNAME=nixos
-              HOME_URL="https://nixos.org/"
-              ID=nixos
-              NAME=NixOS
-              SUPPORT_URL="https://nixos.org/community.html"
-            '')
-            # Add a user at the default user ID, to avoid issues with root
-            # files for root dockerd
-            (pkgs.dockerTools.fakeNss.override {
-              extraPasswdLines = [ "vscode:x:1000:1000:vs code:/home/vscode:/bin/sh" ];
-              extraGroupLines = [ "vscode:x:1000:" ];
-            })
-            # VS Code runs its own Node JS for the VS Code server, which we
-            # cannot patch so we use the nix-ld dynamic linker as the docker OS
-            # dynamic linker, see NIX_LD and NIX_LD_LIBRARY_PATH below
-            (pkgs.runCommand "nix-ld-linker" { } ''
-              ldpath="$(cat ${pkgs.nix-ld}/nix-support/ldpath)"
-              mkdir -p "$out/$(dirname "$ldpath")"
-              ln -s ${pkgs.nix-ld}/libexec/nix-ld "$out/$ldpath"
-            '')
-            # Some packages VS Code requires for various commands
-            pkgs.file
-            pkgs.findutils
-            pkgs.getent
-            pkgs.gnugrep
-            pkgs.gnused
-            pkgs.gnutar
-            pkgs.gzip
-            pkgs.less
-            pkgs.procps
-            pkgs.ripgrep
-            pkgs.shadow
-          ];
+      contents =
+        ocaml-env
         # Compatibility for devcontainer
-        NIX_LD = pkgs.stdenv.cc.bintools.dynamicLinker;
-        NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-          pkgs.zlib
-          pkgs.zstd
-          pkgs.stdenv.cc.cc
-          pkgs.curl
-          pkgs.openssl
-          pkgs.attr
-          pkgs.libssh
-          pkgs.bzip2
-          pkgs.libxml2
-          pkgs.acl
-          pkgs.libsodium
-          pkgs.util-linux
-          pkgs.xz
+        ++ [
+          pkgs.coreutils
+          pkgs.dockerTools.binSh
+          pkgs.dockerTools.usrBinEnv
+          pkgs.dockerTools.caCertificates
+
+          # VSCode devenv tools
+          # VSCode reads /etc/os-release to find stuff out about the
+          # container, so put something there
+          (pkgs.writeTextDir "/etc/os-release" ''
+            DEFAULT_HOSTNAME=nixos
+            HOME_URL="https://nixos.org/"
+            ID=nixos
+            NAME=NixOS
+            SUPPORT_URL="https://nixos.org/community.html"
+          '')
+          # Add a user at the default user ID, to avoid issues with root
+          # files for root dockerd
+          (pkgs.dockerTools.fakeNss.override {
+            extraPasswdLines = [ "vscode:x:1000:1000:vs code:/home/vscode:/bin/sh" ];
+            extraGroupLines = [ "vscode:x:1000:" ];
+          })
+          # VS Code runs its own Node JS for the VS Code server, which we
+          # cannot patch so we use the nix-ld dynamic linker as the docker OS
+          # dynamic linker, see NIX_LD and NIX_LD_LIBRARY_PATH below
+          (pkgs.runCommand "nix-ld-linker" { } ''
+            ldpath="$(cat ${pkgs.nix-ld}/nix-support/ldpath)"
+            mkdir -p "$out/$(dirname "$ldpath")"
+            ln -s ${pkgs.nix-ld}/libexec/nix-ld "$out/$ldpath"
+          '')
+          # Some packages VS Code requires for various commands
+          pkgs.file
+          pkgs.findutils
+          pkgs.getent
+          pkgs.gnugrep
+          pkgs.gnused
+          pkgs.gnutar
+          pkgs.gzip
+          pkgs.less
+          pkgs.nodejs
+          pkgs.procps
+          pkgs.ripgrep
+          pkgs.shadow
+          pkgs.stdenv.cc.cc.out
+          pkgs.stdenv.cc.libc.bin
+        ];
+      # Compatibility for devcontainer
+      config = {
+        Cmd = [ "/bin/sh" ];
+        Env = [
+          "TYPST_PACKAGE_PATH=${self.devenv.env.TYPST_PACKAGE_PATH}"
+          "TYPST_FONT_PATHS=${self.devenv.env.TYPST_FONT_PATHS}"
+          "NIX_LD=${pkgs.stdenv.cc.bintools.dynamicLinker}"
+          "NIX_LD_LIBRARY_PATH=${
+            pkgs.lib.makeLibraryPath [
+              pkgs.zlib
+              pkgs.zstd
+              pkgs.stdenv.cc.cc
+              pkgs.curl
+              pkgs.openssl
+              pkgs.attr
+              pkgs.libssh
+              pkgs.bzip2
+              pkgs.libxml2
+              pkgs.acl
+              pkgs.libsodium
+              pkgs.util-linux
+              pkgs.xz
+            ]
+          }"
         ];
       };
     };
