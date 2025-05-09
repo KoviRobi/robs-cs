@@ -116,7 +116,7 @@ in
     };
 
     docker-ocaml = pkgs.dockerTools.streamNixShellImage {
-      name = "robs-cs-ocaml";
+      name = "ghcr.io/KoviRobi/robs-cs-ocaml";
       tag = "latest";
       drv = pkgs.mkShell {
         packages =
