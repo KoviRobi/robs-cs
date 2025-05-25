@@ -8,7 +8,7 @@
   subtitle: [_`git` gud_],
 )
 
-#show raw: set text(size: 19pt)
+#show raw: set text(size: 0.95em)
 
 #title-slide
 
@@ -89,7 +89,7 @@ $ find .git -type f
 ]
 
 == Blobs
-- Raw file contents
+Raw file contents
 #v(-0.5em)
 #codly-reveal((1,2,4,6,8))[
   ```shell
@@ -109,9 +109,9 @@ Hello, world
   Let's make commits reproducible
   #v(-0.5em)
   ```shell
-$ export GIT_CONFIG_GLOBAL=.gitconfig
+$ export GIT_CONFIG_GLOBAL=$PWD/.gitconfig
 $ export GIT_{AUTHOR,COMMITTER}_DATE=2025-05-19T14:00
-$ cat <<EOF >.gitconfig
+$ cat <<EOF >"$GIT_CONFIG_GLOBAL"
 [user]
 name=Test
 email=test@mail.com
@@ -191,13 +191,38 @@ Update README
 
 = Branches
 - Files in `.git/refs/heads/<name>` containing hash to commit object
+  #v(-0.5em)
+  ```shell
+  $ head -c4 .git/refs/heads/main
+  ba9f
+  ```
+- ```shell
+  $ git push -u origin @
+  branch 'main' set up to track 'origin/main'.
+  ```
+- `<branch>@{u}` now points to `origin/main`
+
+#slide[
+  #v(-1em)
+  #align(horizon + center, diagram(
+    node-shape: pill,
+    node-stroke: black,
+    node((-1, 0), "main", shape: tag),
+    edge("->"),
+    node((0, 0), grid(row-gutter: 0.5em, inset: (x: 0.5em), `ba9f`, [Update README])),
+    edge("->"),
+    node((0, 1), grid(row-gutter: 0.5em, inset: (x: 0.5em), `d260`, [Initial commit])),
+  ))
+]
 
 = Tags -- lightweight
 - Files in `.git/refs/tags/<name>` containing hash to commit object
   #v(-0.5em)
   ```shell
 $ git tag lightweight
-$ git cat-file -t $(.git/refs/tags/lightweight)
+$ head -c4 .git/refs/tags/lightweight
+ba9f
+$ git cat-file -t lightweight
 commit
   ```
 = Tags -- annotated
@@ -205,8 +230,12 @@ commit
     #v(-0.5em)
     ```shell
 $ git tag -m 'Annotated' annotated
-$ git cat-file -t $(.git/refs/tags/annotated)
+$ head -c4 .git/refs/tags/annotated
+dfe3
+$ git cat-file -t annotated
 tag
+$ git cat-file -t 'annotated^{commit}'
+commit
     ```
 
 = Amend
@@ -216,14 +245,17 @@ tag
 - Symmetric `<rev1>...<rev2>`
 
 = Interactive Rebase
-#slide[
+#slide(repeat: 5, self => [
+  #let (uncover, only, alternatives) = utils.methods(self)
   #v(-1em)
   #fletcher-diagram(
     spacing: (1.5em, 3em),
     node-shape: pill,
     node-stroke: black,
-    node((-1, 0), `branch`, shape: tag),
-    edge("->"),
+    only("3-", node((-1, 0.5), `ORIG_HEAD`, shape: tag)),
+    only("3-", edge((-1, 0.5), (-0.35, 0.5), (-0.35, 0), (0, 0), "->")),
+    only("-4", node((-1, 0), `branch`, shape: tag)),
+    only("-4", edge("->")),
     node((0, 0), `89ab`),
     edge("->"),
     node((0, 1), `4567`),
@@ -232,34 +264,55 @@ tag
     edge("<-"),
     node((-1, 2), `branch@{u}`, shape: tag),
     pause,
-    node((1, 1), `0246`),
+    pause,
+    node((1, 1), `468a`),
     edge((0, 2), "->"),
     pause,
     node((1, 0), `8ace`),
     edge((1, 1), "->"),
+    pause,
+    edge("<-"),
+    node((2, 0), `branch`, shape: tag.with(dir: left)),
   )
-][
   #meanwhile
+], self => [
+  #only(1, local(number-format: none)[
+    #v(-1em)
+    ```git-rebase-todo
+    pick 4567
+    pick 89ab
+    # p, pick   <commit>
+    # r, reword <commit>
+    # e, edit   <commit>
+    # s, squash <commit>
+    # f, fixup [-C|-c] <commit>
+    # x, exec <command>
+    # b, break
+    ```
+  ])
   #for (s, hi) in (
     none,
     ((line: 1),),
     ((line: 2),),
-  ).enumerate(start: 1) {
-    only(s, local(number-format: none, highlights: hi)[
-      #v(-1em)
-      ```git-rebase-todo
-      pick 4567
-      pick 89ab
-      #
-      # p, pick   <commit>
-      # e, edit   <commit>
-      # s, squash <commit>
-      # f, fixup [-C|-c] <commit>
-      # b, break
-      ```
-    ])
-  }
-]
+  ).enumerate(start: 2) {
+  only(s, local(number-format: none, display-name: false, display-icon: false, highlights: hi)[
+    #v(-1em)
+    ```git-rebase-todo
+    reword 4567
+    reword 89ab
+    # p, pick   <commit>
+    # r, reword <commit>
+    # e, edit   <commit>
+    # s, squash <commit>
+    # f, fixup [-C|-c] <commit>
+    # x, exec <command>
+    # b, break
+    ```
+  ])
+}
+])
+
+= Reflog
 
 = Rebase keep merges
 
