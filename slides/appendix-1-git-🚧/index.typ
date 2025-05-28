@@ -12,6 +12,9 @@
 
 #title-slide
 
+= Note
+This is specifically about Git, not GitHub/GitLab/Gerrit/Gitea/etc
+
 #let folder = text(font: "Noto Sans Symbols")[🗀]
 #hero(
   grid(align: left + horizon, columns: 4, rows: 1fr,
@@ -60,6 +63,7 @@
 = Git under the hood
 - Why
   - Good mental model
+  - Understand when things go wrong
 #pause
 - Doesn't
   - use diffs
@@ -196,11 +200,16 @@ Update README
   $ head -c4 .git/refs/heads/main
   ba9f
   ```
-- ```shell
+  #pause
+- Branches can track upstream
+  #v(-0.5em)
+  ```shell
   $ git push -u origin @
   branch 'main' set up to track 'origin/main'.
   ```
-- `<branch>@{u}` now points to `origin/main`
+  #v(-0.5em)
+  `main@{u}` now points to `origin/main` \
+  As usual `@{u}` is shorthand for `HEAD@{u}`
 
 #slide[
   #v(-1em)
@@ -239,6 +248,8 @@ commit
     ```
 
 = Amend
+
+= Reflog
 
 = Revisions 2
 - Asymmetric `<rev1>..``<rev2>` /* Avoid `..<` ligature */
@@ -312,12 +323,20 @@ commit
 }
 ])
 
-= Reflog
-
 = Rebase keep merges
 
+= Rebase exec
+
+= Autosquash
+
+= Split commits
+
 = First-parent
+
+= Bisect
 
 = Range-diff
 
 = Conflicts
+
+= Unix vs Windows differences
