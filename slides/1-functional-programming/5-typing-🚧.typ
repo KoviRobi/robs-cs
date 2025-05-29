@@ -108,6 +108,100 @@ let [11; 12; 13] = List.map (add 10) [1; 2; 3]
   ]
 ]
 
+= Higher order functions
+#v(-1em)
+```ocaml
+# #show List;;
+module List : sig
+  val map : ('a -> 'b) -> 'a t -> 'b t
+  val concat_map : ('a -> 'b t) -> 'a t -> 'b t
+  val for_all : ('a -> bool) -> 'a t -> bool
+  val exists : ('a -> bool) -> 'a t -> bool
+  val filter : ('a -> bool) -> 'a t -> 'a t
+  (* ... *)
+end
+```
+
+== Example -- Transpose
+#v(-1em)
+#components.side-by-side(columns: (5fr, 2fr))[
+  #codly(display-icon: false, display-name: false)
+  ```ocaml
+  let rec transpose = function
+    | []::_ -> []
+    | lst ->
+      List.map List.hd lst
+      :: transpose List.(map tl lst)
+  ```
+][
+  #for (i, (head, t1, t2)) in (
+    (0,0,0),
+    (0,0,0),
+    (3,5,7),
+    (5,7,7),
+    (7,0,0),
+  ).enumerate(start: 1){
+    only(i, local(
+      number-format: none,
+      highlights: (
+        (line: 1, start: head, end: head),
+        (line: 2, start: head, end: head),
+        (line: 3, start: head, end: head),
+        (line: 1, start: t1, end: t2, fill: green.B),
+        (line: 2, start: t1, end: t2, fill: green.B),
+        (line: 3, start: t1, end: t2, fill: green.B),
+      ),
+    )[
+      ```ocaml
+      [[1;2;3];
+       [4;5;6];
+       [7;8;9]]
+      ```
+    ])
+  }
+]
+#pause
+Note: `List.(map tl lst)` behaves like `List.map List.tl lst`
+
+== Example -- Encapsulating state
+#slide[
+  #v(-1em)
+  ```ocaml
+let make_counter () =
+  let this = ref 0 in
+  fun () -> begin
+    let old = !this in
+    this := !this + 1;
+    old
+  end
+  ```
+][
+  #pause
+  #v(-1em)
+  #local(number-format: none)[
+    ```ocaml
+# let a = make_counter ();;
+# let b = make_counter ();;
+# a();;
+0
+# a();;
+1
+# b();;
+0
+    ```
+  ]
+]
+
+= Combinations
+#v(-1em)
+```ocaml
+let rec comb = function
+  | [] -> [[]]
+  | x :: xs ->
+    List.map (fun rest -> x :: rest) (comb xs)
+    @ comb xs
+```
+
 = Functions all the way down
 #slide[
   #align(center, table(columns: 2, stroke: 0em, inset: 0.5em, align: (right, left))[
