@@ -268,9 +268,132 @@ let cons el lst = fun f init -> f el (lst f init)
   ]
 ]
 
+= Inferring types
 #slide[
   #codly(display-icon: false, display-name: false, number-format: none)
   How do we work out types? Take
+  #only(1)[
+    #v(-0.5em)
+    ```ocaml
+    1
+    ```
+    #v(-0.5em)
+    This is an integer.
+  ]
+
+  #only(2)[
+    #v(-0.5em)
+    ```ocaml
+    "hello"
+    ```
+    #v(-0.5em)
+    This is a string.
+  ]
+
+  #only((3,4,5,6))[
+    #v(-0.5em)
+    ```ocaml
+    let f (x: int) = x
+    ```
+    #v(-0.5em)
+    This is a function.
+  ]
+  #only((4,5,6))[
+
+    Functions have some argument type, and some return type.
+  ]
+  #only((5,6))[
+
+    It takes ```ocaml x```, an ```ocaml int```, and returns the type of
+    ```ocaml x```.
+  ]
+  #only((6))[
+
+    It is ```ocaml int -> int```.
+  ]
+
+  #only((7,8,9,10))[
+    #v(-0.5em)
+    ```ocaml
+    let f x = x
+    ```
+    #v(-0.5em)
+
+    Also a function.
+  ]
+  #only((8,9,10))[
+
+    But here ```ocaml x``` is generic.
+  ]
+  #only((9,10))[
+
+    So assume it has type ```ocaml 'a```.
+  ]
+  #only((10))[
+
+    Thus it has type ```ocaml 'a -> 'a```.
+  ]
+
+  #only((11,12,13,14))[
+    #v(-0.5em)
+    ```ocaml
+    (fun x -> x) 1
+    ```
+    #v(-0.5em)
+    This is a function application.
+  ]
+  #only((12,13,14))[
+
+    We know the function is ```ocaml 'a -> 'a```.
+  ]
+  #only((13,14))[
+
+    We also know the argument is ```ocaml int```.
+  ]
+  #only(14)[
+
+    But then ```ocaml 'a``` is ```ocaml int```.
+
+    So the result is ```ocaml int```.
+  ]
+
+  #only((15,16))[
+    #v(-0.5em)
+    ```ocaml
+    x y
+    ```
+    #v(-0.5em)
+    We have to assume ```ocaml x``` is a generic function.
+
+    So try ```ocaml x``` as ```ocaml 'a -> 'b```.
+  ]
+  #only((16))[
+
+    Then ```ocaml y``` should be ```ocaml 'a```.
+
+    And ```ocaml x y``` should be ```ocaml 'b```.
+  ]
+
+  #only((17,18,19))[
+    #v(-0.5em)
+    ```ocaml
+    let rec f x = f x
+    ```
+    #v(-0.5em)
+  ]
+  #only((18,19))[
+
+    If it never terminates, it could return anything.
+  ]
+  #only((19))[
+
+    So ```ocaml 'a -> 'b```.
+  ]
+]
+
+#slide[
+  #codly(display-icon: false, display-name: false, number-format: none)
+  Example from above
   #let mkhi(hi) = local(highlights: hi)[
     #v(-0.5em)
     ```ocaml
