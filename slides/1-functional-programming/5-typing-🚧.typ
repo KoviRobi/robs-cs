@@ -9,7 +9,7 @@
 
 #show raw: set text(font: "CaskaydiaCove NF")
 
-#title-slide
+#title-slide()
 
 = Multiple arguments
 #slide[
@@ -110,17 +110,19 @@ let [11; 12; 13] = List.map (add 10) [1; 2; 3]
 
 = Higher order functions
 #v(-1em)
-```ocaml
-# #show List;;
-module List : sig
-  val map : ('a -> 'b) -> 'a t -> 'b t
-  val concat_map : ('a -> 'b t) -> 'a t -> 'b t
-  val for_all : ('a -> bool) -> 'a t -> bool
-  val exists : ('a -> bool) -> 'a t -> bool
-  val filter : ('a -> bool) -> 'a t -> 'a t
-  (* ... *)
-end
-```
+#local(number-format: none)[
+  ```ocaml
+  # #show List;;
+  module List : sig
+    val map : ('a -> 'b) -> 'a t -> 'b t
+    val concat_map : ('a -> 'b t) -> 'a t -> 'b t
+    val for_all : ('a -> bool) -> 'a t -> bool
+    val exists : ('a -> bool) -> 'a t -> bool
+    val filter : ('a -> bool) -> 'a t -> 'a t
+    (* ... *)
+  end
+  ```
+]
 
 == Example -- Transpose
 #v(-1em)
@@ -267,6 +269,10 @@ let cons el lst = fun f init -> f el (lst f init)
     within with the arguments for the current case).
   ]
 ]
+
+#title-slide(
+  subtitle: "Pause"
+)
 
 = Inferring types
 #slide[

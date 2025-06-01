@@ -9,7 +9,7 @@
 
 #show raw: set text(font: "CaskaydiaCove NF")
 
-#title-slide
+#title-slide()
 
 #slide[
 #sym.space.quad When old age shall this generation waste,                                \

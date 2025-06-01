@@ -9,7 +9,7 @@
 
 #show raw: set text(font: "CaskaydiaCove NF")
 
-#title-slide
+#title-slide()
 
 #let tree(a,b,c,d,e,f,g) = diagram(
   spacing: (0.2em, 0.8em),

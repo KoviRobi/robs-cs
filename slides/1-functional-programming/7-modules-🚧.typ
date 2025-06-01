@@ -9,7 +9,7 @@
 
 #show raw: set text(font: "CaskaydiaCove NF")
 
-#title-slide
+#title-slide()
 
 = Sets of what?
 We used ```ocaml =```, ```ocaml <``` and ```ocaml >``` but how are they

@@ -10,7 +10,7 @@
 
 #show raw: set text(size: 0.95em)
 
-#title-slide
+#title-slide()
 
 = Note
 This is specifically about Git, not GitHub/GitLab/Gerrit/Gitea/etc

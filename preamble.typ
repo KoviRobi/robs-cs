@@ -59,4 +59,4 @@
 #let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
 #let fletcher-diagram = touying-reducer.with(reduce: fletcher.diagram, cover: fletcher.hide)
 
-#let title-slide = unistra.title-slide(logo: image(height: 95%, "branding/carallon/carallon_logo_white.png"))
+#let title-slide = unistra.title-slide.with(logo: image(height: 95%, "branding/carallon/carallon_logo_white.png"))
