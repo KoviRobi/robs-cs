@@ -21,71 +21,89 @@
 #only(3)[
   / #"A:": One
     #v(-0.5em)
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 (* val add : (int * int) -> int *)
 let add (args) = match args with
         (x, y) -> x + y
-    ```
+        ```
+      ]
     ]
 #only(4)[
   / #"A:": One
     #v(-0.5em)
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 (* val add :  int * int  -> int *)
 let add (args) = match args with
         (x, y) -> x + y
-    ```
+        ```
+      ]
     ]
 #only(5)[
   / #"A:": One, with pattern matching
     #v(-0.5em)
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 (* val add :  int * int  -> int *)
 let add (x, y) = x + y
-    ```
+      ```
+    ]
   ]
 ]
 
 #slide[
 / #"Q:": So what's
   #v(-0.5em)
-  ```ocaml
+  #local(number-format: none)[
+    ```ocaml
 let add x y = x + y
-  ```
+    ```
+  ]
 #pause
 / #"A:": Function returning a function
   #only(2)[
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 (* val add : int -> (int -> int) *)
 let add = fun x -> (fun y -> x + y)
-    ```
+      ```
+    ]
   ]
   #only(3)[
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 (* val add : int ->  int -> int  *)
 let add = fun x ->  fun y -> x + y
-    ```
+      ```
+    ]
   ]
   #only(4)[
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 (* val add : int ->  int -> int  *)
 let add x = fun y -> x + y
-    ```
+      ```
+    ]
   ]
 ]
 
 #slide[
   / #"Q:": Why use
     #v(-0.5em)
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 let add x y = x + y
-    ```
+      ```
+    ]
     #v(-0.5em)
     instead of #only(3)[#h(1fr)#sym.arrow.t curry #h(1em) uncurry #sym.arrow.b#h(1fr)]
     #v(-0.5em)
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 let add (x, y) = x + y
-    ```
+      ```
+    ]
   #pause
   / #"A:": Partial application
 ]
@@ -95,7 +113,8 @@ let add (x, y) = x + y
   Contrived but simple example
   #v(-0.5em)
   #codly-reveal((1,3,6,8))[
-    ```ocaml
+    #local(number-format: none)[
+      ```ocaml
 let add x y = x + y;;
 
 let add1 = add 1;;
@@ -104,7 +123,8 @@ assert (add1 1 = 2);;
 assert (add1 (add1 1) = 3);;
 
 assert (List.map (add 10) [1; 2; 3] = [11; 12; 13]);;
-```
+    ```
+    ]
   ]
 ]
 
@@ -130,11 +150,10 @@ Some functions contain types like ```ocaml 'a```
 #local(number-format: none)[
   ```ocaml
   # #show List;;
-  module List :
-    sig
-      type 'a t = 'a list = [] | (::) of 'a * 'a list
-      val length : 'a t -> int
-    end
+  module List : sig
+    type 'a t = 'a list = [] | (::) of 'a * 'a list
+    val length : 'a t -> int
+  end
   ```
 ]
 #v(-0.5em)
@@ -289,7 +308,7 @@ let cons el lst = el :: lst
     How about encoding `match lst with ...`?
     #v(-0.5em)
     ```ocaml
-let empty = fun ifCons ifEmpty -> ifEmpty
+let empty       = fun ifCons ifEmpty -> ifEmpty
 let cons el lst = fun ifCons ifEmpty -> ifCons el lst
     ```
     #v(-0.5em)
@@ -299,7 +318,7 @@ let cons el lst = fun ifCons ifEmpty -> ifCons el lst
     How about encoding `fold_right`?
     #v(-0.5em)
     ```ocaml
-let empty = fun f init -> init
+let empty       = fun f init -> init
 let cons el lst = fun f init -> f el (lst f init)
     ```
     #v(-0.5em)
@@ -315,4 +334,23 @@ let cons el lst = fun f init -> f el (lst f init)
     recursive values (e.g. the tail of the list), we call the value contained
     within with the arguments for the current case).
   ]
+]
+
+= Exercise
+The function `List.map f lst` applies the function `f` to each element of the
+list `lst`. Implement `map` for the Church encoding
+#v(-0.5em)
+#local(number-format: none)[
+  ```ocaml
+let empty_church       = fun f init -> init
+let cons_church el lst = fun f init -> f el (lst f init)
+  ```
+  #v(-0.5em)
+  Some structure is provided at
+  #v(-0.5em)
+  ```sh
+git clone https://github.com/KoviRobi/robs-cs
+git checkout exercises/2-higher-order-functions
+dune runtest
+  ```
 ]
